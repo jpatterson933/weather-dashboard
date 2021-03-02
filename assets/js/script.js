@@ -51,54 +51,91 @@ $("#button-search").on("click", function (event) {
                     //these are the results for the current day which are kept sepearte form the 
                     //daily results, so we will need to console log and store current weather conditions
                     //we could even have an on click even that stores it on the page until they change it
+                    
+//----------------------------------------locally store our current day weather condition----------------------------------//
                     console.log("current day")
+
                     console.log(results.current.dt)
                     localStorage.setItem("currentDate", results.current.dt)
+
                     console.log(results.current.temp)
                     localStorage.setItem("currentTemp", results.current.temp)
-                    console.log(results.current.wind_speed)
-                    console.log(results.current.humidity)
-                    console.log(results.current.uvi)
-                    console.log(results.current.weather[0].main)
-                    console.log(results.current.weather[0].icon)
-                    console.log(results.current.sunset)
-                    console.log(results.current.sunrise)
-                    console.log("end current day info")
-                    
 
+                    console.log(results.current.wind_speed)
+                    localStorage.setItem("currentWindSpeed", results.current.wind_speed)
+
+                    console.log(results.current.humidity)
+                    localStorage.setItem("currentHumidity", results.current.humidity)
+
+                    console.log(results.current.uvi)
+                    localStorage.setItem("currentUvi", results.current.uvi)
+
+                    console.log(results.current.weather[0].main)
+                    localStorage.setItem("currentConditions", results.current.weather[0].main)
+
+                    console.log(results.current.weather[0].icon)
+                    localStorage.setItem("currentConditionsImg", results.current.weather[0].icon)
+
+                    console.log(results.current.sunset)
+                    localStorage.setItem("currentSunset", results.current.sunset)
+
+                    console.log(results.current.sunrise)
+                    localStorage.setItem("currentSunrise", results.current.sunrise)
+
+                    console.log("end current day info")
+
+                    //empty variables that will be used to store each of our five days information into local storage
+                    var dateStr = ' ';
+                    var tempMaxStr = ' ';
+                    var tempMinStr = ' ';
+                    var windSpeedStr = ' ';
+                    var humidityStr = ' ';
+                    var uviStr = ' ';
+                    var weatherConditionMainStr = ' ';
+                    var weatherConditionIconStr = ' ';
+                    var sunriseStr = ' ';
+                    var sunsetStr = ' ';
+                    
                     //loops through our daily weather reports for the next five days
                     for (var i = 1; i < 6; i++) {
-
-                        var maximumTemp = results.daily[i].temp.max
-                        var minimumTemp = results.daily[i].temp.min
-                        var avgTemp = (maximumTemp + minimumTemp) / 2
-
-                        //takes the average of maximum and minimum temperatures
+                        
+                        //console log to track each new day through loops
                         console.log("new day")
-                        console.log(avgTemp)
                         //console log our date
                         console.log(results.daily[i].dt)
+                        
+                        //date string
+                        dateStr += results.daily[i].dt + ", ";
+                        console.log(dateStr)
+                        localStorage.setItem("dailyDate", dateStr)
+                     
                         //console log our max temp
                         console.log(results.daily[i].temp.max)
+
+                        //max temp string
+                        tempMaxStr += results.daily[i].temp.max + ", ";
+                        localStorage.setItem("dailyTempMax", tempMaxStr)
+
                         //console log our min temp
                         console.log(results.daily[i].temp.min)
+
+                        //temp min string
+                        tempMinStr += results.daily[i].temp.min + ", ";
+                        localStorage.setItem("dailyTempMin", tempMinStr)
+
                         //console log our humidity
                         console.log(results.daily[i].wind_speed)
+
+                        windSpeedStr += results.daily[i].wind_speed + ", ";
+                        localStorage.setItem("dailyWindSpeed", windSpeedStr)
                         //console log our humidity - this can be translated to percentage to represent total humidty in the air. (eg. 49 means humidity is 49%)
                         console.log(results.daily[i].humidity)
                         //console log our uvi
-                            //UV Index 0 - 2. Low exposure level. Average time it takes to burn: 60 minutes. ...
-                            // UV Index 3 - 5. Moderate exposure level. Average time it takes to burn: 45 minutes. ...
-                            // UV Index 6 - 7. High exposure level. ...
-                            // UV Index 8 - 10. Very high exposure level. ...
-                            // 11+ UV Index. Extreme exposure level.
                         //I will need to create  uvi function
                         console.log(results.daily[i].uvi)
                         //console log weather conditions report string
                         //i could go further and loop throug the weather array or just set it to 0
-                        console.log(results.daily[i].weather[0].id)
                         console.log(results.daily[i].weather[0].main)
-                        console.log(results.daily[i].weather[0].description)
                         console.log(results.daily[i].weather[0].icon)
                         //console log our sunrise time
                         console.log(results.daily[i].sunrise)
