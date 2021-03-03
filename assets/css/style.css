@@ -1,0 +1,29 @@
+:root {
+    --globalBorder: 3px solid rgba( 149, 199, 255, 1); 
+}
+
+
+.card-design {
+    background-color: rgba(149, 199, 255, .5);
+    width: fit-content;
+    border: var(--globalBorder);
+    border-radius: 5px;
+    margin: 0 auto;
+    box-shadow: rgb(50 50 93 / 25%) 0px 30px 60px -12px, rgb(0 0 0 / 30%) 0px 18px 36px -18px;
+}
+
+.top-row-design {
+    margin: 5px;
+    display: contents;
+    text-align: center;
+    
+}
+
+.mid-row-design p {
+    margin: 0 auto;
+}
+
+#uvi-color {
+    padding: 10px;
+    margin: 0 auto;
+}

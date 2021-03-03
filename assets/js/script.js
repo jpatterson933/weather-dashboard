@@ -11,7 +11,7 @@ var apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
 
 //when the user clicks this button, it will run the events for the pages
 $("#button-search").on("click", function (event) {
-    event.preventDefault();
+    // event.preventDefault();
     //this variable is the input from the user and trims all white spaces
     var cityName = $("#city-name").val().trim();
     //this is our inital url that we are using fetch with to gather the lon and lat of cities
@@ -171,8 +171,6 @@ var cityNameGlobal =  localStorage.getItem("cityName");
 
 function currentDay () {
 
-    
-
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
         date: localStorage.getItem("currentDate").trim(),
@@ -182,12 +180,19 @@ function currentDay () {
         uvi: localStorage.getItem("currentUvi").trim(),
         conditions: localStorage.getItem("currentConditions").trim(),
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
-
     }
 
-    var displayColumn1 = $("<div class='col'></div>");
-    var displayRow1 = $("<div class='row'></div>");
-    var displayRow2 = $("<div class='row'></div>");
+
+    var fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9/5) + 32)
+    
+    var date = new Date(0)
+    date.setUTCSeconds(currentDayForecast.date);
+
+
+
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
     var displayRow3 = $("<div class='row'></div>");
 
     var displayCity = $("<p></p>");
@@ -196,16 +201,45 @@ function currentDay () {
     var displayWind = $("<p></p>");
     var displayHumidity = $("<p></p>");
     var displayUvi = $("<p></p>");
+    var uviColor = currentDayForecast.uvi;
     var displayConditions = $("<p></p>");
-    var displayConditionImg = $("<p></p>");
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
 
+    
+    //if statements that change my box color based off uvi
+    if (uviColor < 3) {
+        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
+    }
+    
+    if (uviColor > 2 && uviColor < 6) {
+        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
+    }
+
+    if (uviColor > 5 && uviColor < 8) {
+        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
+    }
+
+    if (uviColor > 7 && uvicolor < 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
+    }
+
+    if (uviColor > 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
+    }
+    
+
+    
+
+    
     displayCity.text(currentDayForecast.cityName);
-    displayDate.text(currentDayForecast.date);
-    displayTemp.text(currentDayForecast.temp)
+    displayDate.text(date);
+    displayTemp.text("Current Temperature " + fahrenTemp + "\u00B0" + "F")
 
-    displayWind.text(currentDayForecast.windSpeed);
-    displayHumidity.text(currentDayForecast.humidity);
-    displayUvi.text(currentDayForecast.uvi);
+    displayWind.text("Wind Speed " + currentDayForecast.windSpeed);
+    displayHumidity.text("Humidity " + currentDayForecast.humidity + "%");
+    displayUvi.text("UV Index " + currentDayForecast.uvi);
+
+    
 
     displayConditions.text(currentDayForecast.conditions);
     displayConditionImg.text(currentDayForecast.conditionImg);
@@ -217,6 +251,8 @@ function currentDay () {
     displayRow2.append(displayWind);
     displayRow2.append(displayHumidity);
     displayRow2.append(displayUvi);
+    //uvi clor being appended
+    displayRow2.append(uviColor)
 
     displayRow3.append(displayConditions);
     displayRow3.append(displayConditionImg);
@@ -226,13 +262,6 @@ function currentDay () {
     displayColumn1.append(displayRow3);
 
     currentDayDisplay.append(displayColumn1)
-
-
-    
-
-
-
-
 }
 
 currentDay()
