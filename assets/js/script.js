@@ -78,12 +78,6 @@ $("#button-search").on("click", function (event) {
                     console.log(results.current.weather[0].icon)
                     localStorage.setItem("currentConditionsImg", results.current.weather[0].icon)
 
-                    console.log(results.current.sunset)
-                    localStorage.setItem("currentSunset", results.current.sunset)
-
-                    console.log(results.current.sunrise)
-                    localStorage.setItem("currentSunrise", results.current.sunrise)
-
                     console.log("end current day info")
 
                     //empty variables that will be used to store each of our five days information into local storage
@@ -153,8 +147,7 @@ var humidityStr = localStorage.getItem("dailyHumidity").split(",");
 var uviStr = localStorage.getItem("dailyUvi").split(",");
 var weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
 var weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
-var sunriseStr = localStorage.getItem("dailySunrise").split(",");
-var sunsetStr = localStorage.getItem("dailySunset").split(",");
+
 
 // console.log(dateStr)
 // console.log(tempMaxStr)
@@ -178,6 +171,8 @@ var cityNameGlobal =  localStorage.getItem("cityName");
 
 function currentDay () {
 
+    
+
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
         date: localStorage.getItem("currentDate").trim(),
@@ -187,40 +182,55 @@ function currentDay () {
         uvi: localStorage.getItem("currentUvi").trim(),
         conditions: localStorage.getItem("currentConditions").trim(),
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
-        sunset: localStorage.getItem("currentSunset").trim(),
-        sunrsie: localStorage.getItem("currentSunrise").trim()
+
     }
 
-    var displayColumn1 = $("<div class='col-sm-3'></div>");
-    var displayCity = $("<div class='row'></div>");
-    var displayDate = $("<div class='row'><p></p></div>");
-    var displayTemp = $("<div class='row'></div>");
-    var displayWind = $("<div class='row'></div>"); 
-    var displayHumidity = $("<div class='row'></div>");
-    var displayUvi = $("<div class='row'></div>");
-    var displayConditions = $("<div class='row'></div>");
+    var displayColumn1 = $("<div class='col'></div>");
+    var displayRow1 = $("<div class='row'></div>");
+    var displayRow2 = $("<div class='row'></div>");
+    var displayRow3 = $("<div class='row'></div>");
 
-    var displayCity = $("<h1>" + currentDayForecast.cityName + "</h1>")
+    var displayCity = $("<p></p>");
+    var displayDate = $("<p></p>");
+    var displayTemp = $("<p></p>");
+    var displayWind = $("<p></p>");
+    var displayHumidity = $("<p></p>");
+    var displayUvi = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    var displayConditionImg = $("<p></p>");
 
-    displayCity.append(displayCity)
-    displayDate.append(currentDayForecast.date)
-    displayTemp.append(currentDayForecast.temp)
-    displayWind.append(currentDayForecast.windSpeed)
-    displayHumidity.append(currentDayForecast.humidity)
-    displayUvi.append(currentDayForecast.uvi)
-    displayConditions.append(currentDayForecast.conditions)
-    displayConditions.append(currentDayForecast.conditionImg)
+    displayCity.text(currentDayForecast.cityName);
+    displayDate.text(currentDayForecast.date);
+    displayTemp.text(currentDayForecast.temp)
+
+    displayWind.text(currentDayForecast.windSpeed);
+    displayHumidity.text(currentDayForecast.humidity);
+    displayUvi.text(currentDayForecast.uvi);
+
+    displayConditions.text(currentDayForecast.conditions);
+    displayConditionImg.text(currentDayForecast.conditionImg);
     
-    displayColumn1.append(displayCity)
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow1.append(displayTemp);
+
+    displayRow2.append(displayWind);
+    displayRow2.append(displayHumidity);
+    displayRow2.append(displayUvi);
+
+    displayRow3.append(displayConditions);
+    displayRow3.append(displayConditionImg);
+
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3);
+
     currentDayDisplay.append(displayColumn1)
+
+
     
-    displayColumn1.append(displayDate);
-    displayColumn1.append(displayTemp);
-    displayColumn1.append(displayTemp);
-    displayColumn1.append(displayWind);
-    displayColumn1.append(displayHumidity);
-    displayColumn1.append(displayUvi);
-    displayColumn1.append(displayConditions);
+
+
 
 
 }
