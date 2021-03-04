@@ -11,7 +11,7 @@ var apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
 
 //when the user clicks this button, it will run the events for the pages
 $("#button-search").on("click", function (event) {
-    // event.preventDefault();
+    event.preventDefault();
     //this variable is the input from the user and trims all white spaces
     var cityName = $("#city-name").val().trim();
     //this is our inital url that we are using fetch with to gather the lon and lat of cities
@@ -91,7 +91,8 @@ $("#button-search").on("click", function (event) {
                     var weatherConditionIconStr = ' ';
                     var sunriseStr = ' ';
                     var sunsetStr = ' ';
-                    
+
+//----------------------------locally store a five day weather forecast----------------------------------//
                     //loops through our daily weather reports for the next five days
                     for (var i = 1; i < 6; i++) {
                         
@@ -134,7 +135,9 @@ $("#button-search").on("click", function (event) {
                         //sunset string
                         sunsetStr += results.daily[i].sunset + ", ";
                         localStorage.setItem("dailySunset", sunsetStr)
+
                     }
+                    location.reload()
                 })
         })
 })
@@ -149,28 +152,22 @@ var weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split("
 var weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
 
-// console.log(dateStr)
-// console.log(tempMaxStr)
-// console.log(tempMinStr)
-// console.log(windSpeedStr)
-// console.log(humidityStr)
-// console.log(uviStr)
-// console.log(weatherConditionMainStr)
-// console.log(weatherConditionIconStr)
-// console.log(sunriseStr)
-// console.log(sunsetStr)
-
-
-//variables for displaying card information. City Name remains global.
+//variables for displaying card information
 var currentDayDisplay = $("#current-day");
+var dayOne = $("#one-day");
+var dayTwo = $("#two-day");
+var dayThree = $("#three-day");
+var dayFour = $("#four-day");
+var dayFive = $("#five-day");
+// City Name remains global
 var cityNameGlobal =  localStorage.getItem("cityName");
 
 
 
-
-
+//function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay () {
-
+    //we will stringify and store this object so it can be added to local storage later
+    //and added into our "search history" // not sure how I am going to create that yet
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
         date: localStorage.getItem("currentDate").trim(),
@@ -182,93 +179,630 @@ function currentDay () {
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
     }
 
-
+    //change temperature to fahrenheit 
     var fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9/5) + 32)
     
-    var date = new Date(0)
-    date.setUTCSeconds(currentDayForecast.date);
 
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = currentDayForecast.date
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
+        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
 
-
+    //uvi variable
+    var uviColor = currentDayForecast.uvi;
+    
+    //creat columns and rose here to append html elements
     var displayColumn1 = $("<div class='col card-design'></div>");
     var displayRow1 = $("<div class='row top-row-design'></div>");
     var displayRow2 = $("<div class='row mid-row-design'></div>");
-    var displayRow3 = $("<div class='row'></div>");
-
-    var displayCity = $("<p></p>");
+    var displayRow3 = $("<div class='row bot-row-design'></div>");
+    var displayRow4 = $("<div class='row floor-row-design'></div>");
+    var displayRow5 = $("<div class='row base-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
     var displayDate = $("<p></p>");
     var displayTemp = $("<p></p>");
     var displayWind = $("<p></p>");
     var displayHumidity = $("<p></p>");
     var displayUvi = $("<p></p>");
-    var uviColor = currentDayForecast.uvi;
     var displayConditions = $("<p></p>");
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
     var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
-
+    
     
     //if statements that change my box color based off uvi
     if (uviColor < 3) {
         uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
     }
-    
     if (uviColor > 2 && uviColor < 6) {
         uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
     }
-
     if (uviColor > 5 && uviColor < 8) {
         uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
     }
-
     if (uviColor > 7 && uvicolor < 11) {
         uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
     }
-
     if (uviColor > 11) {
         uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
     }
     
-
-    
-
-    
+    //insert text into variables that hold html elements
     displayCity.text(currentDayForecast.cityName);
     displayDate.text(date);
     displayTemp.text("Current Temperature " + fahrenTemp + "\u00B0" + "F")
-
-    displayWind.text("Wind Speed " + currentDayForecast.windSpeed);
+    displayWind.text("Wind Speed " + currentDayForecast.windSpeed + " mph");
     displayHumidity.text("Humidity " + currentDayForecast.humidity + "%");
     displayUvi.text("UV Index " + currentDayForecast.uvi);
-
-    
-
     displayConditions.text(currentDayForecast.conditions);
     displayConditionImg.text(currentDayForecast.conditionImg);
     
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
     displayRow1.append(displayCity);
     displayRow1.append(displayDate);
     displayRow1.append(displayTemp);
-
-    displayRow2.append(displayWind);
-    displayRow2.append(displayHumidity);
-    displayRow2.append(displayUvi);
-    //uvi clor being appended
-    displayRow2.append(uviColor)
-
-    displayRow3.append(displayConditions);
-    displayRow3.append(displayConditionImg);
-
+    displayRow2.append(displayConditions);
+    displayRow2.append(displayConditionImg);
+    displayRow3.append(displayWind);
+    displayRow4.append(displayUvi);
+    displayRow4.append(uviColor)
+    displayRow5.append(displayHumidity);
     displayColumn1.append(displayRow1)
     displayColumn1.append(displayRow2)
     displayColumn1.append(displayRow3);
-
+    displayColumn1.append(displayRow4);
+    displayColumn1.append(displayRow5);
     currentDayDisplay.append(displayColumn1)
 }
 
+function oneDay () {
+
+    var newDate = dateStr[0].trim();
+    var tempMax = tempMaxStr[0].trim();
+    var tempMin = tempMinStr[0].trim();
+    var windSpeed = windSpeedStr[0].trim();
+    var humidity = humidityStr[0].trim();
+    var uvi = uviStr[0].trim();
+    var conditions = weatherConditionMainStr[0].trim();
+    var conditionImg = weatherConditionIconStr[0].trim();
+
+
+  
+    
+    //we will stringify and store this object so it can be added to local storage later
+    //and added into our "search history" // not sure how I am going to create that yet
+    
+
+    //max and min temperature in fahrenheit
+    var fahrenTempMax = Math.round((tempMax - 273.15) * (9/5) + 32)
+    var fahrenTempMin = Math.round((tempMin - 273.15) * (9/5) + 32)
+    
+
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = newDate;
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
+        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+
+    //uvi variable
+    var uviColor = uvi;
+    
+    //creat columns and rose here to append html elements
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
+    var displayRow3 = $("<div class='row mid-row-design'></div>");
+    var displayRow4 = $("<div class='row floor-row-design'></div>");
+    var displayRow5 = $("<div class='row base-row-design'></div>");
+    var displayRow6 = $("<div class='row base-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
+    var displayDate = $("<p></p>");
+    var displayMaxTemp = $("<p></p>");
+    var displayMinTemp = $("<p></p>");
+    var displayWind = $("<p></p>");
+    var displayHumidity = $("<p></p>");
+    var displayUvi = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    
+    
+    //if statements that change my box color based off uvi
+    if (uviColor < 3) {
+        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
+    }
+    if (uviColor > 2 && uviColor < 6) {
+        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
+    }
+    if (uviColor > 5 && uviColor < 8) {
+        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
+    }
+    if (uviColor > 7 && uvicolor < 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
+    }
+    if (uviColor > 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
+    }
+    
+    //insert text into variables that hold html elements
+    displayCity.text(cityNameGlobal);
+    displayDate.text(oneDate);
+    displayMaxTemp.text("Max Temp " + fahrenTempMax + "\u00B0" + "F")
+    displayMinTemp.text("Min Temp " + fahrenTempMin + "\u00B0" + "F")
+    displayWind.text("Wind Speed " + windSpeed + " mph");
+    displayHumidity.text("Humidity " + humidity + "%");
+    displayUvi.text("UV Index " + uvi);
+    displayConditions.text(conditions);
+    displayConditionImg.text(conditionImg);
+    
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow2.append(displayMaxTemp);
+    displayRow2.append(displayMinTemp);
+    displayRow3.append(displayConditions);
+    displayRow3.append(displayConditionImg);
+    displayRow4.append(displayWind);
+    displayRow5.append(displayUvi);
+    displayRow5.append(uviColor)
+    displayRow6.append(displayHumidity);
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3);
+    displayColumn1.append(displayRow4);
+    displayColumn1.append(displayRow5);
+    displayColumn1.append(displayRow6);
+    dayOne.append(displayColumn1)
+}
+
+function twoDay () {
+
+    var newDate = dateStr[1].trim();
+    var tempMax = tempMaxStr[1].trim();
+    var tempMin = tempMinStr[1].trim();
+    var windSpeed = windSpeedStr[1].trim();
+    var humidity = humidityStr[1].trim();
+    var uvi = uviStr[1].trim();
+    var conditions = weatherConditionMainStr[1].trim();
+    var conditionImg = weatherConditionIconStr[1].trim();
+
+    
+
+    //max and min temperature in fahrenheit
+    var fahrenTempMax = Math.round((tempMax - 273.15) * (9/5) + 32)
+    var fahrenTempMin = Math.round((tempMin - 273.15) * (9/5) + 32)
+    
+
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = newDate;
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
+        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+
+    //uvi variable
+    var uviColor = uvi;
+    
+    //creat columns and rose here to append html elements
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
+    var displayRow3 = $("<div class='row mid-row-design'></div>");
+    var displayRow4 = $("<div class='row floor-row-design'></div>");
+    var displayRow5 = $("<div class='row base-row-design'></div>");
+    var displayRow6 = $("<div class='row base-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
+    var displayDate = $("<p></p>");
+    var displayMaxTemp = $("<p></p>");
+    var displayMinTemp = $("<p></p>");
+    var displayWind = $("<p></p>");
+    var displayHumidity = $("<p></p>");
+    var displayUvi = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    
+    
+    //if statements that change my box color based off uvi
+    if (uviColor < 3) {
+        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
+    }
+    if (uviColor > 2 && uviColor < 6) {
+        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
+    }
+    if (uviColor > 5 && uviColor < 8) {
+        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
+    }
+    if (uviColor > 7 && uvicolor < 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
+    }
+    if (uviColor > 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
+    }
+    
+    //insert text into variables that hold html elements
+    displayCity.text(cityNameGlobal);
+    displayDate.text(oneDate);
+    displayMaxTemp.text("Max Temp " + fahrenTempMax + "\u00B0" + "F")
+    displayMinTemp.text("Min Temp " + fahrenTempMin + "\u00B0" + "F")
+    displayWind.text("Wind Speed " + windSpeed + " mph");
+    displayHumidity.text("Humidity " + humidity + "%");
+    displayUvi.text("UV Index " + uvi);
+    displayConditions.text(conditions);
+    displayConditionImg.text(conditionImg);
+    
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow2.append(displayMaxTemp);
+    displayRow2.append(displayMinTemp);
+    displayRow3.append(displayConditions);
+    displayRow3.append(displayConditionImg);
+    displayRow4.append(displayWind);
+    displayRow5.append(displayUvi);
+    displayRow5.append(uviColor)
+    displayRow6.append(displayHumidity);
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3);
+    displayColumn1.append(displayRow4);
+    displayColumn1.append(displayRow5);
+    displayColumn1.append(displayRow6);
+    dayTwo.append(displayColumn1)
+}
+
+function threeDay () {
+
+    var newDate = dateStr[2].trim();
+    var tempMax = tempMaxStr[2].trim();
+    var tempMin = tempMinStr[2].trim();
+    var windSpeed = windSpeedStr[2].trim();
+    var humidity = humidityStr[2].trim();
+    var uvi = uviStr[2].trim();
+    var conditions = weatherConditionMainStr[2].trim();
+    var conditionImg = weatherConditionIconStr[2].trim();
+
+    
+
+    //max and min temperature in fahrenheit
+    var fahrenTempMax = Math.round((tempMax - 273.15) * (9/5) + 32)
+    var fahrenTempMin = Math.round((tempMin - 273.15) * (9/5) + 32)
+    
+
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = newDate;
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
+        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+
+    //uvi variable
+    var uviColor = uvi;
+    
+    //creat columns and rose here to append html elements
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
+    var displayRow3 = $("<div class='row mid-row-design'></div>");
+    var displayRow4 = $("<div class='row floor-row-design'></div>");
+    var displayRow5 = $("<div class='row base-row-design'></div>");
+    var displayRow6 = $("<div class='row base-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
+    var displayDate = $("<p></p>");
+    var displayMaxTemp = $("<p></p>");
+    var displayMinTemp = $("<p></p>");
+    var displayWind = $("<p></p>");
+    var displayHumidity = $("<p></p>");
+    var displayUvi = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    
+    
+    //if statements that change my box color based off uvi
+    if (uviColor < 3) {
+        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
+    }
+    if (uviColor > 2 && uviColor < 6) {
+        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
+    }
+    if (uviColor > 5 && uviColor < 8) {
+        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
+    }
+    if (uviColor > 7 && uvicolor < 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
+    }
+    if (uviColor > 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
+    }
+    
+    //insert text into variables that hold html elements
+    displayCity.text(cityNameGlobal);
+    displayDate.text(oneDate);
+    displayMaxTemp.text("Max Temp " + fahrenTempMax + "\u00B0" + "F")
+    displayMinTemp.text("Min Temp " + fahrenTempMin + "\u00B0" + "F")
+    displayWind.text("Wind Speed " + windSpeed + " mph");
+    displayHumidity.text("Humidity " + humidity + "%");
+    displayUvi.text("UV Index " + uvi);
+    displayConditions.text(conditions);
+    displayConditionImg.text(conditionImg);
+    
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow2.append(displayMaxTemp);
+    displayRow2.append(displayMinTemp);
+    displayRow3.append(displayConditions);
+    displayRow3.append(displayConditionImg);
+    displayRow4.append(displayWind);
+    displayRow5.append(displayUvi);
+    displayRow5.append(uviColor)
+    displayRow6.append(displayHumidity);
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3);
+    displayColumn1.append(displayRow4);
+    displayColumn1.append(displayRow5);
+    displayColumn1.append(displayRow6);
+    dayThree.append(displayColumn1)
+}
+
+function fourDay () {
+
+    var newDate = dateStr[3].trim();
+    var tempMax = tempMaxStr[3].trim();
+    var tempMin = tempMinStr[3].trim();
+    var windSpeed = windSpeedStr[3].trim();
+    var humidity = humidityStr[3].trim();
+    var uvi = uviStr[3].trim();
+    var conditions = weatherConditionMainStr[3].trim();
+    var conditionImg = weatherConditionIconStr[3].trim();
+
+    
+
+    //max and min temperature in fahrenheit
+    var fahrenTempMax = Math.round((tempMax - 273.15) * (9/5) + 32)
+    var fahrenTempMin = Math.round((tempMin - 273.15) * (9/5) + 32)
+    
+
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = newDate;
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
+        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+
+    //uvi variable
+    var uviColor = uvi;
+    
+    //creat columns and rose here to append html elements
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
+    var displayRow3 = $("<div class='row mid-row-design'></div>");
+    var displayRow4 = $("<div class='row floor-row-design'></div>");
+    var displayRow5 = $("<div class='row base-row-design'></div>");
+    var displayRow6 = $("<div class='row base-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
+    var displayDate = $("<p></p>");
+    var displayMaxTemp = $("<p></p>");
+    var displayMinTemp = $("<p></p>");
+    var displayWind = $("<p></p>");
+    var displayHumidity = $("<p></p>");
+    var displayUvi = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    
+    
+    //if statements that change my box color based off uvi
+    if (uviColor < 3) {
+        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
+    }
+    if (uviColor > 2 && uviColor < 6) {
+        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
+    }
+    if (uviColor > 5 && uviColor < 8) {
+        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
+    }
+    if (uviColor > 7 && uvicolor < 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
+    }
+    if (uviColor > 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
+    }
+    
+    //insert text into variables that hold html elements
+    displayCity.text(cityNameGlobal);
+    displayDate.text(oneDate);
+    displayMaxTemp.text("Max Temp " + fahrenTempMax + "\u00B0" + "F")
+    displayMinTemp.text("Min Temp " + fahrenTempMin + "\u00B0" + "F")
+    displayWind.text("Wind Speed " + windSpeed + " mph");
+    displayHumidity.text("Humidity " + humidity + "%");
+    displayUvi.text("UV Index " + uvi);
+    displayConditions.text(conditions);
+    displayConditionImg.text(conditionImg);
+    
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow2.append(displayMaxTemp);
+    displayRow2.append(displayMinTemp);
+    displayRow3.append(displayConditions);
+    displayRow3.append(displayConditionImg);
+    displayRow4.append(displayWind);
+    displayRow5.append(displayUvi);
+    displayRow5.append(uviColor)
+    displayRow6.append(displayHumidity);
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3);
+    displayColumn1.append(displayRow4);
+    displayColumn1.append(displayRow5);
+    displayColumn1.append(displayRow6);
+    dayFour.append(displayColumn1)
+}
+
+function fiveDay () {
+
+    var newDate = dateStr[4].trim();
+    var tempMax = tempMaxStr[4].trim();
+    var tempMin = tempMinStr[4].trim();
+    var windSpeed = windSpeedStr[4].trim();
+    var humidity = humidityStr[4].trim();
+    var uvi = uviStr[4].trim();
+    var conditions = weatherConditionMainStr[4].trim();
+    var conditionImg = weatherConditionIconStr[4].trim();
+
+    
+
+    //max and min temperature in fahrenheit
+    var fahrenTempMax = Math.round((tempMax - 273.15) * (9/5) + 32)
+    var fahrenTempMin = Math.round((tempMin - 273.15) * (9/5) + 32)
+    
+
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = newDate;
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
+        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+
+    //uvi variable
+    var uviColor = uvi;
+    
+    //creat columns and rose here to append html elements
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
+    var displayRow3 = $("<div class='row mid-row-design'></div>");
+    var displayRow4 = $("<div class='row floor-row-design'></div>");
+    var displayRow5 = $("<div class='row base-row-design'></div>");
+    var displayRow6 = $("<div class='row base-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
+    var displayDate = $("<p></p>");
+    var displayMaxTemp = $("<p></p>");
+    var displayMinTemp = $("<p></p>");
+    var displayWind = $("<p></p>");
+    var displayHumidity = $("<p></p>");
+    var displayUvi = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    
+    
+    //if statements that change my box color based off uvi
+    if (uviColor < 3) {
+        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
+    }
+    if (uviColor > 2 && uviColor < 6) {
+        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
+    }
+    if (uviColor > 5 && uviColor < 8) {
+        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
+    }
+    if (uviColor > 7 && uvicolor < 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
+    }
+    if (uviColor > 11) {
+        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
+    }
+    
+    //insert text into variables that hold html elements
+    displayCity.text(cityNameGlobal);
+    displayDate.text(oneDate);
+    displayMaxTemp.text("Max Temp " + fahrenTempMax + "\u00B0" + "F")
+    displayMinTemp.text("Min Temp " + fahrenTempMin + "\u00B0" + "F")
+    displayWind.text("Wind Speed " + windSpeed + " mph");
+    displayHumidity.text("Humidity " + humidity + "%");
+    displayUvi.text("UV Index " + uvi);
+    displayConditions.text(conditions);
+    displayConditionImg.text(conditionImg);
+    
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow2.append(displayMaxTemp);
+    displayRow2.append(displayMinTemp);
+    displayRow3.append(displayConditions);
+    displayRow3.append(displayConditionImg);
+    displayRow4.append(displayWind);
+    displayRow5.append(displayUvi);
+    displayRow5.append(uviColor)
+    displayRow6.append(displayHumidity);
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3);
+    displayColumn1.append(displayRow4);
+    displayColumn1.append(displayRow5);
+    displayColumn1.append(displayRow6);
+    dayFive.append(displayColumn1)
+}
+
+//run our current day function which basically pulls data from local storage and displays
+//this display happens here when the search button is clicked and the page reloads
 currentDay()
+oneDay()
+twoDay()
+threeDay()
+fourDay()
+fiveDay()
 
-
-
-
-//use momement to parse into the sunrise and sunset time
 
 
