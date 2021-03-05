@@ -2,6 +2,39 @@
     --globalBorder: 3px solid rgba(255, 150, 100, 1); 
 }
 
+.jumbotron {
+    padding: 0;
+    margin: 0;
+}
+/* this holds are saved title and saved city weather data */
+#saved-title {
+    background-color: darkgrey;
+    border-radius: 5px;
+    padding: 6px;
+    box-shadow: inset 4px 4px 7px black;
+}
+
+/* styles all of our buttons */
+button {
+    background-color: rgba(255,183,150,0.8);
+    border: none;
+    border-radius: 5px;
+}
+/* gives hover elements to all buttons on page */
+button:hover {
+    box-shadow: 3px -4px 7px 1px grey;
+}
+/* specific styling for our search button */
+#button-search {
+    padding: 4px 12px;
+}
+
+#search-bar-header {
+    width: fit-content;
+    margin: 0 auto;
+    text-align: center;
+}
+
 #main-wrapper {
     display: flex;
 }
@@ -11,24 +44,39 @@
     margin: 0 auto;
     border: var(--globalBorder);
     border-radius: 20px;
+    float: left;
+    min-width: 160px;
+    box-shadow: 3px -4px 7px 1px grey;
 }
+h1{
+    font-size: 1.5em;
+}
+
 
 #saved-city {
     width: fit-content;
-    margin: 0 auto;
     border: var(--globalBorder);
     border-radius: 20px;
     height: fit-content;
-
+    margin: 9px auto;
 }
-
+#save-current-city {
+    margin-left: 2.1em;
+    margin-bottom: 5px;
+    padding: 4px 10px;
+}
+#show-forecast {
+    padding: 5px 10px;
+    margin: 6px;
+}
 .forecast-card {
     width: fit-content;
-    margin: 0 auto;
+    margin: 0px auto;
     border: var(--globalBorder);
     border-radius: 20px;
-    
+    box-shadow: 3px -4px 7px 1px grey;
 }
+
 
 .top-row-design {
     display: block;

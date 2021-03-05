@@ -23,7 +23,7 @@ $("#button-search").on("click", function (event) {
         .then(function (response) {
             if (response.status === 404) {
                 //replace this with a modal
-                $("#invalid-city").show()
+                alert("Please enter a valid city name!")
             }
             return response.json();
         })
@@ -144,6 +144,7 @@ $("#button-search").on("click", function (event) {
                         localStorage.setItem("dailySunset", sunsetStr)
                     }
                     location.reload()
+                
                 })
         })
 })
@@ -166,6 +167,7 @@ var dayThree = $("#three-day");
 var dayFour = $("#four-day");
 var dayFive = $("#five-day");
 var savedCity = $("#saved-city")
+var savedTitle = $("#saved-title")
 // City Name remains global
 var cityNameGlobal =  localStorage.getItem("cityName");
 
@@ -275,10 +277,13 @@ function currentDay () {
     displayColumn1.append(displayRow5);
     displayColumn1.append(displayRow6);
     currentDayDisplay.append(displayColumn1)
+    //save current city into local storage
     $("#save-current-city").on("click", function () {
         localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
+        location.reload()
     })
 }
+//---I REALIZED LATER I COULD HAVE LOOPED THROUGH INSTEAD OF CREATING 5 FUNCTIONS FOR EACH DAY :( ---//
 
 function oneDay () {
 
@@ -289,19 +294,11 @@ function oneDay () {
     var humidity = humidityStr[0].trim();
     var uvi = uviStr[0].trim();
     var conditions = weatherConditionMainStr[0].trim();
-    var conditionImg = weatherConditionIconStr[0].trim();
-
-
-  
-    
-    //we will stringify and store this object so it can be added to local storage later
-    //and added into our "search history" // not sure how I am going to create that yet
-    
+    var conditionImg = weatherConditionIconStr[0].trim(); 
 
     //max and min temperature in fahrenheit
     var fahrenTempMax = Math.round((tempMax - 273.15) * (9/5) + 32)
     var fahrenTempMin = Math.round((tempMin - 273.15) * (9/5) + 32)
-    
 
     //converetd unixtimestamp into a readable date formate
     var unixTimeStamp = newDate;
@@ -338,7 +335,6 @@ function oneDay () {
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
     var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
-    
     
     //if statements that change my box color based off uvi
     if (uviColor < 3) {
@@ -810,7 +806,7 @@ function showStoredCity () {
     var storedCity = JSON.parse(localStorage.getItem("savedCity"))
     //displaying temperature as fahrenheit
     var fahrenTemp = Math.round((storedCity.temp - 273.15) * (9/5) + 32)
-
+    console.log(fahrenTemp)
     //converetd unixtimestamp into a readable date formate
     var unixTimeStamp = storedCity.date
     var milliseconds = unixTimeStamp * 1000
@@ -827,8 +823,10 @@ function showStoredCity () {
     var displayColumn1 = $("<div class='col card-design'></div>");
     var displayRow1 = $("<div class='row top-row-design'></div>");
     var displayRow2 = $("<div class='row mid-row-design'></div>");
+    var displayRow3 = $("<div class='row mid-row-design'></div>");
     
     //creat html elements for each object in currendDayForecast
+    var title = $("<h1></h1>");
     var displayCity = $("<p class='city-name'></p>");
     var displayDate = $("<p></p>");
     var displayTemp = $("<p></p>");
@@ -839,6 +837,7 @@ function showStoredCity () {
     var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     //insert text into variables that hold html elements
+    title.text("Your Saved City");
     displayCity.text(storedCity.cityName);
     displayDate.text(date);
     displayTemp.text("Currently " + fahrenTemp + "\u00B0" + "F")
@@ -853,11 +852,14 @@ function showStoredCity () {
     displayRow1.append(displayTemp);
     displayRow2.append(displayConditions);
     displayRow2.append(displayConditionImg);
-    displayRow2.append(grabButton);
+    displayRow3.append(grabButton);
     displayColumn1.append(displayRow1)
     displayColumn1.append(displayRow2)
+    displayColumn1.append(displayRow3)
+    title.append(displayColumn1)
+    savedTitle.append(title)
     savedCity.append(displayColumn1)
-
+    savedTitle.append(savedCity)
 
     //pull and store lat and lon to potentially display the current city and five day forecasts on click of stored city
     var latitude = localStorage.getItem("latitude")
@@ -865,8 +867,8 @@ function showStoredCity () {
     console.log(latitude)
     console.log(longitude)
 
+    //new query  ased off of stored city latitutde and longitude
     var query2 = forecastUrl + "lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,minutely" + apiKey;
-
 
     console.log(query2)
     $("#show-forecast").on("click", function () {
@@ -914,7 +916,6 @@ function showStoredCity () {
 
 //run our current day function which basically pulls data from local storage and displays
 //this display happens here when the search button is clicked and the page reloads
-showStoredCity()
 currentDay()
 oneDay()
 twoDay()
@@ -922,5 +923,6 @@ threeDay()
 fourDay()
 fiveDay()
 
+showStoredCity()
 
 

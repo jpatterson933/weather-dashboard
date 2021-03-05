@@ -14,31 +14,37 @@
     <!-- please enter valid city modal -->
     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button> -->
 
-    <div class="modal fade bd-example-modal-sm" id="invalid-city" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-            ...
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Weather Dashboard</h1>
+          <div class="row">
+            <div id="search-bar-header">
+                <h1>Enter a City Name</h1>
+                <input type="text" id="city-name">
+                <button id="button-search" data-toggle="modal">Search</button>
             </div>
+            <!--i need to hid these elements so the border is no showing when the page is blank-->
+            <div id="saved-title"></div>
+            <div id="saved-city"></div>
+        </div>
+          
         </div>
     </div>
-    <div>
-        <input type="text" id="city-name">
-        <button id="button-search" data-toggle="modal">Search</button>
 
-    </div>
-    <div id="main-wrapper">
-        <div id="saved-city"></div>
-
-        <!--where the current day card will display for the city that has been searched for-->
-        <div id="current-day"></div>
-    </div>
-    <!--five day forcast-->
-    <div class="row">
-        <div id="one-day" class="forecast-card"></div>
-        <div id="two-day" class="forecast-card"></div>
-        <div id="three-day" class="forecast-card"></div>
-        <div id="four-day" class="forecast-card"></div>
-        <div id="five-day" class="forecast-card"></div>
+    <div class="main">
+        <div class="row-3">
+           
+                <!--where the current day card will display for the city that has been searched for-->
+            <div id="current-day" class="col-3"></div>
+        </div>
+        <!--five day forcast-->
+        <div class="row">
+            <div id="one-day" class="forecast-card"></div>
+            <div id="two-day" class="forecast-card"></div>
+            <div id="three-day" class="forecast-card"></div>
+            <div id="four-day" class="forecast-card"></div>
+            <div id="five-day" class="forecast-card"></div>
+        </div>
     </div>
 
 
