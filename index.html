@@ -11,13 +11,27 @@
     <title>Weather Dashboard</title>
 </head>
 <body>
+    <!-- please enter valid city modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button> -->
+
+    <div class="modal fade bd-example-modal-sm" id="invalid-city" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+            ...
+            </div>
+        </div>
+    </div>
     <div>
         <input type="text" id="city-name">
-        <button id="button-search">Search</button>
-    </div>
+        <button id="button-search" data-toggle="modal">Search</button>
 
-    <!--where the current day card will display for the city that has been searched for-->
-    <div id="current-day"></div>
+    </div>
+    <div id="main-wrapper">
+        <div id="saved-city"></div>
+
+        <!--where the current day card will display for the city that has been searched for-->
+        <div id="current-day"></div>
+    </div>
     <!--five day forcast-->
     <div class="row">
         <div id="one-day" class="forecast-card"></div>
@@ -25,7 +39,6 @@
         <div id="three-day" class="forecast-card"></div>
         <div id="four-day" class="forecast-card"></div>
         <div id="five-day" class="forecast-card"></div>
-        
     </div>
 
 

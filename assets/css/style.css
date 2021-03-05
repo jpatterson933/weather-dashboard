@@ -2,11 +2,24 @@
     --globalBorder: 3px solid rgba(255, 150, 100, 1); 
 }
 
+#main-wrapper {
+    display: flex;
+}
+
 #current-day {
     width: fit-content;
     margin: 0 auto;
     border: var(--globalBorder);
     border-radius: 20px;
+}
+
+#saved-city {
+    width: fit-content;
+    margin: 0 auto;
+    border: var(--globalBorder);
+    border-radius: 20px;
+    height: fit-content;
+
 }
 
 .forecast-card {
@@ -25,10 +38,6 @@
 .mid-row-design {
     display: block;
     text-align: center;
-}
-
-.bot-row-design {
-    margin: 0 auto;
 }
 
 #uvi-color {

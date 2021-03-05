@@ -14,12 +14,17 @@ $("#button-search").on("click", function (event) {
     event.preventDefault();
     //this variable is the input from the user and trims all white spaces
     var cityName = $("#city-name").val().trim();
+
     //this is our inital url that we are using fetch with to gather the lon and lat of cities
     let query = baseUrl + cityName + apiKey;
 
     //first fetch that pulls lat and lon locations of cities
     fetch(query)
         .then(function (response) {
+            if (response.status === 404) {
+                //replace this with a modal
+                $("#invalid-city").show()
+            }
             return response.json();
         })
         .then(function (data) {
@@ -27,12 +32,15 @@ $("#button-search").on("click", function (event) {
             //console log our city name so we know where to find it
             //this can be used as the title plug for our cards
             console.log(data.city.name)
+           
             //store city name
             localStorage.setItem("cityName", data.city.name)
 
             // console log our latitude and longtitude so we know where to find them
             console.log(data.city.coord.lat);
+            localStorage.setItem("latitude", data.city.coord.lat)
             console.log(data.city.coord.lon);
+            localStorage.setItem("longitude", data.city.coord.lon);
 
             //make the next url include the lat and lon to create the forecast url -- we also exclude hourly and minutely data so we only get daily
             let query2 = forecastUrl + "lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&exclude=hourly,minutely" + apiKey;
@@ -46,7 +54,6 @@ $("#button-search").on("click", function (event) {
                     return response.json();
                 })
                 .then(function (results) {
-
 
                     //console.log our results from the new url so we can the further refine our weather program
                     console.log(results)
@@ -135,7 +142,6 @@ $("#button-search").on("click", function (event) {
                         //sunset string
                         sunsetStr += results.daily[i].sunset + ", ";
                         localStorage.setItem("dailySunset", sunsetStr)
-
                     }
                     location.reload()
                 })
@@ -159,6 +165,7 @@ var dayTwo = $("#two-day");
 var dayThree = $("#three-day");
 var dayFour = $("#four-day");
 var dayFive = $("#five-day");
+var savedCity = $("#saved-city")
 // City Name remains global
 var cityNameGlobal =  localStorage.getItem("cityName");
 
@@ -170,6 +177,8 @@ function currentDay () {
     //and added into our "search history" // not sure how I am going to create that yet
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
+        latitude: localStorage.getItem("latitude").trim(),
+        longitude: localStorage.getItem("longitude").trim(),
         date: localStorage.getItem("currentDate").trim(),
         temp: localStorage.getItem("currentTemp").trim(),
         windSpeed: localStorage.getItem("currentWindSpeed").trim(),
@@ -178,6 +187,8 @@ function currentDay () {
         conditions: localStorage.getItem("currentConditions").trim(),
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
     }
+
+   
 
     //change temperature to fahrenheit 
     var fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9/5) + 32)
@@ -190,11 +201,10 @@ function currentDay () {
     var readableDate = {
         day: dateObject.toLocaleString("en-US", {weekday: "long"}),
         month: dateObject.toLocaleString("en-US", {month: "long"}),
-        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
-        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
     }
     //combines my readable date into a single string that will be displayed on the card
-    var date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+    var date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //uvi variable
     var uviColor = currentDayForecast.uvi;
@@ -203,9 +213,10 @@ function currentDay () {
     var displayColumn1 = $("<div class='col card-design'></div>");
     var displayRow1 = $("<div class='row top-row-design'></div>");
     var displayRow2 = $("<div class='row mid-row-design'></div>");
-    var displayRow3 = $("<div class='row bot-row-design'></div>");
+    var displayRow3 = $("<div class='row floor-row-design'></div>");
     var displayRow4 = $("<div class='row floor-row-design'></div>");
     var displayRow5 = $("<div class='row base-row-design'></div>");
+    var displayRow6 = $("<button id='save-current-city'>Save City</button>");
     
     //creat html elements for each object in currendDayForecast
     var displayCity = $("<p class='city-name'></p>");
@@ -239,7 +250,7 @@ function currentDay () {
     //insert text into variables that hold html elements
     displayCity.text(currentDayForecast.cityName);
     displayDate.text(date);
-    displayTemp.text("Current Temperature " + fahrenTemp + "\u00B0" + "F")
+    displayTemp.text("Currently " + fahrenTemp + "\u00B0" + "F")
     displayWind.text("Wind Speed " + currentDayForecast.windSpeed + " mph");
     displayHumidity.text("Humidity " + currentDayForecast.humidity + "%");
     displayUvi.text("UV Index " + currentDayForecast.uvi);
@@ -262,7 +273,11 @@ function currentDay () {
     displayColumn1.append(displayRow3);
     displayColumn1.append(displayRow4);
     displayColumn1.append(displayRow5);
+    displayColumn1.append(displayRow6);
     currentDayDisplay.append(displayColumn1)
+    $("#save-current-city").on("click", function () {
+        localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
+    })
 }
 
 function oneDay () {
@@ -295,11 +310,10 @@ function oneDay () {
     var readableDate = {
         day: dateObject.toLocaleString("en-US", {weekday: "long"}),
         month: dateObject.toLocaleString("en-US", {month: "long"}),
-        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
-        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
     }
     //combines my readable date into a single string that will be displayed on the card
-    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //uvi variable
     var uviColor = uvi;
@@ -400,11 +414,10 @@ function twoDay () {
     var readableDate = {
         day: dateObject.toLocaleString("en-US", {weekday: "long"}),
         month: dateObject.toLocaleString("en-US", {month: "long"}),
-        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
-        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
     }
     //combines my readable date into a single string that will be displayed on the card
-    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //uvi variable
     var uviColor = uvi;
@@ -505,11 +518,10 @@ function threeDay () {
     var readableDate = {
         day: dateObject.toLocaleString("en-US", {weekday: "long"}),
         month: dateObject.toLocaleString("en-US", {month: "long"}),
-        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
-        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
     }
     //combines my readable date into a single string that will be displayed on the card
-    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //uvi variable
     var uviColor = uvi;
@@ -610,11 +622,10 @@ function fourDay () {
     var readableDate = {
         day: dateObject.toLocaleString("en-US", {weekday: "long"}),
         month: dateObject.toLocaleString("en-US", {month: "long"}),
-        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
-        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
     }
     //combines my readable date into a single string that will be displayed on the card
-    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //uvi variable
     var uviColor = uvi;
@@ -715,11 +726,10 @@ function fiveDay () {
     var readableDate = {
         day: dateObject.toLocaleString("en-US", {weekday: "long"}),
         month: dateObject.toLocaleString("en-US", {month: "long"}),
-        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"}),
-        year: dateObject.toLocaleString("en-US", {year: "numeric"})
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
     }
     //combines my readable date into a single string that will be displayed on the card
-    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum + ", " + readableDate.year;
+    var oneDate = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //uvi variable
     var uviColor = uvi;
@@ -795,8 +805,116 @@ function fiveDay () {
     dayFive.append(displayColumn1)
 }
 
+function showStoredCity () {
+    //pulling stored city information and storing it into a variable
+    var storedCity = JSON.parse(localStorage.getItem("savedCity"))
+    //displaying temperature as fahrenheit
+    var fahrenTemp = Math.round((storedCity.temp - 273.15) * (9/5) + 32)
+
+    //converetd unixtimestamp into a readable date formate
+    var unixTimeStamp = storedCity.date
+    var milliseconds = unixTimeStamp * 1000
+    var dateObject = new Date(milliseconds)
+    var readableDate = {
+        day: dateObject.toLocaleString("en-US", {weekday: "long"}),
+        month: dateObject.toLocaleString("en-US", {month: "long"}),
+        dayNum: dateObject.toLocaleString("en-US", {day: "numeric"})
+    }
+    //combines my readable date into a single string that will be displayed on the card
+    var date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
+    
+    //creat columns and rose here to append html elements
+    var displayColumn1 = $("<div class='col card-design'></div>");
+    var displayRow1 = $("<div class='row top-row-design'></div>");
+    var displayRow2 = $("<div class='row mid-row-design'></div>");
+    
+    //creat html elements for each object in currendDayForecast
+    var displayCity = $("<p class='city-name'></p>");
+    var displayDate = $("<p></p>");
+    var displayTemp = $("<p></p>");
+    var displayConditions = $("<p></p>");
+    var grabButton = $("<button id='show-forecast'></button>")
+
+    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
+    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    
+    //insert text into variables that hold html elements
+    displayCity.text(storedCity.cityName);
+    displayDate.text(date);
+    displayTemp.text("Currently " + fahrenTemp + "\u00B0" + "F")
+    displayConditions.text(storedCity.conditions);
+    displayConditionImg.text(storedCity.conditionImg);
+    grabButton.text("Show Forecast");
+    
+    //append our html elements that hold text into the three rows, 
+    //then the column, then the carddisplay element in html
+    displayRow1.append(displayCity);
+    displayRow1.append(displayDate);
+    displayRow1.append(displayTemp);
+    displayRow2.append(displayConditions);
+    displayRow2.append(displayConditionImg);
+    displayRow2.append(grabButton);
+    displayColumn1.append(displayRow1)
+    displayColumn1.append(displayRow2)
+    savedCity.append(displayColumn1)
+
+
+    //pull and store lat and lon to potentially display the current city and five day forecasts on click of stored city
+    var latitude = localStorage.getItem("latitude")
+    var longitude = localStorage.getItem("longitude")
+    console.log(latitude)
+    console.log(longitude)
+
+    var query2 = forecastUrl + "lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,minutely" + apiKey;
+
+
+    console.log(query2)
+    $("#show-forecast").on("click", function () {
+        fetch(query2)
+          .then(function (response) {
+            console.log(response);
+            return response.json();
+        })
+        .then(function (results) {
+            console.log(results)
+            currentDayForecast = {
+                cityName: localStorage.getItem("cityName"),
+                latitude: localStorage.getItem("latitude").trim(),
+                longitude: localStorage.getItem("longitude").trim(),
+                date: localStorage.getItem("currentDate").trim(),
+                temp: localStorage.getItem("currentTemp").trim(),
+                windSpeed: localStorage.getItem("currentWindSpeed").trim(),
+                humidity: localStorage.getItem("currentHumidity").trim(),
+                uvi: localStorage.getItem("currentUvi").trim(),
+                conditions: localStorage.getItem("currentConditions").trim(),
+                conditionImg: localStorage.getItem("currentConditionsImg").trim(),
+            }
+
+            //on click this will change local storage, reload the page, and displayed there stored citys forecast
+            localStorage.setItem("cityName", storedCity.cityName)
+            localStorage.setItem("currentDate", storedCity.date)
+            localStorage.setItem("currentTemp", storedCity.temp)
+            localStorage.setItem("currentWindSpeed", storedCity.windSpeed)
+            localStorage.setItem("currentHumidity", storedCity.humidity)
+            localStorage.setItem("currentUvi", storedCity.uvi)
+            localStorage.setItem("currentConditions", storedCity.conditions)
+            localStorage.setItem("currentConditionsImg", storedCity.conditionImg)
+
+
+
+            location.reload()
+
+
+
+                
+        })
+
+      })
+}
+
 //run our current day function which basically pulls data from local storage and displays
 //this display happens here when the search button is clicked and the page reloads
+showStoredCity()
 currentDay()
 oneDay()
 twoDay()
