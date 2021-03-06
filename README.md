@@ -1,27 +1,30 @@
-# weather-dashboard
+# Weather Dashboard Application
 
-## Assignment Requirements:
-GIVEN a weather dashboard with form inputs
+Jeffery Patterson
+3/5/21 - Last Updated
 
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
+Use
 
-Here I will need a search bar input - that input will need to be pushed onto the end of our url string. 
+This application can be used to find the the current weather data and five day forecast of any known city typed into the search bar. Specifically, the user can find weather data on the current temperature, wind speeds, uvi levels and color, current conditions with current condition image, and the humidity levels for the city. The five day forecast will display the same information except instead of the current temperature (as it is in the future), it will take the max and minimum temperature of the day and display it for the user to read. 
 
-Once the specific city is found, I will need it to pull that five day forcast and we will need to log that city in our local storage nad have it presented somewhere on the screen.
+On page load..
+
+The user will be displayed with an inital load up page that will show empty boxes. 
+![Inital Page on Load](./images-gifs/inital-loaded-page.png);
+
+If the user does not enter a KNOWN city, the page will show an alert.
+![User enters non-city input](./images-gifs/non-city-search.gif)
 
 
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
 
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
 
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
 
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
----
 
-You will need to add a key that explains what the uvi colors mean.
+
+
+
+Known Errors
+1. Alert instead of Modale - In the future, the alert will be repalced with a modal providing the user with a smoother interface and a design which elements were complimented by the overal design of the website. 
+
+
+
