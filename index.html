@@ -11,8 +11,9 @@
     <title>Weather Dashboard</title>
 </head>
 <body>
-
+    <!--this is our header wrapper-->
     <header id="header-wrap">
+        <!--jumbotron that will be displayed-->
         <div class="jumbotron jumbotron-fluid">
             <h1 class="display-4">Weather Dashboard</h1>
             <div class="row">
@@ -24,6 +25,7 @@
                 <!--i need to hid these elements so the border is no showing when the page is blank-->
             </div>
         </div>
+        <!--our aside to display saved city forecast and current city forecast-->
         <aside id="hold-info">
             <div id="saved-title"></div>
             <div id="saved-city"></div> 
@@ -32,9 +34,11 @@
             <div id="current-day"></div>
         </aside>
     </header>
+    <!--our div that will hold our five day forecast cards.-->
     <div class="main">
         <!--five day forcast-->
         <div id="forecast-title">Five Day Forecast</div>
+        <!--our five day forecast display cards-->
         <div class="row">
             <div id="one-day" class="forecast-card"></div>
             <div id="two-day" class="forecast-card"></div>
@@ -43,10 +47,6 @@
             <div id="five-day" class="forecast-card"></div>
         </div>
     </div>
-
-
-
-
 
     <!--moment script for time-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
