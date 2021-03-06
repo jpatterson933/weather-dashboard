@@ -1,58 +1,44 @@
+/* global variables declared here */
 :root {
     --globalBorder: 3px solid rgba(255, 150, 100, 1); 
 }
+/* wraps our top header to include relevant items */
+#header-wrap{
+    display: flex;
+}
 
+/* jumbotron styling */
 .jumbotron {
-    padding: 0;
-    margin: 0;
-}
-/* this holds are saved title and saved city weather data */
-#saved-title {
-    background-color: darkgrey;
-    border-radius: 5px;
-    padding: 6px;
-    box-shadow: inset 4px 4px 7px black;
-}
-
-/* styles all of our buttons */
-button {
-    background-color: rgba(255,183,150,0.8);
-    border: none;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    padding: 0 1em;
+    margin: 31px;
+    max-height: 11em;
+    box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 42%);
     border-radius: 5px;
 }
-/* gives hover elements to all buttons on page */
-button:hover {
-    box-shadow: 3px -4px 7px 1px grey;
-}
-/* specific styling for our search button */
-#button-search {
-    padding: 4px 12px;
-}
-
+/*formatting for search bar*/
 #search-bar-header {
     width: fit-content;
     margin: 0 auto;
     text-align: center;
 }
 
-#main-wrapper {
+/*us this to flex our saved city and currenty city data*/
+#hold-info {
     display: flex;
 }
-
-#current-day {
-    width: fit-content;
-    margin: 0 auto;
-    border: var(--globalBorder);
-    border-radius: 20px;
-    float: left;
-    min-width: 160px;
-    box-shadow: 3px -4px 7px 1px grey;
+/* this holds are saved title and saved city weather data */
+#saved-title {
+    background-color: rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    padding: 6px;
+    margin: 2em;
+    box-shadow: inset 4px 4px 7px rgb(0 0 0 / 30%), 4px 4px 4px rgb(0 0 0 / 20%);
+    max-height: 25em;
 }
-h1{
-    font-size: 1.5em;
-}
-
-
+/* styling for our saved city card */
 #saved-city {
     width: fit-content;
     border: var(--globalBorder);
@@ -60,15 +46,59 @@ h1{
     height: fit-content;
     margin: 9px auto;
 }
+
+/*this is the idea for the save button on the current city card*/
 #save-current-city {
-    margin-left: 2.1em;
+    margin-left: 4em;
     margin-bottom: 5px;
     padding: 4px 10px;
 }
+
+/* -------------------------------------------BUTTON STYLING------------------------------------------------- */
+button {
+    background-color: rgba(255,183,150,0.8);
+    border: none;
+    border-radius: 5px;
+}
+button:hover {
+    box-shadow: 3px -4px 7px 1px grey;
+}
+#button-search {
+    padding: 4px 12px;
+}
+/*--------------------------END BUTTON STYLING ------------------------------------*/
+
+/*styling for our current display card*/
+#current-day {
+    margin-top: 1.9em;
+    margin-left: 6em;
+    width: fit-content;
+    border: var(--globalBorder);
+    border-radius: 20px;
+    min-width: 160px;
+    box-shadow: 3px -4px 7px 1px grey;
+}
+/*styles all of our h1s*/
+h1{
+    font-size: 1.5em;
+    padding: 2px;
+}
+
+/*styling of forecast title*/
+#forecast-title {
+    text-align: center;
+    font-size: 3em;
+    margin: 10px;
+    text-shadow: 1px 1px 1px orange;
+}
+
+/*button to reload saved forecast*/
 #show-forecast {
     padding: 5px 10px;
     margin: 6px;
 }
+
+/*styling for five day forecast cards*/
 .forecast-card {
     width: fit-content;
     margin: 0px auto;
@@ -77,30 +107,21 @@ h1{
     box-shadow: 3px -4px 7px 1px grey;
 }
 
-
-.top-row-design {
+/*----------styling for inner card elements---------------*/
+.top-row-design, .mid-row-design {
     display: block;
     text-align: center;
 }
-
-.mid-row-design {
-    display: block;
-    text-align: center;
+.floor-row-design, .base-row-design {
+    margin: 0 auto;
+    width: fit-content;
 }
 
+
+/* styling for our uvi color holder */
 #uvi-color {
     min-width: 2em;
     min-height: 15px;
     max-height: 2em;
     border-radius: 30px;
-}
-
-.floor-row-design {
-    margin: 0 auto;
-    width: fit-content;
-}
-
-.base-row-design {
-    margin: 0 auto;
-    width: fit-content;
 }

@@ -99,7 +99,7 @@ $("#button-search").on("click", function (event) {
                     var sunriseStr = ' ';
                     var sunsetStr = ' ';
 
-//----------------------------locally store a five day weather forecast----------------------------------//
+//----------------------------locally store a five day weather forecast using loop----------------------//
                     //loops through our daily weather reports for the next five days
                     for (var i = 1; i < 6; i++) {
                         
@@ -168,6 +168,7 @@ var dayFour = $("#four-day");
 var dayFive = $("#five-day");
 var savedCity = $("#saved-city")
 var savedTitle = $("#saved-title")
+var todayTitle = $("#today-title")
 // City Name remains global
 var cityNameGlobal =  localStorage.getItem("cityName");
 
@@ -196,7 +197,7 @@ function currentDay () {
     var fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9/5) + 32)
     
 
-    //converetd unixtimestamp into a readable date formate
+    //converetd unixtimestamp into a readable date format
     var unixTimeStamp = currentDayForecast.date
     var milliseconds = unixTimeStamp * 1000
     var dateObject = new Date(milliseconds)
@@ -221,6 +222,7 @@ function currentDay () {
     var displayRow6 = $("<button id='save-current-city'>Save City</button>");
     
     //creat html elements for each object in currendDayForecast
+    var title = $("<h1></h1>");
     var displayCity = $("<p class='city-name'></p>");
     var displayDate = $("<p></p>");
     var displayTemp = $("<p></p>");
@@ -250,6 +252,7 @@ function currentDay () {
     }
     
     //insert text into variables that hold html elements
+    title.text("Today's Weather Stats")
     displayCity.text(currentDayForecast.cityName);
     displayDate.text(date);
     displayTemp.text("Currently " + fahrenTemp + "\u00B0" + "F")
@@ -276,7 +279,12 @@ function currentDay () {
     displayColumn1.append(displayRow4);
     displayColumn1.append(displayRow5);
     displayColumn1.append(displayRow6);
+    title.append(displayColumn1)
+    todayTitle.append(title)
+    currentDayDisplay.append(todayTitle)
     currentDayDisplay.append(displayColumn1)
+
+ 
     //save current city into local storage
     $("#save-current-city").on("click", function () {
         localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
@@ -902,20 +910,13 @@ function showStoredCity () {
             localStorage.setItem("currentConditions", storedCity.conditions)
             localStorage.setItem("currentConditionsImg", storedCity.conditionImg)
 
-
-
-            location.reload()
-
-
-
-                
+            //reload on click
+            location.reload() 
         })
-
       })
 }
 
-//run our current day function which basically pulls data from local storage and displays
-//this display happens here when the search button is clicked and the page reloads
+//Our display cards
 currentDay()
 oneDay()
 twoDay()
