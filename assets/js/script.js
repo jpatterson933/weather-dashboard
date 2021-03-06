@@ -6,12 +6,10 @@ var forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 //this is my api key
 var apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
 
-
-
-
-//when the user clicks this button, it will run the events for the pages
+//when the user clicks this button, it will search for a city and store all relevant data for that city and the future five days in local storage
 $("#button-search").on("click", function (event) {
     event.preventDefault();
+
     //this variable is the input from the user and trims all white spaces
     var cityName = $("#city-name").val().trim();
 
@@ -29,63 +27,33 @@ $("#button-search").on("click", function (event) {
         })
         .then(function (data) {
 
-            //console log our city name so we know where to find it
-            //this can be used as the title plug for our cards
-            console.log(data.city.name)
-           
             //store city name
             localStorage.setItem("cityName", data.city.name)
-
-            // console log our latitude and longtitude so we know where to find them
-            console.log(data.city.coord.lat);
+            
+            //store our latitude and longitude
             localStorage.setItem("latitude", data.city.coord.lat)
-            console.log(data.city.coord.lon);
             localStorage.setItem("longitude", data.city.coord.lon);
 
             //make the next url include the lat and lon to create the forecast url -- we also exclude hourly and minutely data so we only get daily
             let query2 = forecastUrl + "lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&exclude=hourly,minutely" + apiKey;
-            
-            ///console log query2 so we what our url looks like so we know what fetch will be using
-            console.log(query2);
 
-            //our second fetch grabbing the data from our new url
+            //our second fetch grabbing the data from our new url created at query2
             fetch(query2)
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (results) {
-
-                    //console.log our results from the new url so we can the further refine our weather program
-                    console.log(results)
-                    //these are the results for the current day which are kept sepearte form the 
-                    //daily results, so we will need to console log and store current weather conditions
-                    //we could even have an on click even that stores it on the page until they change it
                     
 //----------------------------------------locally store our current day weather condition----------------------------------//
-                    console.log("current day")
 
-                    console.log(results.current.dt)
+                    //store all current day data into local storage//
                     localStorage.setItem("currentDate", results.current.dt)
-
-                    console.log(results.current.temp)
                     localStorage.setItem("currentTemp", results.current.temp)
-
-                    console.log(results.current.wind_speed)
                     localStorage.setItem("currentWindSpeed", results.current.wind_speed)
-
-                    console.log(results.current.humidity)
                     localStorage.setItem("currentHumidity", results.current.humidity)
-
-                    console.log(results.current.uvi)
                     localStorage.setItem("currentUvi", results.current.uvi)
-
-                    console.log(results.current.weather[0].main)
                     localStorage.setItem("currentConditions", results.current.weather[0].main)
-
-                    console.log(results.current.weather[0].icon)
                     localStorage.setItem("currentConditionsImg", results.current.weather[0].icon)
-
-                    console.log("end current day info")
 
                     //empty variables that will be used to store each of our five days information into local storage
                     var dateStr = ' ';
@@ -96,59 +64,50 @@ $("#button-search").on("click", function (event) {
                     var uviStr = ' ';
                     var weatherConditionMainStr = ' ';
                     var weatherConditionIconStr = ' ';
-                    var sunriseStr = ' ';
-                    var sunsetStr = ' ';
 
 //----------------------------locally store a five day weather forecast using loop----------------------//
                     //loops through our daily weather reports for the next five days
                     for (var i = 1; i < 6; i++) {
                         
-                        //date string
+                        //create date string and store
                         dateStr += results.daily[i].dt + ", ";
                         localStorage.setItem("dailyDate", dateStr)
 
-                        //temp max string
+                        //create temp max string and store
                         tempMaxStr += results.daily[i].temp.max + ", ";
                         localStorage.setItem("dailyTempMax", tempMaxStr)
 
-                        //temp min string
+                        //create temp min string and store
                         tempMinStr += results.daily[i].temp.min + ", ";
                         localStorage.setItem("dailyTempMin", tempMinStr)
 
-                        //wind speed string
+                        //create wind speed string and store
                         windSpeedStr += results.daily[i].wind_speed + ", ";
                         localStorage.setItem("dailyWindSpeed", windSpeedStr)
 
-                        //humidity string
+                        //create humidity string and store
                         humidityStr += results.daily[i].humidity + ", ";
                         localStorage.setItem("dailyHumidity", humidityStr)
 
-                        //uvi string
+                        //create uvi string and store
                         uviStr += results.daily[i].uvi + ", ";
                         localStorage.setItem("dailyUvi", uviStr);
 
-                        //weather condition main string
+                        //create weather condition string and store
                         weatherConditionMainStr += results.daily[i].weather[0].main + ", ";
                         localStorage.setItem("dailyConditionMain", weatherConditionMainStr)
 
-                        //weather condition icon string
+                        //create weather condition icon code string and store
                         weatherConditionIconStr += results.daily[i].weather[0].icon + ", ";
                         localStorage.setItem("dailyConditionImg", weatherConditionIconStr)
-
-                        //sunrise string
-                        sunriseStr += results.daily[i].sunrise + ", ";
-                        localStorage.setItem("dailySunrise", sunriseStr);
-
-                        //sunset string
-                        sunsetStr += results.daily[i].sunset + ", ";
-                        localStorage.setItem("dailySunset", sunsetStr)
                     }
+                    //reload page on clik to display newly stored information
                     location.reload()
-                
                 })
         })
 })
 
+//An error will populate here that says i cannot split null. I am very very unsure how to fix - code still works once city is inputted.
 var dateStr = localStorage.getItem("dailyDate").split(",");
 var tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
 var tempMinStr = localStorage.getItem("dailyTempMin").split(",");
@@ -158,8 +117,7 @@ var uviStr = localStorage.getItem("dailyUvi").split(",");
 var weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
 var weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
-
-//variables for displaying card information
+//variables for grabbing html elements to be used in displaying card data
 var currentDayDisplay = $("#current-day");
 var dayOne = $("#one-day");
 var dayTwo = $("#two-day");
@@ -169,15 +127,11 @@ var dayFive = $("#five-day");
 var savedCity = $("#saved-city")
 var savedTitle = $("#saved-title")
 var todayTitle = $("#today-title")
-// City Name remains global
 var cityNameGlobal =  localStorage.getItem("cityName");
-
-
 
 //function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay () {
-    //we will stringify and store this object so it can be added to local storage later
-    //and added into our "search history" // not sure how I am going to create that yet
+
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
         latitude: localStorage.getItem("latitude").trim(),
@@ -191,12 +145,9 @@ function currentDay () {
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
     }
 
-   
-
     //change temperature to fahrenheit 
     var fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9/5) + 32)
     
-
     //converetd unixtimestamp into a readable date format
     var unixTimeStamp = currentDayForecast.date
     var milliseconds = unixTimeStamp * 1000
@@ -232,7 +183,6 @@ function currentDay () {
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
     var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
-    
     
     //if statements that change my box color based off uvi
     if (uviColor < 3) {
@@ -284,7 +234,6 @@ function currentDay () {
     currentDayDisplay.append(todayTitle)
     currentDayDisplay.append(displayColumn1)
 
- 
     //save current city into local storage
     $("#save-current-city").on("click", function () {
         localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
@@ -292,7 +241,6 @@ function currentDay () {
     })
 }
 //---I REALIZED LATER I COULD HAVE LOOPED THROUGH INSTEAD OF CREATING 5 FUNCTIONS FOR EACH DAY :( ---//
-
 function oneDay () {
 
     var newDate = dateStr[0].trim();
@@ -392,7 +340,6 @@ function oneDay () {
     displayColumn1.append(displayRow6);
     dayOne.append(displayColumn1)
 }
-
 function twoDay () {
 
     var newDate = dateStr[1].trim();
@@ -496,7 +443,6 @@ function twoDay () {
     displayColumn1.append(displayRow6);
     dayTwo.append(displayColumn1)
 }
-
 function threeDay () {
 
     var newDate = dateStr[2].trim();
@@ -600,7 +546,6 @@ function threeDay () {
     displayColumn1.append(displayRow6);
     dayThree.append(displayColumn1)
 }
-
 function fourDay () {
 
     var newDate = dateStr[3].trim();
@@ -704,7 +649,6 @@ function fourDay () {
     displayColumn1.append(displayRow6);
     dayFour.append(displayColumn1)
 }
-
 function fiveDay () {
 
     var newDate = dateStr[4].trim();
@@ -808,7 +752,6 @@ function fiveDay () {
     displayColumn1.append(displayRow6);
     dayFive.append(displayColumn1)
 }
-
 function showStoredCity () {
     //pulling stored city information and storing it into a variable
     var storedCity = JSON.parse(localStorage.getItem("savedCity"))
@@ -878,7 +821,7 @@ function showStoredCity () {
     //new query  ased off of stored city latitutde and longitude
     var query2 = forecastUrl + "lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,minutely" + apiKey;
 
-    console.log(query2)
+    //on click event to reload our stored data from the saved button and display it on the page
     $("#show-forecast").on("click", function () {
         fetch(query2)
           .then(function (response) {
