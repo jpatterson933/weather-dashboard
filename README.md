@@ -14,6 +14,7 @@
 ## API Used
 <ul>Open Weather API</ul>
 
+***
 
 ## Weather Dashboard
 
