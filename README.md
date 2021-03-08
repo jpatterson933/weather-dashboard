@@ -21,19 +21,19 @@ This application can be used to find the the current weather data and five day f
 
 #### On page load..
 
-    The user will be displayed with an inital load up page that will show empty boxes.
+The user will be displayed with an inital load up page that will show empty boxes.
 ![Inital Page on Load](./assets/images-gifs/inital-loaded-page.png)
 
-    If the user does not enter a KNOWN city, the page will show an alert.
+If the user does not enter a KNOWN city, the page will show an alert.
 ![User enters non-city input](./assets/images-gifs/non-city-search.gif)
 
-    Once the user enters a KNOWN city, the page will display the city's current weather forecast, as well as display a five day future forecast as displayed here.
+Once the user enters a KNOWN city, the page will display the city's current weather forecast, as well as display a five day future forecast as displayed here.
 ![User enters a KNOWN city and clicks search](./assets/images-gifs/user-searches.gif)
 
-    Once the search button is clicked and the information is displayed, you can find all daily information and all current day information stored in local storage.
+Once the search button is clicked and the information is displayed, you can find all daily information and all current day information stored in local storage.
 ![Current and Daily Weather Info Stored in Local Storage](./assets/images-gifs/local-storage-on-search.png)
 
-    When the user clicks on the Save City button, the city will be saved and displayed on page reload next to the search button and they can search for other cities without losing their saved city.
+When the user clicks on the Save City button, the city will be saved and displayed on page reload next to the search button and they can search for other cities without losing their saved city.
 ![User saves city, searches for other cities, and reloads page with saved city still in place](./assets/images-gifs/save-city.gif)
 
 ### Known Issues
