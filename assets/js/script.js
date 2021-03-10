@@ -1,6 +1,6 @@
 var searchButton = $("#button-search");
 //this base url pulls my latitude and logitude positions from whatever city is inputed
-var baseUrl = "http://api.openweathermap.org/data/2.5/forecast?&q="
+var baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
 //this input pulls my daily forcast
 var forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 //this is my api key
