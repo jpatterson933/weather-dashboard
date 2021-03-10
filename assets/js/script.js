@@ -182,7 +182,7 @@ function currentDay () {
     var displayUvi = $("<p></p>");
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     //if statements that change my box color based off uvi
     if (uviColor < 3) {
@@ -290,7 +290,7 @@ function oneDay () {
     var displayUvi = $("<p></p>");
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     //if statements that change my box color based off uvi
     if (uviColor < 3) {
@@ -392,7 +392,7 @@ function twoDay () {
     var displayUvi = $("<p></p>");
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     
     //if statements that change my box color based off uvi
@@ -495,7 +495,7 @@ function threeDay () {
     var displayUvi = $("<p></p>");
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     
     //if statements that change my box color based off uvi
@@ -598,7 +598,7 @@ function fourDay () {
     var displayUvi = $("<p></p>");
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     
     //if statements that change my box color based off uvi
@@ -701,7 +701,7 @@ function fiveDay () {
     var displayUvi = $("<p></p>");
     var displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     
     //if statements that change my box color based off uvi
@@ -785,7 +785,7 @@ function showStoredCity () {
     var grabButton = $("<button id='show-forecast'></button>")
 
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='http://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
     
     //insert text into variables that hold html elements
     title.text("Your Saved City");
