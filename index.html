@@ -33,21 +33,27 @@
             <div id="today-title"></div>
             <div id="current-day"></div>
         </aside>
+    
     </header>
-    <!--our div that will hold our five day forecast cards.-->
-    <div class="main">
-        <!--five day forcast-->
-        <div id="forecast-title">Five Day Forecast</div>
-        <!--our five day forecast display cards-->
-        <div class="row">
-            <div id="one-day" class="forecast-card"></div>
-            <div id="two-day" class="forecast-card"></div>
-            <div id="three-day" class="forecast-card"></div>
-            <div id="four-day" class="forecast-card"></div>
-            <div id="five-day" class="forecast-card"></div>
-        </div>
-    </div>
 
+    <!--five day forcast-->
+    <div id="forecast-title">Five Day Forecast</div>
+    <div id="daily-forecast-card-wrapper"></div>
+
+    <!-- card wrapper-- -->
+    <div id="daily-forecast-card">
+        <p id="city-name"></p>
+        <p id="date"></p>
+        <p id="max-temp"></p>
+        <p id="min-temp"></p>
+        <p id="daily-conditions"></p>
+        <p id="daily-conditions-img"></p>
+        <p id="wind-speed"></p>
+        <p id="uv-index"><span id="uv-index-img"></span></p>
+        <p id="daily-humidity"></p>
+    </div>
+  
+    <!-- SCRIPTS -->
     <!--moment script for time-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <!--jquery script-->
