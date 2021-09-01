@@ -106,7 +106,7 @@ $("#button-search").on("click", function (event) {
         })
 })
 
-//An error will populate here that says i cannot split null. I am very very unsure how to fix - code still works once city is inputted.
+//An error will populate here that says i cannot split null. I am very very unsure how to fix - code still works once city is inputted 
 let dateStr = localStorage.getItem("dailyDate").split(",");
 let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
 let tempMinStr = localStorage.getItem("dailyTempMin").split(",");
@@ -116,17 +116,34 @@ let uviStr = localStorage.getItem("dailyUvi").split(",");
 let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
 let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
-//letiables for grabbing html elements to be used in displaying card data
+//variables for grabbing html elements to be used in displaying card data
 let currentDayDisplay = $("#current-day");
-let dayOne = $("#one-day");
-let dayTwo = $("#two-day");
-let dayThree = $("#three-day");
-let dayFour = $("#four-day");
-let dayFive = $("#five-day");
 let savedCity = $("#saved-city")
 let savedTitle = $("#saved-title")
 let todayTitle = $("#today-title")
 let cityNameGlobal = localStorage.getItem("cityName");
+
+function uviColorDisplay(uviColor) {
+    if (uviColor < 3) {
+        return color = "<div id='uvi-color' style='background-color: green'></div>";
+    }
+    if (uviColor > 2 && uviColor < 6) {
+        return color = "<div id='uvi-color' style='background-color: yellow'></div>"
+    }
+    if (uviColor > 5 && uviColor < 8) {
+        return color = "<div id='uvi-color' style='background-color: orange'></div>"
+    }
+    if (uviColor > 7 && uviColor < 11) {
+        return color = "<div id='uvi-color' style='background-color: red'></div>"
+    }
+    if (uviColor > 11) {
+        return color = "<div id='uvi-color' style='background-color: purple'></div>"
+    }
+}
+
+// const test = uviColorDisplay(6);
+
+// console.log(test, "uvi color display test for the function")
 
 //function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay() {
@@ -183,22 +200,7 @@ function currentDay() {
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
     let displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
 
-    //if statements that change my box color based off uvi
-    if (uviColor < 3) {
-        uviColor = $("<div id='uvi-color' style='background-color: green'></div>")
-    }
-    if (uviColor > 2 && uviColor < 6) {
-        uviColor = $("<div id='uvi-color' style='background-color: yellow'></div>")
-    }
-    if (uviColor > 5 && uviColor < 8) {
-        uviColor = $("<div id='uvi-color' style='background-color: orange'></div>")
-    }
-    if (uviColor > 7 && uviColor < 11) {
-        uviColor = $("<div id='uvi-color' style='background-color: red'></div>")
-    }
-    if (uviColor > 11) {
-        uviColor = $("<div id='uvi-color' style='background-color: purple'></div>")
-    }
+    const uviDisplayColor = uviColorDisplay(uviColor)
 
     //insert text into variables that hold html elements
     title.text("Today's Weather Stats")
@@ -220,7 +222,7 @@ function currentDay() {
     displayRow2.append(displayConditionImg);
     displayRow3.append(displayWind);
     displayRow4.append(displayUvi);
-    displayRow4.append(uviColor)
+    displayRow4.append(uviDisplayColor)
     displayRow5.append(displayHumidity);
     displayColumn1.append(displayRow1)
     displayColumn1.append(displayRow2)
@@ -254,7 +256,7 @@ const fiveDayForecast = () => {
     let uvIndexImg = $("#uv-index-img");
     let dailyHumidity = $("#daily-humidity");
 
-    for (let i = 0; i < 5; i++) {       
+    for (let i = 0; i < 5; i++) {
         // date
         let newDate = dateStr[i].trim();
         let unixTimeStamp = newDate;
@@ -288,26 +290,10 @@ const fiveDayForecast = () => {
         let uvi = `UVI Index ${uviStr[i].trim()}`;
         let uviColor = uviStr[i].trim();
 
-        //if statements that change my box color based off uvi
-        if (uviColor < 3) {
-            uviColor = "<div id='uvi-color' style='background-color: green'></div>"
-        }
-        if (uviColor > 2 && uviColor < 6) {
-            uviColor = "<div id='uvi-color' style='background-color: yellow'></div>"
-        }
-        if (uviColor > 5 && uviColor < 8) {
-            uviColor = "<div id='uvi-color' style='background-color: orange'></div>"
-        }
-        if (uviColor > 7 && uviColor < 11) {
-            uviColor = "<div id='uvi-color' style='background-color: red'></div>"
-        }
-        if (uviColor > 11) {
-            uviColor = "<div id='uvi-color' style='background-color: purple'></div>"
-        }
-        
+        const uviDisplayColor = uviColorDisplay(uviColor);
+
         // daily humidity
         let humidity = `Humidity ${humidityStr[i].trim()}%`;
-
 
         const dailyForecastCard = `<div id="wrapper">
         <h1>${cityNameGlobal}</h1>
@@ -318,7 +304,7 @@ const fiveDayForecast = () => {
         <p>${displayConditionImg}</p>
         <p>${windSpeed}</p>
         <p>${uvi}</p>
-        <p>${uviColor}</p>
+        <p>${uviDisplayColor}</p>
         <p>${humidity}</p>
         </div>
         `
@@ -326,10 +312,9 @@ const fiveDayForecast = () => {
         let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
 
         dailyForecastCardWrapper.append(dailyForecastCard)
-        
-        
+
         // five day forecast cards
-        cityName.append(cityNameGlobal)    
+        cityName.append(cityNameGlobal)
         date.append(oneDate)
         maxTemperature.append(fahrenTempMax)
         minTemperature.append(fahrenTempMin)
@@ -343,15 +328,13 @@ const fiveDayForecast = () => {
     }
 }
 
-// FUNCTION TO DISPLAY FIVE DAY FORECAST
-fiveDayForecast();
-//---I REALIZED LATER I COULD HAVE LOOPED THROUGH INSTEAD OF CREATING 5 FUNCTIONS FOR EACH DAY :( ---//
 
 function showStoredCity() {
     //pulling stored city information and storing it into a variable
     let storedCity = JSON.parse(localStorage.getItem("savedCity"))
     //displaying temperature as fahrenheit
     let fahrenTemp = Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)
+
     //converetd unixtimestamp into a readable date formate
     let unixTimeStamp = storedCity.date
     let milliseconds = unixTimeStamp * 1000
@@ -410,18 +393,17 @@ function showStoredCity() {
     let latitude = localStorage.getItem("latitude")
     let longitude = localStorage.getItem("longitude")
 
-    //new query  ased off of stored city latitutde and longitude
+    //new query based off of stored city latitutde and longitude
     let query2 = forecastUrl + "lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,minutely" + apiKey;
 
     //on click event to reload our stored data from the saved button and display it on the page
     $("#show-forecast").on("click", function () {
         fetch(query2)
             .then(function (response) {
-                console.log(response);
                 return response.json();
             })
             .then(function (results) {
-                console.log(results)
+
                 currentDayForecast = {
                     cityName: localStorage.getItem("cityName"),
                     latitude: localStorage.getItem("latitude").trim(),
@@ -454,3 +436,5 @@ function showStoredCity() {
 //Our display cards
 currentDay()
 showStoredCity()
+// FUNCTION TO DISPLAY FIVE DAY FORECAST
+fiveDayForecast();
