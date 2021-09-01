@@ -1,17 +1,17 @@
-var searchButton = $("#button-search");
+let searchButton = $("#button-search");
 //this base url pulls my latitude and logitude positions from whatever city is inputed
-var baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
+let baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
 //this input pulls my daily forcast
-var forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
+let forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 //this is my api key
-var apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
+let apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
 
 //when the user clicks this button, it will search for a city and store all relevant data for that city and the future five days in local storage
 $("#button-search").on("click", function (event) {
     event.preventDefault();
 
-    //this variable is the input from the user and trims all white spaces
-    var cityName = $("#city-name").val().trim();
+    // searched city from user
+    let cityName = $("#city-name").val().trim();
 
     //this is our inital url that we are using fetch with to gather the lon and lat of cities
     let query = baseUrl + cityName + apiKey;
@@ -55,18 +55,18 @@ $("#button-search").on("click", function (event) {
                     localStorage.setItem("currentConditionsImg", results.current.weather[0].icon)
 
                     //empty variables that will be used to store each of our five days information into local storage
-                    var dateStr = ' ';
-                    var tempMaxStr = ' ';
-                    var tempMinStr = ' ';
-                    var windSpeedStr = ' ';
-                    var humidityStr = ' ';
-                    var uviStr = ' ';
-                    var weatherConditionMainStr = ' ';
-                    var weatherConditionIconStr = ' ';
+                    let dateStr = ' ';
+                    let tempMaxStr = ' ';
+                    let tempMinStr = ' ';
+                    let windSpeedStr = ' ';
+                    let humidityStr = ' ';
+                    let uviStr = ' ';
+                    let weatherConditionMainStr = ' ';
+                    let weatherConditionIconStr = ' ';
 
                     //----------------------------locally store a five day weather forecast using loop----------------------//
                     //loops through our daily weather reports for the next five days
-                    for (var i = 1; i < 6; i++) {
+                    for (let i = 1; i < 6; i++) {
 
                         //create date string and store
                         dateStr += results.daily[i].dt + ", ";
@@ -100,33 +100,33 @@ $("#button-search").on("click", function (event) {
                         weatherConditionIconStr += results.daily[i].weather[0].icon + ", ";
                         localStorage.setItem("dailyConditionImg", weatherConditionIconStr)
                     }
-                    //reload page on clik to display newly stored information
+                    //reload page on click to display newly stored information
                     location.reload()
                 })
         })
 })
 
 //An error will populate here that says i cannot split null. I am very very unsure how to fix - code still works once city is inputted.
-var dateStr = localStorage.getItem("dailyDate").split(",");
-var tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
-var tempMinStr = localStorage.getItem("dailyTempMin").split(",");
-var windSpeedStr = localStorage.getItem("dailyWindSpeed").split(",");
-var humidityStr = localStorage.getItem("dailyHumidity").split(",");
-var uviStr = localStorage.getItem("dailyUvi").split(",");
-var weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
-var weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
+let dateStr = localStorage.getItem("dailyDate").split(",");
+let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
+let tempMinStr = localStorage.getItem("dailyTempMin").split(",");
+let windSpeedStr = localStorage.getItem("dailyWindSpeed").split(",");
+let humidityStr = localStorage.getItem("dailyHumidity").split(",");
+let uviStr = localStorage.getItem("dailyUvi").split(",");
+let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
+let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
-//variables for grabbing html elements to be used in displaying card data
-var currentDayDisplay = $("#current-day");
-var dayOne = $("#one-day");
-var dayTwo = $("#two-day");
-var dayThree = $("#three-day");
-var dayFour = $("#four-day");
-var dayFive = $("#five-day");
-var savedCity = $("#saved-city")
-var savedTitle = $("#saved-title")
-var todayTitle = $("#today-title")
-var cityNameGlobal = localStorage.getItem("cityName");
+//letiables for grabbing html elements to be used in displaying card data
+let currentDayDisplay = $("#current-day");
+let dayOne = $("#one-day");
+let dayTwo = $("#two-day");
+let dayThree = $("#three-day");
+let dayFour = $("#four-day");
+let dayFive = $("#five-day");
+let savedCity = $("#saved-city")
+let savedTitle = $("#saved-title")
+let todayTitle = $("#today-title")
+let cityNameGlobal = localStorage.getItem("cityName");
 
 //function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay() {
@@ -145,43 +145,43 @@ function currentDay() {
     }
 
     //change temperature to fahrenheit 
-    var fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)
+    let fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)
 
     //converetd unixtimestamp into a readable date format
-    var unixTimeStamp = currentDayForecast.date
-    var milliseconds = unixTimeStamp * 1000
-    var dateObject = new Date(milliseconds)
-    var readableDate = {
+    let unixTimeStamp = currentDayForecast.date
+    let milliseconds = unixTimeStamp * 1000
+    let dateObject = new Date(milliseconds)
+    let readableDate = {
         day: dateObject.toLocaleString("en-US", { weekday: "long" }),
         month: dateObject.toLocaleString("en-US", { month: "long" }),
         dayNum: dateObject.toLocaleString("en-US", { day: "numeric" })
     }
     //combines my readable date into a single string that will be displayed on the card
-    var date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
+    let date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
-    //uvi variable
+    //uvi letiable
     let uviColor = currentDayForecast.uvi;
 
     //creat columns and rose here to append html elements
-    var displayColumn1 = $("<div class='col card-design'></div>");
-    var displayRow1 = $("<div class='row top-row-design'></div>");
-    var displayRow2 = $("<div class='row mid-row-design'></div>");
-    var displayRow3 = $("<div class='row floor-row-design'></div>");
-    var displayRow4 = $("<div class='row floor-row-design'></div>");
-    var displayRow5 = $("<div class='row base-row-design'></div>");
-    var displayRow6 = $("<button id='save-current-city'>Save City</button>");
+    let displayColumn1 = $("<div class='col card-design'></div>");
+    let displayRow1 = $("<div class='row top-row-design'></div>");
+    let displayRow2 = $("<div class='row mid-row-design'></div>");
+    let displayRow3 = $("<div class='row floor-row-design'></div>");
+    let displayRow4 = $("<div class='row floor-row-design'></div>");
+    let displayRow5 = $("<div class='row base-row-design'></div>");
+    let displayRow6 = $("<button id='save-current-city'>Save City</button>");
 
     //creat html elements for each object in currendDayForecast
-    var title = $("<h1></h1>");
-    var displayCity = $("<p class='city-name'></p>");
-    var displayDate = $("<p></p>");
-    var displayTemp = $("<p></p>");
-    var displayWind = $("<p></p>");
-    var displayHumidity = $("<p></p>");
-    var displayUvi = $("<p></p>");
-    var displayConditions = $("<p></p>");
+    let title = $("<h1></h1>");
+    let displayCity = $("<p class='city-name'></p>");
+    let displayDate = $("<p></p>");
+    let displayTemp = $("<p></p>");
+    let displayWind = $("<p></p>");
+    let displayHumidity = $("<p></p>");
+    let displayUvi = $("<p></p>");
+    let displayConditions = $("<p></p>");
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    let displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
 
     //if statements that change my box color based off uvi
     if (uviColor < 3) {
@@ -349,37 +349,37 @@ fiveDayForecast();
 
 function showStoredCity() {
     //pulling stored city information and storing it into a variable
-    var storedCity = JSON.parse(localStorage.getItem("savedCity"))
+    let storedCity = JSON.parse(localStorage.getItem("savedCity"))
     //displaying temperature as fahrenheit
-    var fahrenTemp = Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)
+    let fahrenTemp = Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)
     //converetd unixtimestamp into a readable date formate
-    var unixTimeStamp = storedCity.date
-    var milliseconds = unixTimeStamp * 1000
-    var dateObject = new Date(milliseconds)
-    var readableDate = {
+    let unixTimeStamp = storedCity.date
+    let milliseconds = unixTimeStamp * 1000
+    let dateObject = new Date(milliseconds)
+    let readableDate = {
         day: dateObject.toLocaleString("en-US", { weekday: "long" }),
         month: dateObject.toLocaleString("en-US", { month: "long" }),
         dayNum: dateObject.toLocaleString("en-US", { day: "numeric" })
     }
     //combines my readable date into a single string that will be displayed on the card
-    var date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
+    let date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
 
     //creat columns and rose here to append html elements
-    var displayColumn1 = $("<div class='col card-design'></div>");
-    var displayRow1 = $("<div class='row top-row-design'></div>");
-    var displayRow2 = $("<div class='row mid-row-design'></div>");
-    var displayRow3 = $("<div class='row mid-row-design'></div>");
+    let displayColumn1 = $("<div class='col card-design'></div>");
+    let displayRow1 = $("<div class='row top-row-design'></div>");
+    let displayRow2 = $("<div class='row mid-row-design'></div>");
+    let displayRow3 = $("<div class='row mid-row-design'></div>");
 
     //creat html elements for each object in currendDayForecast
-    var title = $("<h1></h1>");
-    var displayCity = $("<p class='city-name'></p>");
-    var displayDate = $("<p></p>");
-    var displayTemp = $("<p></p>");
-    var displayConditions = $("<p></p>");
-    var grabButton = $("<button id='show-forecast'></button>")
+    let title = $("<h1></h1>");
+    let displayCity = $("<p class='city-name'></p>");
+    let displayDate = $("<p></p>");
+    let displayTemp = $("<p></p>");
+    let displayConditions = $("<p></p>");
+    let grabButton = $("<button id='show-forecast'></button>")
 
     //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    var displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
+    let displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
 
     //insert text into variables that hold html elements
     title.text("Your Saved City");
@@ -407,11 +407,11 @@ function showStoredCity() {
     savedTitle.append(savedCity)
 
     //pull and store lat and lon to potentially display the current city and five day forecasts on click of stored city
-    var latitude = localStorage.getItem("latitude")
-    var longitude = localStorage.getItem("longitude")
+    let latitude = localStorage.getItem("latitude")
+    let longitude = localStorage.getItem("longitude")
 
     //new query  ased off of stored city latitutde and longitude
-    var query2 = forecastUrl + "lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,minutely" + apiKey;
+    let query2 = forecastUrl + "lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,minutely" + apiKey;
 
     //on click event to reload our stored data from the saved button and display it on the page
     $("#show-forecast").on("click", function () {
