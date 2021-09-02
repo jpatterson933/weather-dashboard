@@ -144,7 +144,6 @@ function currentDay() {
         cityName: localStorage.getItem("cityName"),
         latitude: localStorage.getItem("latitude").trim(),
         longitude: localStorage.getItem("longitude").trim(),
-        date: localStorage.getItem("currentDate").trim(),
         temp: localStorage.getItem("currentTemp").trim(),
         windSpeed: localStorage.getItem("currentWindSpeed").trim(),
         humidity: localStorage.getItem("currentHumidity").trim(),
@@ -169,6 +168,7 @@ function currentDay() {
         <p>Wind Speed ${currentDayForecast.windSpeed} mph</p>
         <p>UV Index ${currentDayForecast.uvi}${uviDisplayColor}</p>
         <p>Humidity ${currentDayForecast.humidity}%</p>
+        <button id="save-current-city">Save City</button>
     </div>
     `
     const currentDay = $("#current-day-weather")
@@ -181,25 +181,30 @@ function currentDay() {
     })
 }
 
+
+// function converting date to a readable format
+const realDate = (x) => {
+    let unixTimeStamp = x.trim();
+    let dateObject = new Date(unixTimeStamp * 1000);
+    let readableDate = {
+        day: dateObject.toLocaleString('en-US', { weekday: 'long' }),
+        month: dateObject.toLocaleString('en-US', { month: 'long' }),
+        dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
+    }
+    let date = `${readableDate.day} ${readableDate.month} ${readableDate.dayNum}`
+    return date;
+}
+
 // five day forecast card creating loop
 const fiveDayForecast = () => {
-    for (let i = 0; i < 5; i++) {
-        // date
-        let newDate = dateStr[i].trim();
-        let unixTimeStamp = newDate;
-        let milliseconds = unixTimeStamp * 1000;
-        let dateObject = new Date(milliseconds);
-        let readableDate = {
-            day: dateObject.toLocaleString('en-US', { weekday: 'long' }),
-            month: dateObject.toLocaleString('en-US', { month: 'long' }),
-            dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
-        }
-        let oneDate = `${readableDate.day} ${readableDate.month} ${readableDate.dayNum}`
+    for (let i = 0; i < 5; i++) {   
 
-        // max temp
+        // function converting date into a readable format
+        let oneDate = realDate(dateStr[i])
+
+        // max & min temperature conversion
         let tempMax = tempMaxStr[i].trim();
         let fahrenTempMax = `Max Temp ${Math.round((tempMax - 273.15) * (9 / 5) + 32)}\u00B0F`;
-        // min temp
         let tempMin = tempMinStr[i].trim();
         let fahrenTempMin = `Min Temp ${Math.round((tempMin - 273.15) * (9 / 5) + 32)}\u00B0F`;
 
@@ -248,18 +253,7 @@ function showStoredCity() {
     let storedCity = JSON.parse(localStorage.getItem("savedCity"))
     // Convert temperature to Fahrenheit
     let fahrenTemp = Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)
-
-    //converted unixtimestamp into a readable date format
-    let unixTimeStamp = storedCity.date
-    let milliseconds = unixTimeStamp * 1000
-    let dateObject = new Date(milliseconds)
-    let readableDate = {
-        day: dateObject.toLocaleString("en-US", { weekday: "long" }),
-        month: dateObject.toLocaleString("en-US", { month: "long" }),
-        dayNum: dateObject.toLocaleString("en-US", { day: "numeric" })
-    }
-    //combines my readable date into a single string that will be displayed on the card
-    let date = `${readableDate.day} ${readableDate.month} ${readableDate.dayNum}`;
+    let date = realDate(storedCity.date)
 
     const savedCityCard = `
     <div id="wrapper">
@@ -303,7 +297,7 @@ function showStoredCity() {
                     conditionImg: localStorage.getItem("currentConditionsImg").trim(),
                 }
 
-                //on click this will change local storage, reload the page, and displayed there stored citys forecast
+                //on click this will change local storage, reload the page, and displayed the stored citys forecast
                 localStorage.setItem("cityName", storedCity.cityName)
                 localStorage.setItem("currentDate", storedCity.date)
                 localStorage.setItem("currentTemp", storedCity.temp)
