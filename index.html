@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--bootstrap style sheet-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <!--my style sheet-->
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Weather Dashboard</title>
@@ -16,29 +14,23 @@
     <!--this is our header wrapper-->
     <header id="header-wrap">
         <!--jumbotron that will be displayed-->
-        <div class="jumbotron jumbotron-fluid">
-            <h1 class="display-4">Weather Dashboard</h1>
-            <div class="row">
+        <div>
+            <h1>Weather Dashboard</h1>
                 <div id="search-bar-header">
                     <h1>Enter a City Name</h1>
                     <input type="text" id="city-name">
                     <button id="button-search" data-toggle="modal">Search</button>
                 </div>
-                <!--i need to hid these elements so the border is no showing when the page is blank-->
-            </div>
         </div>
-
-
-        <aside id="saved-city-weather">
-            
-        </aside>
-        <aside id="current-day-weather">
-
-        </aside>
-        
-        
     </header>
 
+
+    <div id="saved-city-weather">
+
+    </div>
+    <div id="current-day-weather">
+
+    </div>
     <!--five day forcast-->
     <div id="forecast-title">Five Day Forecast</div>
     <div id="daily-forecast-card-wrapper"></div>
