@@ -43,9 +43,7 @@ $("#button-search").on("click", function (event) {
                 })
                 .then(function (results) {
 
-                    //----------------------------------------locally store our current day weather condition----------------------------------//
-
-                    //store all current day data into local storage//
+                    //--------------locally store our current day weather condition--------------//
                     localStorage.setItem("currentDate", results.current.dt)
                     localStorage.setItem("currentTemp", results.current.temp)
                     localStorage.setItem("currentWindSpeed", results.current.wind_speed)
@@ -65,7 +63,6 @@ $("#button-search").on("click", function (event) {
                     let weatherConditionIconStr = ' ';
 
                     //----------------------------locally store a five day weather forecast using loop----------------------//
-                    //loops through our daily weather reports for the next five days
                     for (let i = 1; i < 6; i++) {
 
                         //create date string and store
@@ -106,7 +103,7 @@ $("#button-search").on("click", function (event) {
         })
 })
 
-//An error will populate here that says i cannot split null. I am very very unsure how to fix - code still works once city is inputted 
+//An error will populate here that says i cannot split null - will need to fix - might need to remove variables off of global scope
 let dateStr = localStorage.getItem("dailyDate").split(",");
 let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
 let tempMinStr = localStorage.getItem("dailyTempMin").split(",");
@@ -116,7 +113,7 @@ let uviStr = localStorage.getItem("dailyUvi").split(",");
 let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
 let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
-// City Name being searched
+// City Name being searched - used in multiple functions
 let cityNameGlobal = localStorage.getItem("cityName");
 
 // function for color coded uv index
@@ -140,7 +137,7 @@ function uviColorDisplay(uviColor) {
 
 //function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay() {
-
+    // storing currenty day forecast in object to be pulled onto front end
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
         latitude: localStorage.getItem("latitude").trim(),
@@ -159,7 +156,7 @@ function currentDay() {
     // UV Index and associated color
     let uviColor = currentDayForecast.uvi;
     const uviDisplayColor = uviColorDisplay(uviColor)
-
+    // our current day weather card
     const currentDayWeatherInfo = `<div id="current-day-weather-info">
         <h1>Today</h1>
         <p class='city-name'>${currentDayForecast.cityName}</p>
@@ -222,9 +219,9 @@ const fiveDayForecast = () => {
 }
 
 function showStoredCity() {
-    // Grabbing stored City
+    // grab savedCity from local storage
     let storedCity = JSON.parse(localStorage.getItem("savedCity"))
-
+    // saved city card for front end
     const savedCityCard = `
     <div id="wrapper">
         <h1>${storedCity.cityName}</h1>
