@@ -140,6 +140,7 @@ function currentDay() {
     // storing currenty day forecast in object to be pulled onto front end
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
+        date: localStorage.getItem("currentDate"),
         latitude: localStorage.getItem("latitude").trim(),
         longitude: localStorage.getItem("longitude").trim(),
         temp: localStorage.getItem("currentTemp").trim(),
@@ -150,21 +151,15 @@ function currentDay() {
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
     }
 
-    // Temperature converted to Fahrenheit 
-    let fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)
-
-    // UV Index and associated color
-    let uviColor = currentDayForecast.uvi;
-    const uviDisplayColor = uviColorDisplay(uviColor)
     // our current day weather card
     const currentDayWeatherInfo = `<div id="current-day-weather-info">
         <h1>Today</h1>
         <p class='city-name'>${currentDayForecast.cityName}</p>
-        <p>Currently ${fahrenTemp}\u00B0F</p>
+        <p>Currently ${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
         <p>${currentDayForecast.conditions}</p>
         <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>
         <p>Wind Speed ${currentDayForecast.windSpeed} mph</p>
-        <p>UV Index ${currentDayForecast.uvi}${uviDisplayColor}</p>
+        <p>UV Index ${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</p>
         <p>Humidity ${currentDayForecast.humidity}%</p>
         <button id="save-current-city">Save City</button>
     </div>
@@ -178,7 +173,6 @@ function currentDay() {
         location.reload()
     })
 }
-
 
 // function converting date to a readable format
 const realDate = (x) => {
@@ -221,7 +215,7 @@ const fiveDayForecast = () => {
 function showStoredCity() {
     // grab savedCity from local storage
     let storedCity = JSON.parse(localStorage.getItem("savedCity"))
-    // saved city card for front end
+    // saved city card for front
     const savedCityCard = `
     <div id="wrapper">
         <h1>${storedCity.cityName}</h1>
