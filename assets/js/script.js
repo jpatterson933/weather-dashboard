@@ -26,10 +26,8 @@ $("#button-search").on("click", function (event) {
             return response.json();
         })
         .then(function (data) {
-            //store city name
+            //store city name, latitude and longtitude respectively
             localStorage.setItem("cityName", data.city.name)
-
-            //store our latitude and longitude
             localStorage.setItem("latitude", data.city.coord.lat)
             localStorage.setItem("longitude", data.city.coord.lon);
 
@@ -151,7 +149,7 @@ function currentDay() {
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
     }
 
-    // our current day weather card
+    // our current day weather card put into template literal to be appended to our index.html
     const currentDayWeatherInfo = `<div id="current-day-weather-info">
         <h1>Today</h1>
         <p class='city-name'>${currentDayForecast.cityName}</p>
