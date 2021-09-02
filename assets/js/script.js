@@ -116,11 +116,7 @@ let uviStr = localStorage.getItem("dailyUvi").split(",");
 let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
 let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
-//variables for grabbing html elements to be used in displaying card data
-let currentDayDisplay = $("#current-day");
-let savedCity = $("#saved-city")
-let savedTitle = $("#saved-title")
-let todayTitle = $("#today-title")
+// City Name being searched
 let cityNameGlobal = localStorage.getItem("cityName");
 
 function uviColorDisplay(uviColor) {
@@ -141,10 +137,6 @@ function uviColorDisplay(uviColor) {
     }
 }
 
-// const test = uviColorDisplay(6);
-
-// console.log(test, "uvi color display test for the function")
-
 //function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay() {
 
@@ -161,79 +153,26 @@ function currentDay() {
         conditionImg: localStorage.getItem("currentConditionsImg").trim(),
     }
 
-    //change temperature to fahrenheit 
+    // Temperature converted to Fahrenheit 
     let fahrenTemp = Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)
 
-    //converetd unixtimestamp into a readable date format
-    let unixTimeStamp = currentDayForecast.date
-    let milliseconds = unixTimeStamp * 1000
-    let dateObject = new Date(milliseconds)
-    let readableDate = {
-        day: dateObject.toLocaleString("en-US", { weekday: "long" }),
-        month: dateObject.toLocaleString("en-US", { month: "long" }),
-        dayNum: dateObject.toLocaleString("en-US", { day: "numeric" })
-    }
-    //combines my readable date into a single string that will be displayed on the card
-    let date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
-
-    //uvi letiable
+    // UV Index and associated color
     let uviColor = currentDayForecast.uvi;
-
-    //creat columns and rose here to append html elements
-    let displayColumn1 = $("<div class='col card-design'></div>");
-    let displayRow1 = $("<div class='row top-row-design'></div>");
-    let displayRow2 = $("<div class='row mid-row-design'></div>");
-    let displayRow3 = $("<div class='row floor-row-design'></div>");
-    let displayRow4 = $("<div class='row floor-row-design'></div>");
-    let displayRow5 = $("<div class='row base-row-design'></div>");
-    let displayRow6 = $("<button id='save-current-city'>Save City</button>");
-
-    //creat html elements for each object in currendDayForecast
-    let title = $("<h1></h1>");
-    let displayCity = $("<p class='city-name'></p>");
-    let displayDate = $("<p></p>");
-    let displayTemp = $("<p></p>");
-    let displayWind = $("<p></p>");
-    let displayHumidity = $("<p></p>");
-    let displayUvi = $("<p></p>");
-    let displayConditions = $("<p></p>");
-    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    let displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + currentDayForecast.conditionImg + "@2x.png' alt='Weather Condition Image'>");
-
     const uviDisplayColor = uviColorDisplay(uviColor)
 
-    //insert text into variables that hold html elements
-    title.text("Today's Weather Stats")
-    displayCity.text(currentDayForecast.cityName);
-    displayDate.text(date);
-    displayTemp.text("Currently " + fahrenTemp + "\u00B0" + "F")
-    displayWind.text("Wind Speed " + currentDayForecast.windSpeed + " mph");
-    displayHumidity.text("Humidity " + currentDayForecast.humidity + "%");
-    displayUvi.text("UV Index " + currentDayForecast.uvi);
-    displayConditions.text(currentDayForecast.conditions);
-    displayConditionImg.text(currentDayForecast.conditionImg);
-
-    //append our html elements that hold text into the three rows, 
-    //then the column, then the carddisplay element in html
-    displayRow1.append(displayCity);
-    displayRow1.append(displayDate);
-    displayRow1.append(displayTemp);
-    displayRow2.append(displayConditions);
-    displayRow2.append(displayConditionImg);
-    displayRow3.append(displayWind);
-    displayRow4.append(displayUvi);
-    displayRow4.append(uviDisplayColor)
-    displayRow5.append(displayHumidity);
-    displayColumn1.append(displayRow1)
-    displayColumn1.append(displayRow2)
-    displayColumn1.append(displayRow3);
-    displayColumn1.append(displayRow4);
-    displayColumn1.append(displayRow5);
-    displayColumn1.append(displayRow6);
-    title.append(displayColumn1)
-    todayTitle.append(title)
-    currentDayDisplay.append(todayTitle)
-    currentDayDisplay.append(displayColumn1)
+    const currentDayWeatherInfo = `<div id="current-day-weather-info">
+        <h1>Today</h1>
+        <p class='city-name'>${currentDayForecast.cityName}</p>
+        <p>Currently ${fahrenTemp}\u00B0F</p>
+        <p>${currentDayForecast.conditions}</p>
+        <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>
+        <p>Wind Speed ${currentDayForecast.windSpeed} mph</p>
+        <p>UV Index ${currentDayForecast.uvi}${uviDisplayColor}</p>
+        <p>Humidity ${currentDayForecast.humidity}%</p>
+    </div>
+    `
+    const currentDay = $("#current-day-weather")
+    currentDay.append(currentDayWeatherInfo)
 
     //save current city into local storage
     $("#save-current-city").on("click", function () {
@@ -244,18 +183,6 @@ function currentDay() {
 
 // five day forecast card creating loop
 const fiveDayForecast = () => {
-    // grabbing html variable here
-    let cityName = $("#city-name");
-    let date = $("#date");
-    let maxTemperature = $("#max-temp");
-    let minTemperature = $("#min-temp");
-    let dailyConditions = $("#daily-conditions");
-    let dailyConditionsImg = $("#daily-conditions-img");
-    let dailyWindSpeed = $("#wind-speed");
-    let uvIndex = $("#uv-index");
-    let uvIndexImg = $("#uv-index-img");
-    let dailyHumidity = $("#daily-humidity");
-
     for (let i = 0; i < 5; i++) {
         // date
         let newDate = dateStr[i].trim();
@@ -289,53 +216,40 @@ const fiveDayForecast = () => {
         // daily uv index and if statements to adjust color based of uv index rating
         let uvi = `UVI Index ${uviStr[i].trim()}`;
         let uviColor = uviStr[i].trim();
-
         const uviDisplayColor = uviColorDisplay(uviColor);
 
         // daily humidity
         let humidity = `Humidity ${humidityStr[i].trim()}%`;
-
-        const dailyForecastCard = `<div id="wrapper">
-        <h1>${cityNameGlobal}</h1>
-        <p>${oneDate}</p>
-        <p>${fahrenTempMax}</p>
-        <p>${fahrenTempMin}</p>
-        <p>${conditions}</p>
-        <p>${displayConditionImg}</p>
-        <p>${windSpeed}</p>
-        <p>${uvi}</p>
-        <p>${uviDisplayColor}</p>
-        <p>${humidity}</p>
+        
+        // five day forecast card using template literals
+        const dailyForecastCard = `
+        <div id="wrapper">
+            <h1>${cityNameGlobal}</h1>
+            <p>${oneDate}</p>
+            <p>${fahrenTempMax}</p>
+            <p>${fahrenTempMin}</p>
+            <p>${conditions}</p>
+            <p>${displayConditionImg}</p>
+            <p>${windSpeed}</p>
+            <p>${uvi}</p>
+            <p>${uviDisplayColor}</p>
+            <p>${humidity}</p>
         </div>
         `
-
+        // grab id from index.html
         let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-
+        // send card to index.html
         dailyForecastCardWrapper.append(dailyForecastCard)
-
-        // five day forecast cards
-        cityName.append(cityNameGlobal)
-        date.append(oneDate)
-        maxTemperature.append(fahrenTempMax)
-        minTemperature.append(fahrenTempMin)
-        dailyConditions.append(conditions)
-        dailyConditionsImg.append(displayConditionImg)
-        dailyWindSpeed.append(windSpeed)
-        uvIndex.append(uvi)
-        uvIndexImg.append(uviColor)
-        dailyHumidity.append(humidity)
-
     }
 }
 
-
 function showStoredCity() {
-    //pulling stored city information and storing it into a variable
+    // Grabbing stored City
     let storedCity = JSON.parse(localStorage.getItem("savedCity"))
-    //displaying temperature as fahrenheit
+    // Convert temperature to Fahrenheit
     let fahrenTemp = Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)
 
-    //converetd unixtimestamp into a readable date formate
+    //converted unixtimestamp into a readable date format
     let unixTimeStamp = storedCity.date
     let milliseconds = unixTimeStamp * 1000
     let dateObject = new Date(milliseconds)
@@ -345,49 +259,21 @@ function showStoredCity() {
         dayNum: dateObject.toLocaleString("en-US", { day: "numeric" })
     }
     //combines my readable date into a single string that will be displayed on the card
-    let date = readableDate.day + " " + readableDate.month + " " + readableDate.dayNum;
+    let date = `${readableDate.day} ${readableDate.month} ${readableDate.dayNum}`;
 
-    //creat columns and rose here to append html elements
-    let displayColumn1 = $("<div class='col card-design'></div>");
-    let displayRow1 = $("<div class='row top-row-design'></div>");
-    let displayRow2 = $("<div class='row mid-row-design'></div>");
-    let displayRow3 = $("<div class='row mid-row-design'></div>");
+    const savedCityCard = `
+    <div id="wrapper">
+        <h1>${storedCity.cityName}</h1>
+        <p>${date}</p>
+        <p>Currently ${fahrenTemp}\u00B0F</p>
+        <p>${storedCity.conditions}</p>
+        <img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'>
+        <button id='show-forecast'>Show Forecast</button>
+    </div>
+    `
 
-    //creat html elements for each object in currendDayForecast
-    let title = $("<h1></h1>");
-    let displayCity = $("<p class='city-name'></p>");
-    let displayDate = $("<p></p>");
-    let displayTemp = $("<p></p>");
-    let displayConditions = $("<p></p>");
-    let grabButton = $("<button id='show-forecast'></button>")
-
-    //will pull corresponding image depending upon weather conditions (if clear during day, will show sun with no clouds)
-    let displayConditionImg = $("<img src='https://openweathermap.org/img/wn/" + storedCity.conditionImg + "@2x.png' alt='Weather Condition Image'>");
-
-    //insert text into variables that hold html elements
-    title.text("Your Saved City");
-    displayCity.text(storedCity.cityName);
-    displayDate.text(date);
-    displayTemp.text("Currently " + fahrenTemp + "\u00B0" + "F")
-    displayConditions.text(storedCity.conditions);
-    displayConditionImg.text(storedCity.conditionImg);
-    grabButton.text("Show Forecast");
-
-    //append our html elements that hold text into the three rows, 
-    //then the column, then the carddisplay element in html
-    displayRow1.append(displayCity);
-    displayRow1.append(displayDate);
-    displayRow1.append(displayTemp);
-    displayRow2.append(displayConditions);
-    displayRow2.append(displayConditionImg);
-    displayRow3.append(grabButton);
-    displayColumn1.append(displayRow1)
-    displayColumn1.append(displayRow2)
-    displayColumn1.append(displayRow3)
-    title.append(displayColumn1)
-    savedTitle.append(title)
-    savedCity.append(displayColumn1)
-    savedTitle.append(savedCity)
+    const savedCityWeather = $("#saved-city-weather")
+    savedCityWeather.append(savedCityCard)
 
     //pull and store lat and lon to potentially display the current city and five day forecasts on click of stored city
     let latitude = localStorage.getItem("latitude")
@@ -402,7 +288,7 @@ function showStoredCity() {
             .then(function (response) {
                 return response.json();
             })
-            .then(function (results) {
+            .then(function (res) {
 
                 currentDayForecast = {
                     cityName: localStorage.getItem("cityName"),
@@ -433,8 +319,7 @@ function showStoredCity() {
     })
 }
 
-//Our display cards
+// display functions
 currentDay()
 showStoredCity()
-// FUNCTION TO DISPLAY FIVE DAY FORECAST
 fiveDayForecast();

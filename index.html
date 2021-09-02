@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Weather Dashboard</title>
 </head>
+
 <body>
     <!--this is our header wrapper-->
     <header id="header-wrap">
@@ -25,34 +27,22 @@
                 <!--i need to hid these elements so the border is no showing when the page is blank-->
             </div>
         </div>
-        <!--our aside to display saved city forecast and current city forecast-->
-        <aside id="hold-info">
-            <div id="saved-title"></div>
-            <div id="saved-city"></div> 
-            <!--where the current day card will display for the city that has been searched for-->
-            <div id="today-title"></div>
-            <div id="current-day"></div>
+
+
+        <aside id="saved-city-weather">
+            
         </aside>
-    
+        <aside id="current-day-weather">
+
+        </aside>
+        
+        
     </header>
 
     <!--five day forcast-->
     <div id="forecast-title">Five Day Forecast</div>
     <div id="daily-forecast-card-wrapper"></div>
 
-    <!-- card wrapper-- -->
-    <div id="daily-forecast-card">
-        <p id="city-name"></p>
-        <p id="date"></p>
-        <p id="max-temp"></p>
-        <p id="min-temp"></p>
-        <p id="daily-conditions"></p>
-        <p id="daily-conditions-img"></p>
-        <p id="wind-speed"></p>
-        <p id="uv-index"><span id="uv-index-img"></span></p>
-        <p id="daily-humidity"></p>
-    </div>
-  
     <!-- SCRIPTS -->
     <!--moment script for time-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
@@ -61,4 +51,5 @@
     <!--my javascript script-->
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>
