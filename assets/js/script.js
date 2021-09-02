@@ -20,7 +20,7 @@ $("#button-search").on("click", function (event) {
     fetch(query)
         .then(function (response) {
             if (response.status === 404) {
-                //replace this with a modal
+                // alert if the city entered does not exist
                 alert("Please enter a valid city name!")
             }
             return response.json();
@@ -119,6 +119,7 @@ let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",
 // City Name being searched
 let cityNameGlobal = localStorage.getItem("cityName");
 
+// function for color coded uv index
 function uviColorDisplay(uviColor) {
     if (uviColor < 3) {
         return color = "<div id='uvi-color' style='background-color: green'></div>";
@@ -197,48 +198,20 @@ const realDate = (x) => {
 
 // five day forecast card creating loop
 const fiveDayForecast = () => {
-    for (let i = 0; i < 5; i++) {   
-
-        // function converting date into a readable format
-        let oneDate = realDate(dateStr[i])
-
-        // max & min temperature conversion
-        let tempMax = tempMaxStr[i].trim();
-        let fahrenTempMax = `Max Temp ${Math.round((tempMax - 273.15) * (9 / 5) + 32)}\u00B0F`;
-        let tempMin = tempMinStr[i].trim();
-        let fahrenTempMin = `Min Temp ${Math.round((tempMin - 273.15) * (9 / 5) + 32)}\u00B0F`;
-
-        // weather condition string
-        let conditions = weatherConditionMainStr[i].trim();
-
-        // weather condition image
-        let conditionImg = weatherConditionIconStr[i].trim();
-        var displayConditionImg = `<img src='https://openweathermap.org/img/wn/${conditionImg}@2x.png' alt='Weather Condition Image'>`;
-
-        // daily wind speed
-        let windSpeed = `Wind Speed ${windSpeedStr[i].trim()} mph`;
-
-        // daily uv index and if statements to adjust color based of uv index rating
-        let uvi = `UVI Index ${uviStr[i].trim()}`;
-        let uviColor = uviStr[i].trim();
-        const uviDisplayColor = uviColorDisplay(uviColor);
-
-        // daily humidity
-        let humidity = `Humidity ${humidityStr[i].trim()}%`;
-        
+    for (let i = 0; i < 5; i++) {
         // five day forecast card using template literals
         const dailyForecastCard = `
         <div id="wrapper">
             <h1>${cityNameGlobal}</h1>
-            <p>${oneDate}</p>
-            <p>${fahrenTempMax}</p>
-            <p>${fahrenTempMin}</p>
-            <p>${conditions}</p>
-            <p>${displayConditionImg}</p>
-            <p>${windSpeed}</p>
-            <p>${uvi}</p>
-            <p>${uviDisplayColor}</p>
-            <p>${humidity}</p>
+            <p>${realDate(dateStr[i])}</p>
+            <p>Max Temp ${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</p>
+            <p>Min Temp ${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</p>
+            <p>${weatherConditionMainStr[i].trim()}</p>
+            <img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'>
+            <p>Wind Speed ${windSpeedStr[i].trim()} mph</p>
+            <p>UV Index ${uviStr[i].trim()}</p>
+            <p>${uviColorDisplay(uviStr[i].trim())}</p>
+            <p>Humidity ${humidityStr[i].trim()}%</p>
         </div>
         `
         // grab id from index.html
@@ -251,21 +224,17 @@ const fiveDayForecast = () => {
 function showStoredCity() {
     // Grabbing stored City
     let storedCity = JSON.parse(localStorage.getItem("savedCity"))
-    // Convert temperature to Fahrenheit
-    let fahrenTemp = Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)
-    let date = realDate(storedCity.date)
 
     const savedCityCard = `
     <div id="wrapper">
         <h1>${storedCity.cityName}</h1>
-        <p>${date}</p>
-        <p>Currently ${fahrenTemp}\u00B0F</p>
+        <p>${realDate(storedCity.date)}</p>
+        <p>Currently ${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
         <p>${storedCity.conditions}</p>
         <img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'>
         <button id='show-forecast'>Show Forecast</button>
     </div>
     `
-
     const savedCityWeather = $("#saved-city-weather")
     savedCityWeather.append(savedCityCard)
 
