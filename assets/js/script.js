@@ -153,7 +153,7 @@ function currentDay() {
         const currentDayWeatherInfo = `<div id="current-day-weather-info">
         <h1>Today</h1>
         <p class='city-name'>${currentDayForecast.cityName}</p>
-        <p>Currently ${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
+        <p>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
         <p>${currentDayForecast.conditions}</p>
         <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>
         <p>Wind Speed ${currentDayForecast.windSpeed} mph</p>
@@ -268,6 +268,7 @@ function showStoredCity() {
         let storedCity = JSON.parse(localStorage.getItem("savedCity"))
         // saved city card for front
         const savedCityCard = `
+        <h1>Your saved city</h1>
     <div id="wrapper">
     <table>
         <tr>
@@ -275,15 +276,13 @@ function showStoredCity() {
             <th>Date</th>
             <th>Current Temp</th>
             <th>Conditions</th>
-            <th>Wind Speed</th>
-            <th>UV Index</th>
-            <th>Humidity</th>
         </tr>
-        <h1>${storedCity.cityName}</h1>
-        <p>${realDate(storedCity.date)}</p>
-        <p>Currently ${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
-        <p>${storedCity.conditions}</p>
-        <img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'>
+        <tr>
+            <th>${storedCity.cityName}</th>
+            <th>${realDate(storedCity.date)}</th>
+            <th>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</th>
+            <th>${storedCity.conditions}<img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'></th>
+        </tr>        
         <button id='show-forecast'>Show Forecast</button>
     </table>
     </div>

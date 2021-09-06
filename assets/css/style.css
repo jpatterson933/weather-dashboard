@@ -6,25 +6,16 @@
 /* wraps our top header to include relevant items */
 #header-wrap{
     display: flex;
-}
-
-/* jumbotron styling */
-.jumbotron {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    padding: 0 1em;
-    margin: 31px;
-    max-height: 11em;
-    box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 42%);
-    border-radius: 5px;
+    background: rgba(0, 0, 0, .05);
 }
 
 /*formatting for search bar*/
 #search-bar-header {
-    width: fit-content;
+    width: 65%;
     margin: 0 auto;
     text-align: center;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 /*us this to flex our saved city and currenty city data*/
@@ -42,22 +33,6 @@
     max-height: 25em;
 }
 
-/* styling for our saved city card */
-#saved-city {
-    width: fit-content;
-    border: var(--globalBorder);
-    border-radius: 20px;
-    height: fit-content;
-    margin: 9px auto;
-}
-
-/*this is the idea for the save button on the current city card*/
-#save-current-city {
-    margin-left: 4em;
-    margin-bottom: 5px;
-    padding: 4px 10px;
-}
-
 /* -------------------------------------------BUTTON STYLING------------------------------------------------- */
 button {
     background-color: rgba(255,183,150,0.8);
@@ -66,33 +41,23 @@ button {
 }
 button:hover {
     box-shadow: 3px -4px 7px 1px grey;
+    cursor: pointer;
 }
 #button-search {
     padding: 4px 12px;
 }
-/*--------------------------END BUTTON STYLING ------------------------------------*/
 
 /*styling for our current display card*/
-#current-day {
-    margin-top: 1.9em;
-    margin-left: 6em;
-    width: fit-content;
+#current-day-weather-info {
     border: var(--globalBorder);
     border-radius: 20px;
-    min-width: 160px;
-    box-shadow: 3px -4px 7px 1px grey;
-}
-
-/*styles all of our h1s*/
-h1{
-    font-size: 1.5em;
-    padding: 2px;
+    box-shadow: 0px 0px 9px 10px grey;
 }
 
 /*styling of forecast title*/
 #forecast-title {
     text-align: center;
-    font-size: 3em;
+    font-size: 2em;
     margin: 10px;
     text-shadow: 1px 1px 1px orange;
 }
@@ -137,7 +102,7 @@ h1{
 
 /* ---------------------------styling for table contents rows / columns-------------- */
 
-tr:nth-child(even) {
+tr:nth-child(odd) {
     background-color: #dddddd;
   }
 
