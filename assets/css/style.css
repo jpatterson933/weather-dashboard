@@ -103,6 +103,7 @@ h1{
     margin: 6px;
 }
 
+/* -----------------This is the wrapper for our five day forecast--------------- */
 #wrapper {
     display: flex;
 }
@@ -132,4 +133,15 @@ h1{
     min-height: 15px;
     max-height: 2em;
     border-radius: 30px;
+}
+
+/* ---------------------------styling for table contents rows / columns-------------- */
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+tr, th {
+    padding: 0;
+    margin: 0 auto;
 }

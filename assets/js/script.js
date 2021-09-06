@@ -101,18 +101,6 @@ $("#button-search").on("click", function (event) {
         })
 })
 
-
-// let dateStr = localStorage.getItem("dailyDate").split(",");
-// let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
-// let tempMinStr = localStorage.getItem("dailyTempMin").split(",");
-// let windSpeedStr = localStorage.getItem("dailyWindSpeed").split(",");
-// let humidityStr = localStorage.getItem("dailyHumidity").split(",");
-// let uviStr = localStorage.getItem("dailyUvi").split(",");
-// let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
-// let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
-
-//An error will populate here that says i cannot split null - will need to fix - might need to remove variables off of global scope
-
 // City Name being searched - used in multiple functions
 let cityNameGlobal = localStorage.getItem("cityName");
 
@@ -223,24 +211,42 @@ const fiveDayForecast = () => {
             // five day forecast card using template literals
             const dailyForecastCard = `
         <div id="wrapper">
-            <h1>${cityNameGlobal}</h1>
-            <p>${realDate(dateStr[i])}</p>
-            <p>Max Temp ${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</p>
-            <p>Min Temp ${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</p>
-            <p>${weatherConditionMainStr[i].trim()}</p>
-            <img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'>
-            <p>Wind Speed ${windSpeedStr[i].trim()} mph</p>
-            <p>UV Index ${uviStr[i].trim()}</p>
-            <p>${uviColorDisplay(uviStr[i].trim())}</p>
-            <p>Humidity ${humidityStr[i].trim()}%</p>
+        <table>
+            <tr class="bottom-table">
+                <th>${realDate(dateStr[i])}</th>
+                <th>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</th>
+                <th>${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</th>
+                <th>${weatherConditionMainStr[i].trim()}
+                <img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'></th>
+                <th>${windSpeedStr[i].trim()} mph</th>
+                <th>${uviStr[i].trim()}
+                ${uviColorDisplay(uviStr[i].trim())}</th>
+                <th>${humidityStr[i].trim()}%</th>
+            </tr>
+            </table>
         </div>
         `
             let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
             dailyForecastCardWrapper.append(dailyForecastCard)
-
         }
-        const title = `<div id="forecast-title">Five Day Forecast</div>`
+        const title = `<div id="forecast-title">Five Day Forecast for ${cityNameGlobal}</div>`;
+        let bottomTable = $(".bottom-table");
+        let topTable = `
+        <tr>
+            <th>Date</th>
+            <th>Max Temp</th>
+            <th>Min Temp</th>
+            <th>Conditions</th>
+            <th>Wind Speed</th>
+            <th>UV Index</th>
+            <th>Humidity</th>
+        </tr>
+        `
+
+
         let fiveDayTitle = $("#five-day-title");
+        let weatherTable = $("#weather-table");
+        bottomTable.before(topTable)
 
         fiveDayTitle.append(title);
     }
@@ -263,16 +269,29 @@ function showStoredCity() {
         // saved city card for front
         const savedCityCard = `
     <div id="wrapper">
+    <table>
+        <tr>
+            <th>City Name</th>
+            <th>Date</th>
+            <th>Current Temp</th>
+            <th>Conditions</th>
+            <th>Wind Speed</th>
+            <th>UV Index</th>
+            <th>Humidity</th>
+        </tr>
         <h1>${storedCity.cityName}</h1>
         <p>${realDate(storedCity.date)}</p>
         <p>Currently ${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
         <p>${storedCity.conditions}</p>
         <img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'>
         <button id='show-forecast'>Show Forecast</button>
+    </table>
     </div>
     `
         const savedCityWeather = $("#saved-city-weather")
+        const weatherSearchCard = $("#weather-search-card")
         savedCityWeather.append(savedCityCard)
+        weatherSearchCard.append(savedCityWeather)
 
         //pull and store lat and lon to potentially display the current city and five day forecasts on click of stored city
         let latitude = localStorage.getItem("latitude")
