@@ -137,6 +137,16 @@ function uviColorDisplay(uviColor) {
 
 //function for grabbing locally stored current day information and displaying that info in card on browswer
 function currentDay() {
+    if (localStorage.getItem("cityName") === null) {
+        const currentDayWeatherInfo = `
+            <div id="current-day-weather-info>
+                <h1>Please search for a city</h1>
+            </div>
+        `
+        const currentDay = $("#current-day-weather")
+        currentDay.append(currentDayWeatherInfo)
+    } else {
+
     // storing currenty day forecast in object to be pulled onto front end
     currentDayForecast = {
         cityName: localStorage.getItem("cityName"),
@@ -172,7 +182,7 @@ function currentDay() {
         localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
         location.reload()
     })
-}
+}}
 
 // function converting date to a readable format
 const realDate = (x) => {
@@ -189,6 +199,21 @@ const realDate = (x) => {
 
 // five day forecast card creating loop
 const fiveDayForecast = () => {
+
+    if (localStorage.getItem("dailyDate") === null) {
+        const dailyForecastCard = `
+        <div id="current-day-weather-info>
+            <h1>Please search for a city</h1>
+        </div>
+    `
+      // grab id from index.html
+      let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
+      // send card to index.html
+      dailyForecastCardWrapper.append(dailyForecastCard)
+    } else {
+
+
+    
 
     let dateStr = localStorage.getItem("dailyDate").split(",");
     let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
@@ -220,15 +245,9 @@ const fiveDayForecast = () => {
         // send card to index.html
         dailyForecastCardWrapper.append(dailyForecastCard)
     }
-}
+}}
 
 function showStoredCity() {
-    // grab savedCity from local storage
-    // let storedCity = JSON.parse(localStorage.getItem("savedCity"))
-
-    // console.log(storedCity)
-
-    // console.log(storedCity.cityName)
 
     if (localStorage.getItem("savedCity") === null) {
         const savedCityCard = `
