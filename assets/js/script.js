@@ -147,22 +147,22 @@ function currentDay() {
         currentDay.append(currentDayWeatherInfo)
     } else {
 
-    // storing currenty day forecast in object to be pulled onto front end
-    currentDayForecast = {
-        cityName: localStorage.getItem("cityName"),
-        date: localStorage.getItem("currentDate"),
-        latitude: localStorage.getItem("latitude").trim(),
-        longitude: localStorage.getItem("longitude").trim(),
-        temp: localStorage.getItem("currentTemp").trim(),
-        windSpeed: localStorage.getItem("currentWindSpeed").trim(),
-        humidity: localStorage.getItem("currentHumidity").trim(),
-        uvi: localStorage.getItem("currentUvi").trim(),
-        conditions: localStorage.getItem("currentConditions").trim(),
-        conditionImg: localStorage.getItem("currentConditionsImg").trim(),
-    }
+        // storing currenty day forecast in object to be pulled onto front end
+        currentDayForecast = {
+            cityName: localStorage.getItem("cityName"),
+            date: localStorage.getItem("currentDate"),
+            latitude: localStorage.getItem("latitude").trim(),
+            longitude: localStorage.getItem("longitude").trim(),
+            temp: localStorage.getItem("currentTemp").trim(),
+            windSpeed: localStorage.getItem("currentWindSpeed").trim(),
+            humidity: localStorage.getItem("currentHumidity").trim(),
+            uvi: localStorage.getItem("currentUvi").trim(),
+            conditions: localStorage.getItem("currentConditions").trim(),
+            conditionImg: localStorage.getItem("currentConditionsImg").trim(),
+        }
 
-    // our current day weather card put into template literal to be appended to our index.html
-    const currentDayWeatherInfo = `<div id="current-day-weather-info">
+        // our current day weather card put into template literal to be appended to our index.html
+        const currentDayWeatherInfo = `<div id="current-day-weather-info">
         <h1>Today</h1>
         <p class='city-name'>${currentDayForecast.cityName}</p>
         <p>Currently ${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
@@ -174,15 +174,16 @@ function currentDay() {
         <button id="save-current-city">Save City</button>
     </div>
     `
-    const currentDay = $("#current-day-weather")
-    currentDay.append(currentDayWeatherInfo)
+        const currentDay = $("#current-day-weather")
+        currentDay.append(currentDayWeatherInfo)
 
-    //save current city into local storage
-    $("#save-current-city").on("click", function () {
-        localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
-        location.reload()
-    })
-}}
+        //save current city into local storage
+        $("#save-current-city").on("click", function () {
+            localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
+            location.reload()
+        })
+    }
+}
 
 // function converting date to a readable format
 const realDate = (x) => {
@@ -199,34 +200,28 @@ const realDate = (x) => {
 
 // five day forecast card creating loop
 const fiveDayForecast = () => {
-
     if (localStorage.getItem("dailyDate") === null) {
         const dailyForecastCard = `
         <div id="current-day-weather-info>
             <h1>Please search for a city</h1>
         </div>
     `
-      // grab id from index.html
-      let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-      // send card to index.html
-      dailyForecastCardWrapper.append(dailyForecastCard)
+        // grab id from index.html and append dailyForecastCard
+        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
+        dailyForecastCardWrapper.append(dailyForecastCard)
     } else {
+        let dateStr = localStorage.getItem("dailyDate").split(",");
+        let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
+        let tempMinStr = localStorage.getItem("dailyTempMin").split(",");
+        let windSpeedStr = localStorage.getItem("dailyWindSpeed").split(",");
+        let humidityStr = localStorage.getItem("dailyHumidity").split(",");
+        let uviStr = localStorage.getItem("dailyUvi").split(",");
+        let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
+        let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
-
-    
-
-    let dateStr = localStorage.getItem("dailyDate").split(",");
-    let tempMaxStr = localStorage.getItem("dailyTempMax").split(",");
-    let tempMinStr = localStorage.getItem("dailyTempMin").split(",");
-    let windSpeedStr = localStorage.getItem("dailyWindSpeed").split(",");
-    let humidityStr = localStorage.getItem("dailyHumidity").split(",");
-    let uviStr = localStorage.getItem("dailyUvi").split(",");
-    let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
-    let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
-
-    for (let i = 0; i < 5; i++) {
-        // five day forecast card using template literals
-        const dailyForecastCard = `
+        for (let i = 0; i < 5; i++) {
+            // five day forecast card using template literals
+            const dailyForecastCard = `
         <div id="wrapper">
             <h1>${cityNameGlobal}</h1>
             <p>${realDate(dateStr[i])}</p>
@@ -240,12 +235,16 @@ const fiveDayForecast = () => {
             <p>Humidity ${humidityStr[i].trim()}%</p>
         </div>
         `
-        // grab id from index.html
-        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-        // send card to index.html
-        dailyForecastCardWrapper.append(dailyForecastCard)
+            let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
+            dailyForecastCardWrapper.append(dailyForecastCard)
+
+        }
+        const title = `<div id="forecast-title">Five Day Forecast</div>`
+        let fiveDayTitle = $("#five-day-title");
+
+        fiveDayTitle.append(title);
     }
-}}
+}
 
 function showStoredCity() {
 
@@ -253,6 +252,7 @@ function showStoredCity() {
         const savedCityCard = `
         <div id="no-saved-city">
             <h1>You have no saved cities!</h1>
+            <p> Enter a city in the search bar to begin. <p>
         </div>
         `
         const savedCityWeather = $("#saved-city-weather")

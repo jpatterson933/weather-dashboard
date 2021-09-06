@@ -103,6 +103,10 @@ h1{
     margin: 6px;
 }
 
+#wrapper {
+    display: flex;
+}
+
 /*styling for five day forecast cards*/
 .forecast-card {
     width: fit-content;
