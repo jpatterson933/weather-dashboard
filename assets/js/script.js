@@ -150,9 +150,9 @@ function currentDay() {
         }
 
         // our current day weather card put into template literal to be appended to our index.html
-        const currentDayWeatherInfo = `<div id="current-day-weather-info">
-        <h1>Today</h1>
-        <p class='city-name'>${currentDayForecast.cityName}</p>
+        const currentDayWeatherInfo = `
+    <div id="current-day-weather-info">
+        <h1 class='city-name'>Today in ${currentDayForecast.cityName}</h1>
         <p>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
         <p>${currentDayForecast.conditions}</p>
         <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>

@@ -1,50 +1,88 @@
 # Weather Dashboard Application
 
-## [Deployed Application](https://jpatterson933.github.io/weather-dashboard/)
+# [Deployed Application](https://jpatterson933.github.io/weather-dashboard/)
 
-### Jeffery W. Patterson
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Languages Used
-<ul>HTML</ul>
-<ul>CSS</ul>
-<ul>Javascript</ul>
-<ul>jQuery</ul>
-<ul>Bootstrap</ul>
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
-## API Used
-<ul>Open Weather API</ul>
+# Table of Contents
+1. [License MIT](#license-information)
+2. [Description](#application-description)
+3. [Installation](#installation-instructions)
+4. [Usage](#application-usage)
+5. [Languages Used](#languages-used)
+6. [Contribution Guidelines](#contribution-guidelines)
+7. [Testing](#testing-instrutions)
+8. [Known Issues/Errors](#known-issues/errors)
+9. [Questions](#questions)
 
-***
+# License Information
 
-## Weather Dashboard
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This application can be used to find the the current weather data and five day forecast of any known city typed into the search bar. Specifically, the user can find weather data on the current temperature, wind speeds, uvi levels and color, current conditions with current condition image, and the humidity levels for the city. The five day forecast will display the same information except instead of the current temperature (as it is in the future), it will take the max and minimum temperature of the day and display it for the user to read.
+[MIT License](https://www.mit.edu/~amini/LICENSE.md) Documentation
 
-#### On page load..
+Please refer to license documentation for any questions regarding reusing 
+this software or any code within this application.
 
-The user will be displayed with an inital load up page that will show empty boxes.
-![Inital Page on Load](./assets/images-gifs/inital-loaded-page.png)
+[Back to Top](#table-of-contents)
 
-If the user does not enter a KNOWN city, the page will show an alert.
-![User enters non-city input](./assets/images-gifs/non-city-search.gif)
+# Application Description
 
-Once the user enters a KNOWN city, the page will display the city's current weather forecast, as well as display a five day future forecast as displayed here.
-![User enters a KNOWN city and clicks search](./assets/images-gifs/user-searches.gif)
+This application can be used to find the current weather data and five day forecast of any known city typed into the search bar. The user can find weather data on the current temperature, wind speeds, uv index and relevant color for uvi level, current conditions with associated image, and the humidity levels for the city. The five day forecast will display the same information except instead of the current temperature, it will take the max and minimum temperature of the day and display it for the user to read.
 
-Once the search button is clicked and the information is displayed, you can find all daily information and all current day information stored in local storage.
-![Current and Daily Weather Info Stored in Local Storage](./assets/images-gifs/local-storage-on-search.png)
+The user can also save a city and easily return and load the five day forecast for their saved city.
 
-When the user clicks on the Save City button, the city will be saved and displayed on page reload next to the search button and they can search for other cities without losing their saved city.
-![User saves city, searches for other cities, and reloads page with saved city still in place](./assets/images-gifs/save-city.gif)
+[Back to Top](#table-of-contents)
 
-### Known Issues
+# Installation Instructions
 
-1. Error displaying in the console that says it cannot split null. This is becuase there is nothing in local storage. This is a known issue. There is a note in the javascript explaining this issue. It is something I have had difficulty fixing but will added it to my weaknesses as something I need to strengthen my knowledge of.
+You can git clone if you would like to download and use it.
 
-2. Inital load up page shows borders, boxes, cards, and shadows of elements that do not exist yet. This became extremely complicated to solve once the code began to grow in number of lines. I have run into this problem multiple times, and will be working on strengthening my knowledge on the topic as well. It does not cause any errors. However, it does make the interface of the design a bit more abstract than needed.
+[Back to Top](#table-of-contents)
 
-3. Alert instead of Modale - In the future, the alert will be repalced with a modal providing the user with a smoother interface and a design with elements that will be complimented by the overall design of the website.
+# Application Usage
 
-4. There is no search history populated. I instead created the save city option for the user which is something I realized I did not have to do. I had misread the directions on the initial homework markdown. I can add a history of cities that were searched for later, and include them in the stored function if I can learn my way around parameters.
+The purpose of this application is to show a five day forecast. It also saves a city so the user can return and quickly reload the five day forecast for their saved city.
 
-## [Github Repository](https://github.com/jpatterson933/weather-dashboard)
+[Back to Top](#table-of-contents)
+
+# Languages Used
+
+### HTML
+### CSS
+### Javascript
+### jQuery
+
+[Back to Top](#table-of-contents)
+
+# Contribution Guidelines
+
+There are no guidelines for contribution.
+
+[Back to Top](#table-of-contents)
+
+# Testing Instrutions
+
+NA
+
+[Back to Top](#table-of-contents)
+
+# Known Issues/Errors
+
+No. There are some areas of the styling that can be improved but overall the application does not give any errors when ran.
+
+[Back to Top](#table-of-contents)
+
+# Questions
+
+If you have any questions that have not been answered, please send me an email: jpatterson933@ucla.edu
+
+## Checkout My GitHub!
+
+[Back to Top](#table-of-contents)
+
+### [jpatterson933](https://github.com/jpatterson933)
+### [Live Application](https://jpatterson933.github.io/weather-dashboard/)
+### [GitHub Repository](https://github.com/jpatterson933/weather-dashboard)
