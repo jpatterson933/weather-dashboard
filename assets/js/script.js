@@ -210,17 +210,25 @@ const fiveDayForecast = () => {
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
             const dailyForecastCard = `
+        <label id="forecast-title" for="five-day-forecast">${realDate(dateStr[i])}</label>
         <div id="wrapper">
-        <table>
+            <table name="five-day-forecast">
+            <tr>
+                <th>Max Temp</th>
+                <th>Min Temp</th>
+                <th>Conditions</th>
+                <th>Wind Speed</th>
+                <th>UV Index</th>
+                <th>Humidity</th>
+            </tr>
             <tr class="bottom-table">
-                <th>${realDate(dateStr[i])}</th>
                 <th>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</th>
                 <th>${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</th>
-                <th>${weatherConditionMainStr[i].trim()}
+                <th><p>${weatherConditionMainStr[i].trim()}</p>
                 <img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'></th>
                 <th>${windSpeedStr[i].trim()} mph</th>
                 <th>${uviStr[i].trim()}
-                ${uviColorDisplay(uviStr[i].trim())}</th>
+                <span style="width: 5px">${uviColorDisplay(uviStr[i].trim())}</span></th>
                 <th>${humidityStr[i].trim()}%</th>
             </tr>
             </table>
@@ -230,24 +238,7 @@ const fiveDayForecast = () => {
             dailyForecastCardWrapper.append(dailyForecastCard)
         }
         const title = `<div id="forecast-title">Five Day Forecast for ${cityNameGlobal}</div>`;
-        let bottomTable = $(".bottom-table");
-        let topTable = `
-        <tr>
-            <th>Date</th>
-            <th>Max Temp</th>
-            <th>Min Temp</th>
-            <th>Conditions</th>
-            <th>Wind Speed</th>
-            <th>UV Index</th>
-            <th>Humidity</th>
-        </tr>
-        `
-
-
         let fiveDayTitle = $("#five-day-title");
-        let weatherTable = $("#weather-table");
-        bottomTable.before(topTable)
-
         fiveDayTitle.append(title);
     }
 }

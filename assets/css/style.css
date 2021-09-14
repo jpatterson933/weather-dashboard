@@ -1,115 +1,123 @@
 /* global variables declared here */
 :root {
-    --globalBorder: 3px solid rgba(255, 150, 100, 1); 
+  --globalBorder: 3px solid rgba(255, 150, 100, 1);
 }
 
+#date-box {
+    min-width: 12em;
+}
 /* wraps our top header to include relevant items */
-#header-wrap{
-    display: flex;
-    background: rgba(0, 0, 0, .05);
+#header-wrap {
+  display: flex;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /*formatting for search bar*/
 #search-bar-header {
-    width: 65%;
-    margin: 0 auto;
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 10px;
+  width: 65%;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 10px;
 }
 
 /*us this to flex our saved city and currenty city data*/
 #hold-info {
-    display: flex;
+  display: flex;
 }
 
 /* this holds are saved title and saved city weather data */
 #saved-title {
-    background-color: rgba(0, 0, 0, .1);
-    border-radius: 5px;
-    padding: 6px;
-    margin: 2em;
-    box-shadow: inset 4px 4px 7px rgb(0 0 0 / 30%), 4px 4px 4px rgb(0 0 0 / 20%);
-    max-height: 25em;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 6px;
+  margin: 2em;
+  box-shadow: inset 4px 4px 7px rgb(0 0 0 / 30%), 4px 4px 4px rgb(0 0 0 / 20%);
+  max-height: 25em;
 }
 
 /* -------------------------------------------BUTTON STYLING------------------------------------------------- */
 button {
-    background-color: rgba(255,183,150,0.8);
-    border: none;
-    border-radius: 5px;
+  background-color: rgba(255, 183, 150, 0.8);
+  border: none;
+  border-radius: 5px;
 }
 button:hover {
-    box-shadow: 3px -4px 7px 1px grey;
-    cursor: pointer;
+  box-shadow: 3px -4px 7px 1px grey;
+  cursor: pointer;
 }
 #button-search {
-    padding: 4px 12px;
+  padding: 4px 12px;
 }
 
 /*styling for our current display card*/
 #current-day-weather-info {
-    border: var(--globalBorder);
-    border-radius: 20px;
-    box-shadow: 0px 0px 9px 10px grey;
-    text-align: center;
+  border: 2px solid black;
+  border-radius: 3px;
+  box-shadow: 0px 0px 20px 10px grey;
+  text-align: center;
 }
 
 /*styling of forecast title*/
 #forecast-title {
-    text-align: center;
-    font-size: 2em;
-    margin: 10px;
-    text-shadow: 1px 1px 1px orange;
+  text-align: center;
+  font-size: 2em;
+  margin: 10px;
+  text-shadow: 1px 1px 1px orange;
 }
 
 /*button to reload saved forecast*/
 #show-forecast {
-    padding: 5px 10px;
-    margin: 6px;
+  padding: 5px 10px;
+  margin: 6px;
 }
 
 /* -----------------This is the wrapper for our five day forecast--------------- */
 #wrapper {
-    display: flex;
+  display: flex;
 }
 
 /*styling for five day forecast cards*/
 .forecast-card {
-    width: fit-content;
-    margin: 0px auto;
-    border: var(--globalBorder);
-    border-radius: 20px;
-    box-shadow: 3px -4px 7px 1px grey;
+  width: fit-content;
+  margin: 0px auto;
+  border: var(--globalBorder);
+  border-radius: 20px;
+  box-shadow: 3px -4px 7px 1px grey;
 }
 
 /*----------styling for inner card elements---------------*/
-.top-row-design, .mid-row-design {
-    display: block;
-    text-align: center;
+.top-row-design,
+.mid-row-design {
+  display: block;
+  text-align: center;
 }
-.floor-row-design, .base-row-design {
-    margin: 0 auto;
-    width: fit-content;
+.floor-row-design,
+.base-row-design {
+  margin: 0 auto;
+  width: fit-content;
 }
 
 /* styling for our uvi color holder */
 #uvi-color {
-    min-width: 2em;
-    min-height: 15px;
-    max-height: 2em;
-    border-radius: 30px;
+  width: 20px;
+  height: 20px;
+  border-radius: 150px;
+  margin: 0 auto;
 }
 
 /* ---------------------------styling for table contents rows / columns-------------- */
 
+/* every odd for coloring*/
 tr:nth-child(odd) {
-    background-color: #dddddd;
-  }
+    background-color: rgba(270, 220, 191, 0.7);
+    border-radius: 1px;
+    border: 1px solid rgba(270, 220, 191, 1);
+}
 
-tr, th {
-    padding: 0;
-    margin: 0 auto;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+tr,
+th {
+  padding: 0;
+  margin: 0 auto;
+  border: 1px solid rgba(270, 220, 191, 1);
 }
