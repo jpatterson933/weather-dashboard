@@ -210,7 +210,7 @@ const fiveDayForecast = () => {
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
             const dailyForecastCard = `
-        <label id="forecast-title" for="five-day-forecast">${realDate(dateStr[i])}</label>
+        <div><label id="forecast-title" for="five-day-forecast">${realDate(dateStr[i])}</label></div>
         <div id="wrapper">
             <table name="five-day-forecast">
             <tr>
