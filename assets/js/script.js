@@ -6,6 +6,8 @@ let forecastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 //this is my api key
 let apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
 
+
+
 //when the user clicks this button, it will search for a city and store all relevant data for that city and the future five days in local storage
 $("#button-search").on("click", function (event) {
     event.preventDefault();
