@@ -3,22 +3,37 @@
   --globalBorder: 3px solid rgba(255, 150, 100, 1);
 }
 
+/* NAV STYLING */
+nav {
+  background-color: black;
+  padding: 20px;
+  color: white;
+}
+
+nav ul {
+  white-space: nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav li {
+  width: 25%;
+  display: inline-block;
+  font-size: 24px;
+  margin: 0 auto;
+
+}
+
+
 #date-box {
     min-width: 12em;
-}
-/* wraps our top header to include relevant items */
-#header-wrap {
-  display: flex;
-  background: rgba(0, 0, 0, 0.05);
 }
 
 /*formatting for search bar*/
 #search-bar-header {
-  width: 65%;
-  margin: 0 auto;
+  width: 45%;
   text-align: center;
   border: 1px solid black;
-  border-radius: 10px;
 }
 
 /*us this to flex our saved city and currenty city data*/
