@@ -8,6 +8,7 @@ nav {
   background-color: black;
   padding: 20px;
   color: white;
+  min-width: 550px;
 }
 
 nav ul {
@@ -34,6 +35,7 @@ nav li {
   width: 45%;
   text-align: center;
   border: 1px solid black;
+  min-width: 550px;
 }
 
 /*us this to flex our saved city and currenty city data*/
@@ -154,15 +156,22 @@ table {
 
 @media only screen and (max-width: 1000px){
   nav li{
-    width: 50%;
+    width: 40%;
   }
-
   .weather-banner {
     white-space: pre;
   }
+  #search-bar-header {
+    width: 100%;
+  }
+}
 
-
-
-
-
+@media only screen and (max-width: 600px){
+  nav li{
+    display: grid;
+    width: 50%;
+  }
+  .weather-banner {
+    white-space: normal;
+  }
 }
