@@ -65,12 +65,26 @@ button:hover {
   padding: 4px 12px;
 }
 
+/* STYLING FOR ASIDES - puts them next to each other*/
+.weather-banner {
+  white-space: nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.weather-banner aside{
+  top: 0;
+  width: 50%;
+  display: inline-block;
+}
+
+
 /*styling for our current display card*/
 #current-day-weather-info {
-  border: 2px solid black;
-  border-radius: 3px;
-  box-shadow: 0px 0px 20px 10px grey;
+  width: fit-content;
+  border: 2px solid orange;
+  box-shadow: 0px 0px 5px 2px rgb(250 170 98);
   text-align: center;
+  padding: 5px;
 }
 
 /*styling of forecast title*/
@@ -87,10 +101,6 @@ button:hover {
   margin: 6px;
 }
 
-/* -----------------This is the wrapper for our five day forecast--------------- */
-#wrapper {
-  display: flex;
-}
 
 /*styling for five day forecast cards*/
 .forecast-card {
@@ -135,4 +145,24 @@ th {
   padding: 0;
   margin: 0 auto;
   border: 1px solid rgba(270, 220, 191, 1);
+}
+
+table {
+  border: 1px solid black;
+  box-shadow: 1px 1px 8px 0px #453d2f63;
+}
+
+@media only screen and (max-width: 1000px){
+  nav li{
+    width: 50%;
+  }
+
+  .weather-banner {
+    white-space: pre;
+  }
+
+
+
+
+
 }

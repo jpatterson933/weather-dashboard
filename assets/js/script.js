@@ -153,14 +153,25 @@ function currentDay() {
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
+        
     <div id="current-day-weather-info">
-        <h1 class='city-name'>Today in ${currentDayForecast.cityName}</h1>
-        <p>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
-        <p>${currentDayForecast.conditions}</p>
-        <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>
-        <p>Wind Speed ${currentDayForecast.windSpeed} mph</p>
-        <p>UV Index ${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</p>
-        <p>Humidity ${currentDayForecast.humidity}%</p>
+    <h1 class='city-name'>Today in ${currentDayForecast.cityName}</h1>
+        <table>
+        <tr>
+            <th>Currently</th>
+            <th>Conditions</th>
+            <th>Wind Speed</th>
+            <th>UV Index</th>
+            <th>Humidity</th>
+        </tr>
+        <tr>
+            <th>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</th>
+            <th>${currentDayForecast.conditions}<img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'></th>
+            <th>${currentDayForecast.windSpeed} mph</th>
+            <th>${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</th>
+            <th>${currentDayForecast.humidity}%</th>
+        </tr>
+        </table>        
         <button id="save-current-city">Save City</button>
     </div>
     `
@@ -261,8 +272,6 @@ function showStoredCity() {
         let storedCity = JSON.parse(localStorage.getItem("savedCity"))
         // saved city card for front
         const savedCityCard = `
-        <h1>Your saved city</h1>
-    <div id="wrapper">
     <table>
         <tr>
             <th>City Name</th>
@@ -276,14 +285,11 @@ function showStoredCity() {
             <th>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</th>
             <th>${storedCity.conditions}<img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'></th>
         </tr>        
+        </table>
         <button id='show-forecast'>Show Forecast</button>
-    </table>
-    </div>
     `
         const savedCityWeather = $("#saved-city-weather")
-        const weatherSearchCard = $("#weather-search-card")
         savedCityWeather.append(savedCityCard)
-        weatherSearchCard.append(savedCityWeather)
 
         //pull and store lat and lon to potentially display the current city and five day forecasts on click of stored city
         let latitude = localStorage.getItem("latitude")
