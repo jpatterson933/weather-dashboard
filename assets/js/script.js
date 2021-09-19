@@ -155,24 +155,20 @@ function currentDay() {
         const currentDayWeatherInfo = `
         
     <div id="current-day-weather-info">
-    <h1 class='city-name'>Today in ${currentDayForecast.cityName}</h1>
-        <table>
-        <tr>
-            <th>Currently</th>
-            <th>Conditions</th>
-            <th>Wind Speed</th>
-            <th>UV Index</th>
-            <th>Humidity</th>
-        </tr>
-        <tr>
-            <th>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</th>
-            <th>${currentDayForecast.conditions}<img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'></th>
-            <th>${currentDayForecast.windSpeed} mph</th>
-            <th>${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</th>
-            <th>${currentDayForecast.humidity}%</th>
-        </tr>
-        </table>        
-        <button id="save-current-city">Save City</button>
+            <h1 class='city-name'>Today in ${currentDayForecast.cityName}</h1>
+            <div class="weather-info-wrapper">
+                <h4>Current Temperature</h4>
+                <h4>Conditions</h4>
+                <h4>Wind Speed</h4>
+                <h4>UV Index</h4>
+                <h4>Humidity</h4>
+                <div>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</div>
+                <div>${currentDayForecast.conditions}<img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'></div>
+                <div>${currentDayForecast.windSpeed} mph</div>
+                <div>${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</div>
+                <div>${currentDayForecast.humidity}%</div>
+            </div>
+            <button id="save-current-city">Save City</button>
     </div>
     `
         const currentDay = $("#current-day-weather")
