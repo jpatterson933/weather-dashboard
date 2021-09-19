@@ -268,21 +268,16 @@ function showStoredCity() {
         let storedCity = JSON.parse(localStorage.getItem("savedCity"))
         // saved city card for front
         const savedCityCard = `
-    <table>
-        <tr>
-            <th>City Name</th>
-            <th>Date</th>
-            <th>Current Temp</th>
-            <th>Conditions</th>
-        </tr>
-        <tr>
-            <th>${storedCity.cityName}</th>
-            <th>${realDate(storedCity.date)}</th>
-            <th>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</th>
-            <th>${storedCity.conditions}<img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'></th>
-        </tr>        
-        </table>
-        <button id='show-forecast'>Show Forecast</button>
+        <div class="saved-city-weather-info">
+            <h1 class='city-name'>Your Saved City: ${storedCity.cityName}</h1>
+                <div class="saved-city-wrapper">
+                        <h4>Current Temp</h4>
+                        <h4>Conditions</h4>
+                        <div>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</div>
+                        <div>${storedCity.conditions}<img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'></div>
+                </div>
+            <button id='show-forecast'>Show Forecast</button>
+        </div>
     `
         const savedCityWeather = $("#saved-city-weather")
         savedCityWeather.append(savedCityCard)

@@ -53,6 +53,11 @@ nav li {
   max-height: 25em;
 }
 
+.saved-city-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 /* -------------------------------------------BUTTON STYLING------------------------------------------------- */
 button {
   background-color: rgba(255, 183, 150, 0.8);
@@ -79,15 +84,28 @@ button:hover {
   display: inline-block;
 }
 
+/* Current Day city Name */
+.city-name{
+  margin: 0;
+}
 
-/*styling for our current display card*/
-#current-day-weather-info {
+/*styling for our current display card and our saved city display card*/
+#current-day-weather-info, .saved-city-weather-info {
   border: 2px solid orange;
   box-shadow: 0px 0px 5px 2px rgb(250 170 98);
   text-align: center;
   padding: 5px;
 }
 
+/* h4 titls for our weather information */
+#current-day-weather-info h4, .saved-city-wrapper h4{
+  background-color: rgba(236, 110, 76, .2);
+  color: black;
+  padding: 3px;
+  margin: 1px;
+}
+
+/* Add Grid to Current Weather Display */
 .weather-info-wrapper {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -100,13 +118,6 @@ button:hover {
   margin: 10px;
   text-shadow: 1px 1px 1px orange;
 }
-
-/*button to reload saved forecast*/
-#show-forecast {
-  padding: 5px 10px;
-  margin: 6px;
-}
-
 
 /*styling for five day forecast cards*/
 .forecast-card {
