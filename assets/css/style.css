@@ -25,6 +25,11 @@ nav li {
 
 }
 
+nav a {
+  text-decoration: none;
+  color: white;
+}
+
 
 #date-box {
     min-width: 12em;
