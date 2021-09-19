@@ -72,6 +72,11 @@ button:hover {
   padding: 4px 12px;
 }
 
+#daily-forecast-card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+}
 /* STYLING FOR ASIDES - puts them next to each other*/
 .weather-banner {
   white-space: nowrap;
@@ -98,7 +103,7 @@ button:hover {
 }
 
 /* h4 titls for our weather information */
-#current-day-weather-info h4, .saved-city-wrapper h4{
+#current-day-weather-info h4, .saved-city-wrapper h4, #daily-forecast-card-wrapper h4{
   background-color: rgba(236, 110, 76, .2);
   color: black;
   padding: 3px;

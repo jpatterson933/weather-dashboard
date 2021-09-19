@@ -216,34 +216,32 @@ const fiveDayForecast = () => {
         let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
         let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
 
+        // grab our id form index.html and append daily forecast titles
+        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
+        let dailyForecasttitle = `
+            <h4>Date</h4>
+            <h4>Max Temp</h4>
+            <h4>Min Temp</h4>
+            <h4>Conditions</h4>
+            <h4>Wind Speed</h4>
+            <h4>UV Index</h4>
+            <h4>Humidity</h4>
+        `;
+        dailyForecastCardWrapper.append(dailyForecasttitle)
+
+
+
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
             const dailyForecastCard = `
-        <div><label id="forecast-title" for="five-day-forecast">${realDate(dateStr[i])}</label></div>
-        <div id="wrapper">
-            <table name="five-day-forecast">
-            <tr>
-                <th>Max Temp</th>
-                <th>Min Temp</th>
-                <th>Conditions</th>
-                <th>Wind Speed</th>
-                <th>UV Index</th>
-                <th>Humidity</th>
-            </tr>
-            <tr class="bottom-table">
-                <th>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</th>
-                <th>${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</th>
-                <th><p>${weatherConditionMainStr[i].trim()}</p>
-                <img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'></th>
-                <th>${windSpeedStr[i].trim()} mph</th>
-                <th>${uviStr[i].trim()}
-                <span style="width: 5px">${uviColorDisplay(uviStr[i].trim())}</span></th>
-                <th>${humidityStr[i].trim()}%</th>
-            </tr>
-            </table>
-        </div>
+                <label for="five-day-forecast">${realDate(dateStr[i])}</label>
+                <div>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
+                <div>${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
+                <div>${weatherConditionMainStr[i].trim()}<img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'></div>
+                <div>${windSpeedStr[i].trim()} mph</div>
+                <div>${uviStr[i].trim()}${uviColorDisplay(uviStr[i].trim())}</div>
+                <div>${humidityStr[i].trim()}%</div>
         `
-            let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
             dailyForecastCardWrapper.append(dailyForecastCard)
         }
         const title = `<div id="forecast-title">Five Day Forecast for ${cityNameGlobal}</div>`;
