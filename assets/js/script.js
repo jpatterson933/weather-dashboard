@@ -234,7 +234,7 @@ const fiveDayForecast = () => {
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
             const dailyForecastCard = `
-                <label for="five-day-forecast">${realDate(dateStr[i])}</label>
+                <div>${realDate(dateStr[i])}</div>
                 <div>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
                 <div>${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
                 <div>${weatherConditionMainStr[i].trim()}<img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'></div>
