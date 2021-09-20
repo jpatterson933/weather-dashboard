@@ -33,12 +33,14 @@ nav a {
   margin: 10px auto;
 }
 
+/* Wrapper for our graphs */
 #sh-wrapper, #wh-wrapper {
   display: grid;
   grid-template-columns: repeat(241, 1fr);
   align-items: end;
 }
 
+/* Wrapper for our graphs */
 #swell-graph, #wave-graph{
     background-color: aqua;
     border: 1px solid black;
@@ -56,7 +58,5 @@ nav a {
 
 div[title]:hover::after {
     content: attr(title);
-    position: absolute;
-    top: -100%;
-    left: 0;
+    font-size: 2em;
   }
