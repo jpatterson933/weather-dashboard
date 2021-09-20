@@ -1,0 +1,62 @@
+/* NAV STYLING */
+nav {
+  background-color: black;
+  padding: 20px;
+  color: white;
+  min-width: 550px;
+}
+
+nav ul {
+  white-space: nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav li {
+  width: 25%;
+  display: inline-block;
+  font-size: 24px;
+  margin: 0 auto;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+}
+
+/*formatting for search bar*/
+#search-bar-header {
+  width: 45%;
+  text-align: center;
+  border: 1px solid black;
+  min-width: 550px;
+  margin: 10px auto;
+}
+
+#sh-wrapper, #wh-wrapper {
+  display: grid;
+  grid-template-columns: repeat(241, 1fr);
+  align-items: end;
+}
+
+#swell-graph, #wave-graph{
+    background-color: aqua;
+    border: 1px solid black;
+}
+
+#swell-graph:hover, #wave-graph:hover {
+    box-shadow: 0px 3px 20px 7px black;
+    z-index: 99;
+}
+
+#swell-data{
+    margin: 1em;
+}
+
+
+div[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -100%;
+    left: 0;
+  }
