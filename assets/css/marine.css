@@ -34,7 +34,7 @@ nav a {
 }
 
 /* Wrapper for our graphs */
-#sh-wrapper, #wh-wrapper {
+#sh-wrapper, #sp-wrapper, #wh-wrapper {
   display: grid;
   grid-template-columns: repeat(121, 1fr);
   align-items: end;
