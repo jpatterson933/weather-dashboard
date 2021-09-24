@@ -35,21 +35,17 @@ nav a {
 
 /* Wrapper for our graphs */
 #sh-wrapper,
-#wh-wrapper {
+#wh-wrapper,
+#sl-wrapper {
   display: grid;
   grid-template-columns: repeat(121, 1fr);
   align-items: end;
 }
 
-/* wrapper for swell period grid*/
-#sp-wrapper {
-  display: grid;
-  grid-template-columns: repeat(121, 1fr);
-}
-
 /* Wrapper for our graphs */
 #swell-graph,
-#wave-graph {
+#wave-graph,
+#sea-level-graph {
   background-color: aqua;
   border-right: 1px solid rgba(255, 255, 255, 0.7);
 }
