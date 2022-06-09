@@ -28,7 +28,9 @@ $("#button-search").on("click", function (event) {
             return response.json();
         })
         .then(function (data) {
+            console.log(data.city)
             //store city name, latitude and longtitude respectively
+            localStorage.setItem("country", data.city.country)
             localStorage.setItem("cityName", data.city.name)
             localStorage.setItem("latitude", data.city.coord.lat)
             localStorage.setItem("longitude", data.city.coord.lon);
@@ -43,6 +45,8 @@ $("#button-search").on("click", function (event) {
                 })
                 .then(function (results) {
 
+
+                    console.log(results)
                     //--------------locally store our current day weather condition--------------//
                     localStorage.setItem("currentDate", results.current.dt)
                     localStorage.setItem("currentTemp", results.current.temp)
