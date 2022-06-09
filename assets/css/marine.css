@@ -33,44 +33,13 @@ nav a {
   margin: 10px auto;
 }
 
-/* Wrapper for our graphs */
-#sh-wrapper,
-#wh-wrapper,
-#sl-wrapper {
-  display: grid;
-  grid-template-columns: repeat(121, 1fr);
-  align-items: end;
+#three-day-forecast {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-/* Wrapper for our graphs */
-#swell-graph,
-#wave-graph,
-#sea-level-graph {
-  background-color: aqua;
-  border-right: 1px solid rgba(255, 255, 255, 0.7);
-}
-
-/*on hover properties for our swell height and wave height graphs*/
-#swell-graph:hover,
-#wave-graph:hover {
-  z-index: 99;
-  width: 12px;
-  margin-bottom: 6px;
-}
-
-/*swell height data*/
-#swell-data {
-  margin: 1em;
-}
-
-/*on hover of a div title this will show the text in a larger format*/
-div[title]:hover::after {
-  content: attr(title);
-  font-size: 25px;
-  background-color: #36e9e7;
-  color: white;
-  padding-right: 4px;
-  box-shadow: 0 0 1px 1px #02c1bf;
+#current-card-list {
+  margin: 0px 10px 10px 10px;
 }
 
 /* Media Queries for screen size */
