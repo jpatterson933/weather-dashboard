@@ -3,8 +3,6 @@
 // Test scripts
 const test = localStorage.getItem("cityName")
 const test2 = localStorage.getItem("longitude")
-// console.log(test)
-// console.log(test2)
 
 const API_KEY = marine.key;
 const lat = localStorage.getItem("latitude");
@@ -62,7 +60,8 @@ const dataLoading = (status, element) => {
 // get current hour
 const getCurrentHourIso = () => {
     let currentDate = moment().format();
-    return currentHourIso = currentDate.split("T")[1].split(":")[0];
+    // console.log(currentDate)
+    return currentHourIso = currentDate.split(":")[0];
 };
 
 const fetchWaveForecastData = (latitude, longitude, savedCity) => {
@@ -96,9 +95,9 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
             for (let i = 0; i < 72; i++) {
 
                 console.log(data.hours[i].time)
-                let hourNow = getCurrentHourIso();
-                console.log(hourNow)
-
+                let dateAndHourNow = getCurrentHourIso();
+                console.log(dateAndHourNow)
+                // if dateandhournow match the current date and hour now, then we make something happen
 
                 let surfDataArray = data.hours[i];
 
