@@ -154,8 +154,11 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 let averageSwellPeriod = calculateAverageNumberLoop(surfDataArray.swellPeriod, swellPeriodArray, swellPeriodArrayLength);
                 let averageWaveHeight = (3.28084 * calculateAverageNumberLoop(surfDataArray.waveHeight, waveHeightArray, waveHeightArrayLength)).toFixed(2);
                 let averageWindSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.windSpeed, windSpeedArray, windSpeedArrayLength)).toFixed(2);
+                let averageCurrentDirection = calculateAverageNumberLoop(surfDataArray.currentDirection, currentDirectionArray, currentDirectionArrayLength);
+                let averageCurrentSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.currentSpeed, currentSpeedArray, currentSpeedArrayLength)).toFixed(2);
 
-                let cardinalSwellDirection = getCardinalDirection(averageSwellDirection)
+                let cardinalSwellDirection = getCardinalDirection(averageSwellDirection);
+                let cardinalCurrentDirection = getCardinalDirection(averageCurrentDirection);
 
                 // console.log(surfDataArray.time)
 
@@ -165,7 +168,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
 
 
-                surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight, averageWindSpeed);
+                surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight, averageWindSpeed, cardinalCurrentDirection, averageCurrentSpeed);
 
                 let threeDayPrint = $('#three-day-forecast');
 
@@ -175,7 +178,8 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 <div id="current-card-list">
                     <div>${surfData.time}</div>
                     <div>Wave Height: ${surfData.waveHeight} ft</div>
-                
+                    <div>Current Direction: ${surfData.currentDirection} </div>
+                    <div> Current Speed: ${surfData.currentSpeed} mph </div>
                     <div>Swell Direction: ${surfData.swellDirection}</div>
                     <div>Swell Height: ${surfData.swellHeight} ft</div>
                     <div>Swell Period: ${surfData.swellPeriod} Seconds</div>
