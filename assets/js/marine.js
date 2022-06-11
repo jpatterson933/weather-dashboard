@@ -24,13 +24,16 @@ const getCardinalDirection = (angle) => {
 
 // surf class
 class Surf {
-    constructor(seaLevel, swellDirection, swellHeight, swellPeriod, time, waveHeight) {
+    constructor(seaLevel, swellDirection, swellHeight, swellPeriod, time, waveHeight, windSpeed, currentDirection, currentSpeed) {
         this.seaLevel = seaLevel[0].value;
         this.swellDirection = swellDirection;
         this.swellHeight = swellHeight;
         this.swellPeriod = swellPeriod;
         this.time = time;
         this.waveHeight = waveHeight;
+        this.windSpeed = windSpeed;
+        this.currentDirection = currentDirection;
+        this.currentSpeed = currentSpeed;
     }
 };
 
@@ -68,7 +71,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
 
     const url = "https://stormglass.p.rapidapi.com/forecast?lat=";
-    const params = 'swellHeight,swellDirection,swellPeriod,waveHeight,seaLevel';
+    const params = 'swellHeight,swellDirection,swellPeriod,waveHeight,seaLevel,windSpeed,currentDirection,currentSpeed';
     let query = `${url}${latitude}&lng=${longitude}&params=${params}`;
     fetch(query, {
         "method": "GET",
@@ -88,7 +91,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
             return response.json();
         })
         .then((data) => {
-            console.log(data, "data response")
+            // console.log(data, "data response")
             showLoadSymb = false;
             dataLoading(showLoadSymb, loading)
             let dateAndHourNow = getCurrentHourIso();
@@ -99,40 +102,34 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 // console.log(time.time, "this is our for each loop")
                 // console.log(index)
                 if (dateAndHourNow === time.time.split(":")[0]) {
-                    console.log(time.time, index, "we have caputure our time")
+                    // console.log(time.time, index, "we have caputure our time")
                     timeIndexSplit = index;
                 }
 
             });
 
-            console.log(timeIndexSplit, "here we our console logging outside of the foreach function")
+            // console.log(timeIndexSplit, "here we our console logging outside of the foreach function")
             // console.log(data.hours.splice(timeIndexSplit), "what is spliced");
 
             let wavesFromNow = data.hours.splice(timeIndexSplit);
-            console.log(wavesFromNow, "waves from now", wavesFromNow.length)
-            for (let i = 0; i < wavesFromNow.length; i++) {
+            // console.log(wavesFromNow, "waves from now", wavesFromNow.length);
 
-                // console.log(wavesFromNow)
+            // here we caluclate three days into the future from current hour
+            // this is done by taking the waves from now lenght which is 228
+            // then subtracting 156 to get 72 hours
+            let lengthForThreeDaysFromNow = wavesFromNow.length - 156;
 
-                console.log(wavesFromNow[i].time, "inside for loop time")
-                // timeSheet = wavesFromNow[i].time;
-      
-
-                // const wavesStart = (x) => {
-                //     // here I am able to find the matched date and time
-                //     if (x === data.hours[i].time.split(":")[0]) {
-                //         console.log(data.hours[i].time);
-                //         return data.hours[i].time;
-                //     }
-                // }
-                // wavesStart(dateAndHourNow);
-
-                // timeSheet
+            // console.log(lengthForThreeDaysFromNow, "72?")
 
 
 
+            for (let i = 0; i < lengthForThreeDaysFromNow; i++) {
 
-                // if dateandhournow match the current date and hour now, then we make something happen
+                console.log(wavesFromNow)
+
+                // console.log(wavesFromNow[i].time, "inside for loop time")
+    
+
                 // can do something where i split by the T and match the date and anything less than the current hour would be a darker or something where the opacity is a bit less - signify that the time has already pass but there definitely has to be a way ignore the hours before, perhpas by designating a value to them and if they have a certain value like 0 or true, then they are not added to the three day four cast - but also have to think about if there is a way to do this, and then assign the length based off of how many hours of the day have already passed -Jeff
 
                 let surfDataArray = wavesFromNow[i];
@@ -141,15 +138,22 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 let swellHeightArrayLength = 0;
                 let swellPeriodArrayLength = 0;
                 let waveHeightArrayLength = 0;
+                let windSpeedArrayLength = 0;
+                let currentDirectionArrayLength = 0;
+                let currentSpeedArrayLength = 0;
                 let swellDirectionArray = [];
                 let swellHeightArray = [];
                 let swellPeriodArray = [];
                 let waveHeightArray = [];
+                let windSpeedArray = [];
+                let currentDirectionArray = [];
+                let currentSpeedArray = [];
 
                 let averageSwellDirection = calculateAverageNumberLoop(surfDataArray.swellDirection, swellDirectionArray, swellDirectionArrayLength);
                 let averageSwellHeight = (3.28084 * calculateAverageNumberLoop(surfDataArray.swellHeight, swellHeightArray, swellHeightArrayLength)).toFixed(2);
                 let averageSwellPeriod = calculateAverageNumberLoop(surfDataArray.swellPeriod, swellPeriodArray, swellPeriodArrayLength);
                 let averageWaveHeight = (3.28084 * calculateAverageNumberLoop(surfDataArray.waveHeight, waveHeightArray, waveHeightArrayLength)).toFixed(2);
+                let averageWindSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.windSpeed, windSpeedArray, windSpeedArrayLength)).toFixed(2);
 
                 let cardinalSwellDirection = getCardinalDirection(averageSwellDirection)
 
@@ -161,7 +165,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
 
 
-                surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight);
+                surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight, averageWindSpeed);
 
                 let threeDayPrint = $('#three-day-forecast');
 
@@ -170,11 +174,13 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 const threeDayForecastCard = `
                 <div id="current-card-list">
                     <div>${surfData.time}</div>
-                    <div>Sea Level: ${surfData.seaLevel} ft above MSL (Avg. Sea Level)</div>
+                    <div>Wave Height: ${surfData.waveHeight} ft</div>
+                
                     <div>Swell Direction: ${surfData.swellDirection}</div>
                     <div>Swell Height: ${surfData.swellHeight} ft</div>
                     <div>Swell Period: ${surfData.swellPeriod} Seconds</div>
-                    <div>Wave Height: ${surfData.waveHeight} ft</div>
+                    <div>Sea Level: ${surfData.seaLevel} ft above MSL (Avg. Sea Level)</div>
+                    <div>Wind Speed: ${surfData.windSpeed} mph </div>
                 </div>
             `;
 
