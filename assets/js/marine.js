@@ -91,15 +91,51 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
             console.log(data, "data response")
             showLoadSymb = false;
             dataLoading(showLoadSymb, loading)
+            let dateAndHourNow = getCurrentHourIso();
+            let timeIndexSplit;
 
-            for (let i = 0; i < 72; i++) {
+            data.hours.forEach((time, index) => { 
 
-                console.log(data.hours[i].time)
-                let dateAndHourNow = getCurrentHourIso();
-                console.log(dateAndHourNow)
+                // console.log(time.time, "this is our for each loop")
+                // console.log(index)
+                if (dateAndHourNow === time.time.split(":")[0]) {
+                    console.log(time.time, index, "we have caputure our time")
+                    timeIndexSplit = index;
+                }
+
+            });
+
+            console.log(timeIndexSplit, "here we our console logging outside of the foreach function")
+            // console.log(data.hours.splice(timeIndexSplit), "what is spliced");
+
+            let wavesFromNow = data.hours.splice(timeIndexSplit);
+            console.log(wavesFromNow, "waves from now", wavesFromNow.length)
+            for (let i = 0; i < wavesFromNow.length; i++) {
+
+                // console.log(wavesFromNow)
+
+                console.log(wavesFromNow[i].time, "inside for loop time")
+                // timeSheet = wavesFromNow[i].time;
+      
+
+                // const wavesStart = (x) => {
+                //     // here I am able to find the matched date and time
+                //     if (x === data.hours[i].time.split(":")[0]) {
+                //         console.log(data.hours[i].time);
+                //         return data.hours[i].time;
+                //     }
+                // }
+                // wavesStart(dateAndHourNow);
+
+                // timeSheet
+
+
+
+
                 // if dateandhournow match the current date and hour now, then we make something happen
+                // can do something where i split by the T and match the date and anything less than the current hour would be a darker or something where the opacity is a bit less - signify that the time has already pass but there definitely has to be a way ignore the hours before, perhpas by designating a value to them and if they have a certain value like 0 or true, then they are not added to the three day four cast - but also have to think about if there is a way to do this, and then assign the length based off of how many hours of the day have already passed -Jeff
 
-                let surfDataArray = data.hours[i];
+                let surfDataArray = wavesFromNow[i];
 
                 let swellDirectionArrayLength = 0;
                 let swellHeightArrayLength = 0;
