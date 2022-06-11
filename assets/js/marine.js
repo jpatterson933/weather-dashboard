@@ -15,16 +15,21 @@ const cityAndCountry = storedCity + ", " + storedCountry;
 cityNameDisplay.append(cityAndCountry);
 
 
+// function degToCompass(num) {
+//     var val = Math.floor((num / 22.5) + 0.5);
+//     var arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+//     return arr[(val % 16)];
+
 
 // /* function to map directions to cardinal map */
 const getCardinalDirection = (angle) => {
-    const directions = ['↑ N', '↗ NE', '→ E', '↘ SE', '↓ S', '↙ SW', '← W', '↖ NW'];
-    return directions[Math.round(angle / 45) % 8];
+    const directions = ['↑ N', 'NNE', '↗ NE', 'ENE', '→ E', 'ESE', '↘ SE', 'SSE', '↓ S', 'SSW', '↙ SW', 'WSW', '← W', 'WNW', '↖ NW', 'NNW'];
+    return directions[Math.round(angle / 22.5) % 16];
 }
 
-// surf class
+// surf class - stores all data to be parsed through for surfing condigions
 class Surf {
-    constructor(seaLevel, swellDirection, swellHeight, swellPeriod, time, waveHeight, windSpeed, currentDirection, currentSpeed) {
+    constructor(seaLevel, swellDirection, swellHeight, swellPeriod, time, waveHeight, windSpeed, windDirection, currentDirection, currentSpeed) {
         this.seaLevel = seaLevel[0].value;
         this.swellDirection = swellDirection;
         this.swellHeight = swellHeight;
@@ -32,6 +37,7 @@ class Surf {
         this.time = time;
         this.waveHeight = waveHeight;
         this.windSpeed = windSpeed;
+        this.windDirection = windDirection;
         this.currentDirection = currentDirection;
         this.currentSpeed = currentSpeed;
     }
@@ -71,7 +77,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
 
     const url = "https://stormglass.p.rapidapi.com/forecast?lat=";
-    const params = 'swellHeight,swellDirection,swellPeriod,waveHeight,seaLevel,windSpeed,currentDirection,currentSpeed';
+    const params = 'swellHeight,swellDirection,swellPeriod,waveHeight,seaLevel,windSpeed,windDirection,currentDirection,currentSpeed';
     let query = `${url}${latitude}&lng=${longitude}&params=${params}`;
     fetch(query, {
         "method": "GET",
@@ -104,8 +110,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 if (dateAndHourNow === time.time.split(":")[0]) {
                     // console.log(time.time, index, "we have caputure our time")
                     timeIndexSplit = index;
-                }
-
+                };
             });
 
             // console.log(timeIndexSplit, "here we our console logging outside of the foreach function")
@@ -125,7 +130,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
             for (let i = 0; i < lengthForThreeDaysFromNow; i++) {
 
-                console.log(wavesFromNow)
+                // console.log(wavesFromNow)
 
                 // console.log(wavesFromNow[i].time, "inside for loop time")
     
@@ -134,31 +139,43 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
                 let surfDataArray = wavesFromNow[i];
 
+                // swell Data
                 let swellDirectionArrayLength = 0;
                 let swellHeightArrayLength = 0;
                 let swellPeriodArrayLength = 0;
-                let waveHeightArrayLength = 0;
-                let windSpeedArrayLength = 0;
-                let currentDirectionArrayLength = 0;
-                let currentSpeedArrayLength = 0;
                 let swellDirectionArray = [];
                 let swellHeightArray = [];
                 let swellPeriodArray = [];
-                let waveHeightArray = [];
-                let windSpeedArray = [];
-                let currentDirectionArray = [];
-                let currentSpeedArray = [];
-
                 let averageSwellDirection = calculateAverageNumberLoop(surfDataArray.swellDirection, swellDirectionArray, swellDirectionArrayLength);
                 let averageSwellHeight = (3.28084 * calculateAverageNumberLoop(surfDataArray.swellHeight, swellHeightArray, swellHeightArrayLength)).toFixed(2);
                 let averageSwellPeriod = calculateAverageNumberLoop(surfDataArray.swellPeriod, swellPeriodArray, swellPeriodArrayLength);
+
+
+
+                // wave height data
+                let waveHeightArrayLength = 0;
+                let waveHeightArray = [];
                 let averageWaveHeight = (3.28084 * calculateAverageNumberLoop(surfDataArray.waveHeight, waveHeightArray, waveHeightArrayLength)).toFixed(2);
+
+                // wind data
+                let windSpeedArrayLength = 0;
+                let windDirectionArrayLength = 0;
+                let windSpeedArray = [];
+                let windDirectionArray = [];
                 let averageWindSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.windSpeed, windSpeedArray, windSpeedArrayLength)).toFixed(2);
+                let averageWindDirection = calculateAverageNumberLoop(surfDataArray.windDirection, windDirectionArray, windDirectionArrayLength);
+
+                let currentDirectionArrayLength = 0;
+                let currentSpeedArrayLength = 0;
+                let currentDirectionArray = [];
+                let currentSpeedArray = [];
                 let averageCurrentDirection = calculateAverageNumberLoop(surfDataArray.currentDirection, currentDirectionArray, currentDirectionArrayLength);
                 let averageCurrentSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.currentSpeed, currentSpeedArray, currentSpeedArrayLength)).toFixed(2);
 
+                // getting cardinal directions from degress 
                 let cardinalSwellDirection = getCardinalDirection(averageSwellDirection);
                 let cardinalCurrentDirection = getCardinalDirection(averageCurrentDirection);
+                let cardinalWindDirection = getCardinalDirection(averageWindDirection);
 
                 // console.log(surfDataArray.time)
 
@@ -168,23 +185,26 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
 
 
 
-                surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight, averageWindSpeed, cardinalCurrentDirection, averageCurrentSpeed);
+                surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight, averageWindSpeed, cardinalWindDirection, cardinalCurrentDirection, averageCurrentSpeed);
 
                 let threeDayPrint = $('#three-day-forecast');
 
                 // console.log(surfData.seaLevel)
 
+
+                // print to page
                 const threeDayForecastCard = `
                 <div id="current-card-list">
                     <div>${surfData.time}</div>
                     <div>Wave Height: ${surfData.waveHeight} ft</div>
                     <div>Current Direction: ${surfData.currentDirection} </div>
-                    <div> Current Speed: ${surfData.currentSpeed} mph </div>
+                    <div>Current Speed: ${surfData.currentSpeed} mph </div>
                     <div>Swell Direction: ${surfData.swellDirection}</div>
                     <div>Swell Height: ${surfData.swellHeight} ft</div>
                     <div>Swell Period: ${surfData.swellPeriod} Seconds</div>
                     <div>Sea Level: ${surfData.seaLevel} ft above MSL (Avg. Sea Level)</div>
-                    <div>Wind Speed: ${surfData.windSpeed} mph </div>
+                    <div>Wind Speed: ${surfData.windSpeed} mph (10 meters above sea level) </div>
+                    <div>Wind Direction: ${surfData.windDirection} </div>
                 </div>
             `;
 
@@ -197,50 +217,11 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
         .catch(err => {
             console.error(err);
         });
-}
-
-
-// might be able to fetch tide data here
-// const fetchTideData = (latitude, longitude) => {
-
-//     const url = "https://api.stormglass.io/v2/tide/stations"
-
-//     let query = `${url}`
-
-//     console.log(query)
-
-//     fetch(query, {
-//         "method": "GET",
-//         "headers": {
-//             "x-rapidapi-host": "stormglass.p.rapidapi.com",
-//             "x-rapidapi-key": API_KEY
-//         }
-//     })
-//         .then(response => {
-//             console.log(response);
-//             return response.json()
-//         })
-//         .then((data) => {
-
-//         })
-//         .catch(err => {
-//             console.error(err);
-//         });
-// }
-
-
-
-
+};
 
 // UNCOMMENT TO RUN MARINE FUNCTION
 fetchWaveForecastData(lat, lon, storedCity);
 // fetchTideData(lat,lon)
-
-console.log(hourlySurfData, "hours surf data")
-// console.log(hourlySurfData.surfData.seaLevel)
-
-
-//make the next url include the lat and lon to create the forecast url -- we also exclude hourly and minutely data so we only get daily
 
 const calculateAverageNumberLoop = (data, emptyArray, arrayLength) => {
 
