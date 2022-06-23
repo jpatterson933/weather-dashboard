@@ -114,20 +114,12 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 };
             });
 
-            // console.log(timeIndexSplit, "here we our console logging outside of the foreach function")
-            // console.log(data.hours.splice(timeIndexSplit), "what is spliced");
-
             let wavesFromNow = data.hours.splice(timeIndexSplit);
-            // console.log(wavesFromNow, "waves from now", wavesFromNow.length);
 
             // here we caluclate three days into the future from current hour
             // this is done by taking the waves from now lenght which is 228
             // then subtracting 156 to get 72 hours
             let lengthForThreeDaysFromNow = wavesFromNow.length - 156;
-
-            // console.log(lengthForThreeDaysFromNow, "72?")
-
-
 
             for (let i = 0; i < lengthForThreeDaysFromNow; i++) {
 
@@ -156,7 +148,6 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 let wavePeriodArray = [];
                 let averagewavePeriod = calculateAverageNumberLoop(surfDataArray.wavePeriod, wavePeriodArray, wavePeriodArrayLength);
 
-
                 // wind data
                 let windSpeedArrayLength = 0;
                 let windDirectionArrayLength = 0;
@@ -184,30 +175,25 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 let hourFromNow = surfDataArray.time.split("T")[1].split(":")[0];
                 timeFromNow = calculateHours(hourFromNow, splitDate);
 
-
-
                 surfData = new Surf(surfDataArray.seaLevel, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, timeFromNow, averageWaveHeight, averagewavePeriod, averageWindSpeed, cardinalWindDirection, cardinalCurrentDirection, averageCurrentSpeed);
 
                 let threeDayPrint = $('#three-day-forecast');
 
-                // console.log(surfData.seaLevel)
-
-
                 // print to page
                 const threeDayForecastCard = `
-                <ul id="current-card-list">
-                    <li>${surfData.time}</li>
-                    <li>Wave Height: ${surfData.waveHeight} ft</li>
-                    <li>Wave Period: ${surfData.wavePeriod} seconds</li>
-                    <li>Current Direction: ${surfData.currentDirection} </li>
-                    <li>Current Speed: ${surfData.currentSpeed} mph </li>
-                    <li>Swell Direction: ${surfData.swellDirection}</li>
-                    <li>Swell Height: ${surfData.swellHeight} ft</li>
-                    <li>Swell Period: ${surfData.swellPeriod} seconds</li>
-                    <li>Sea Level: ${surfData.seaLevel} ft above MSL (Avg. Sea Level)</li>
-                    <li>Wind Speed: ${surfData.windSpeed} mph (10 meters above sea level) </li>
-                    <li>Wind Direction: ${surfData.windDirection} </li>
-                </ul>
+                <div id="current-card-list">
+                    <h3>${surfData.time}</h3>
+                    <h4>Wave Height: ${surfData.waveHeight} ft</h4>
+                    <h4>Wave Period: ${surfData.wavePeriod} seconds</h4>
+                    <p>Current Direction: ${surfData.currentDirection} </p>
+                    <p>Current Speed: ${surfData.currentSpeed} mph </p>
+                    <p>Swell Direction: ${surfData.swellDirection}</p>
+                    <p>Swell Height: ${surfData.swellHeight} ft</p>
+                    <p>Swell Period: ${surfData.swellPeriod} seconds</p>
+                    <p>Sea Level: ${surfData.seaLevel} ft above (avg. sea sevel)</p>
+                    <p>Wind Speed: ${surfData.windSpeed} mph (10m above sea level) </p>
+                    <p>Wind Direction: ${surfData.windDirection} </p>
+                </div>
             `;
 
                 threeDayPrint.append(threeDayForecastCard)

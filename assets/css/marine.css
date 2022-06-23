@@ -1,3 +1,11 @@
+/* Global */
+
+
+h3, h4, p{
+  margin: 0 auto;
+  padding: 2px;
+}
+
 /* NAV STYLING */
 nav {
   background-color: black;
