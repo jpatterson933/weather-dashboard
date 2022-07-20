@@ -1,5 +1,9 @@
 // const moment = require("moment");
 
+// import json files
+// import surfData from "./surfData.json" assert {type: "json"}
+// console.log(surfData)
+
 // Test scripts
 const test = localStorage.getItem("cityName")
 const test2 = localStorage.getItem("longitude")
@@ -72,9 +76,10 @@ const dataLoading = (status, element) => {
 // get current hour in Iso format
 const getCurrentHourIso = () => {
     let currentDate = moment().format();
+    let currentHourIso = currentDate.split(":")[0];
     // console.log(currentDate)
-    return currentHourIso = currentDate.split(":")[0];
-};
+    return currentHourIso;
+}
 
 // main fetch wave forecast function
 const fetchWaveForecastData = (latitude, longitude, savedCity) => {
@@ -106,7 +111,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
             // set an empty variable for grabbing split time
             let timeIndexSplit;
             // for each loop through our data
-            data.hours.forEach((time, index) => { 
+            data.hours.forEach((time, index) => {
 
                 if (dateAndHourNow === time.time.split(":")[0]) {
                     // console.log(time.time, index, "we have caputure our time")
@@ -153,7 +158,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 let windDirectionArrayLength = 0;
                 let windSpeedArray = [];
                 let windDirectionArray = [];
-                let averageWindSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.windSpeed, windSpeedArray, windSpeedArrayLength)).toFixed(2);
+                let averageWindSpeed = (2.23694 * calculateAverageNumberLoop(surfDataArray.windSpeed, windSpeedArray, windSpeedArrayLength)).toFixed(2);
                 let averageWindDirection = calculateAverageNumberLoop(surfDataArray.windDirection, windDirectionArray, windDirectionArrayLength);
 
                 // current direction data
@@ -162,7 +167,7 @@ const fetchWaveForecastData = (latitude, longitude, savedCity) => {
                 let currentDirectionArray = [];
                 let currentSpeedArray = [];
                 let averageCurrentDirection = calculateAverageNumberLoop(surfDataArray.currentDirection, currentDirectionArray, currentDirectionArrayLength);
-                let averageCurrentSpeed = ( 2.23694 * calculateAverageNumberLoop(surfDataArray.currentSpeed, currentSpeedArray, currentSpeedArrayLength)).toFixed(2);
+                let averageCurrentSpeed = (2.23694 * calculateAverageNumberLoop(surfDataArray.currentSpeed, currentSpeedArray, currentSpeedArrayLength)).toFixed(2);
 
                 // getting cardinal directions from degress 
                 let cardinalSwellDirection = getCardinalDirection(averageSwellDirection);
