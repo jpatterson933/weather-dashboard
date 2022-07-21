@@ -13,6 +13,7 @@ let latitude = 34.005;
 let longitude = -118.8101;
 let savedCity = "Malibu";
 
+// function to write to a file with param fileName and fileData
 function writeToFile(fileName, fileData) {
     fs.writeFile(path.join(__dirname, "./assets/js", fileName), JSON.stringify(fileData), (err) => {
         if (err) {
@@ -27,7 +28,9 @@ function writeToFile(fileName, fileData) {
 
 
 const fetchWaveForecastData = (latitude, longitude) => {
+    // parameters for surf data request
     const params = 'swellHeight,swellDirection,swellPeriod,waveHeight,wavePeriod,seaLevel,windSpeed,windDirection,currentDirection,currentSpeed';
+    // axios options for request
     const options = {
         method: 'GET',
         url: `https://stormglass.p.rapidapi.com/forecast?lat=${latitude}&lng=${longitude}&params=${params}`,
@@ -38,24 +41,25 @@ const fetchWaveForecastData = (latitude, longitude) => {
         }
     };
 
+    // axios request line here
+    axios
+        .request(options)
+        .then((response) => {
+            // console.log(response.data);
 
-    axios.request(options).then((response) => {
-        // console.log(response.data);
-
-        return response.data
-    })
+            return response.data
+        })
         .then((res) => {
             console.log(res)
 
-
-
+            writeToFile("surfData.json", res);
         })
         .catch((error) => {
             console.log(error);
-        })
+        });
 
 
 
 };
 
-fetchWaveForecastData(latitude, longitude);
+// fetchWaveForecastData(latitude, longitude);
