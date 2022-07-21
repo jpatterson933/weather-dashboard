@@ -23,6 +23,7 @@ function parseThruSurfData() {
         console.log(surfDataArray.seaLevel)
 
         let splitDate = surfDataArray.time.split("T")[0];
+        let splitTime = surfDataArray.time.split("T")[1].split("+")[0];
         // wave height data
         let averageWaveHeight = (3.28084 * calculateAverageNumberLoop(surfDataArray.waveHeight)).toFixed(2);
         //wave period
@@ -47,7 +48,7 @@ function parseThruSurfData() {
         let averageWindDirection = calculateAverageNumberLoop(surfDataArray.windDirection);
         let cardinalWindDirection = getCardinalDirection(averageWindDirection);
 
-        surfCard(splitDate, averageWaveHeight, averagewavePeriod, cardinalCurrentDirection, averageCurrentSpeed, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, averageSeaLevel, averageWindSpeed, cardinalWindDirection);
+        surfCard(splitDate, splitTime, averageWaveHeight, averagewavePeriod, cardinalCurrentDirection, averageCurrentSpeed, cardinalSwellDirection, averageSwellHeight, averageSwellPeriod, averageSeaLevel, averageWindSpeed, cardinalWindDirection);
 
 
     };
@@ -55,12 +56,13 @@ function parseThruSurfData() {
 }
 
 // function to print to page
-function surfCard(time, waveH, waveP, currD, currS, swellD, swellH, swellP, seaL, windS, windD) {
+function surfCard(date, time, waveH, waveP, currD, currS, swellD, swellH, swellP, seaL, windS, windD) {
     let threeDayPrint = $('#three-day-forecast');
     // print to page
     const threeDayForecastCard = `
             <div id="current-card-list">
-                <h3>${time}</h3>
+                <h3>Date: ${date}</h3>
+                <h3>Hour: ${time}</h3>
                 <h4>Wave Height: ${waveH} ft</h4>
                 <h4>Wave Period: ${waveP} seconds</h4>
                 <p>Current Direction: ${currD} </p>
