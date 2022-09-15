@@ -48,7 +48,17 @@ nav a {
 
 #current-card-list {
   margin: 0px 10px 10px 10px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  background: rgb(127, 185, 205);
+  border-radius: 10px;
+  text-align: center;
+  
+}
+
+#current-card-list > header {
+  background-color: white;
+  padding: 0;
+  margin: 0;
 }
 
 /* Media Queries for screen size */
