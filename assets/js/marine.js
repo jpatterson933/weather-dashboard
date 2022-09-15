@@ -61,10 +61,12 @@ function surfCard(date, time, waveH, waveP, currD, currS, swellD, swellH, swellP
     // print to page
     const threeDayForecastCard = `
             <div id="current-card-list">
-                <h3>Date: ${date}</h3>
-                <h3>Hour: ${time}</h3>
-                <h4>Wave Height: ${waveH} ft</h4>
-                <h4>Wave Period: ${waveP} seconds</h4>
+                <header>
+                    <h3>Date: ${date}</h3>
+                    <h3>Hour: ${time}</h3>
+                    <h4>Wave Height: ${waveH} ft</h4>
+                    <h4>Wave Period: ${waveP} seconds</h4>
+                </header>
                 <p>Current Direction: ${currD} </p>
                 <p>Current Speed: ${currS} mph </p>
                 <p>Swell Direction: ${swellD}</p>

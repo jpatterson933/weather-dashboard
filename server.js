@@ -25,8 +25,6 @@ function writeToFile(fileName, fileData) {
 }
 
 
-
-
 const fetchWaveForecastData = (latitude, longitude) => {
     // parameters for surf data request
     const params = 'swellHeight,swellDirection,swellPeriod,waveHeight,wavePeriod,seaLevel,windSpeed,windDirection,currentDirection,currentSpeed';
@@ -62,4 +60,4 @@ const fetchWaveForecastData = (latitude, longitude) => {
 
 };
 
-// fetchWaveForecastData(latitude, longitude);
+fetchWaveForecastData(latitude, longitude);
