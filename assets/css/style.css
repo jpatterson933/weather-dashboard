@@ -67,8 +67,20 @@ nav>a {
   margin: 10px 5px;
 }
 
-#current-day-weather-info > img {
+/* Add Grid to Current Weather Display */
+.weather-info-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
+
+/* apply flex properties to div children in current weather card */
+.weather-info-wrapper > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+
 
 
 
@@ -114,11 +126,7 @@ button:hover {
   margin: 1px;
 }
 
-/* Add Grid to Current Weather Display */
-.weather-info-wrapper {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
+
 
 /*styling of forecast title*/
 #forecast-title {

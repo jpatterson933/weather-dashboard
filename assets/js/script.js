@@ -144,7 +144,6 @@ function currentDay() {
         // storing currenty day forecast in object to be pulled onto front end
         currentDayForecast = {
             cityName: localStorage.getItem("cityName"),
-            date: localStorage.getItem("currentDate"),
             latitude: localStorage.getItem("latitude").trim(),
             longitude: localStorage.getItem("longitude").trim(),
             temp: localStorage.getItem("currentTemp").trim(),
@@ -152,23 +151,26 @@ function currentDay() {
             humidity: localStorage.getItem("currentHumidity").trim(),
             uvi: localStorage.getItem("currentUvi").trim(),
             conditions: localStorage.getItem("currentConditions").trim(),
-            conditionImg: localStorage.getItem("currentConditionsImg").trim(),
         }
+
+        console.log(currentDayForecast.uvi)
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
         
     <div id="current-day-weather-info">
             <h1 class="city-name">Currently in ${currentDayForecast.cityName}</h1>
-            <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>
             <div class="weather-info-wrapper">
                 <h4>Conditions</h4>
                 <h4>Wind</h4>
-                <h4>UV Index</h4>
+                <h4>UV</h4>
                 <h4>Humidity</h4>
                 <div>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F ${currentDayForecast.conditions}</div>
                 <div>${currentDayForecast.windSpeed} mph</div>
-                <div>${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</div>
+                <div>
+                    <div>${currentDayForecast.uvi}</div>
+                    <div>${uviColorDisplay(currentDayForecast.uvi)}</div>
+                </div>
                 <div>${currentDayForecast.humidity}%</div>
             </div>
             <button id="save-current-city">Save City</button>
@@ -223,16 +225,14 @@ const fiveDayForecast = () => {
         let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
         let dailyForecasttitle = `
             <h4>Date</h4>
-            <h4>Max Temp</h4>
-            <h4>Min Temp</h4>
+            <h4>Max</h4>
+            <h4>Min</h4>
             <h4>Conditions</h4>
             <h4>Wind Speed</h4>
             <h4>UV Index</h4>
             <h4>Humidity</h4>
         `;
         dailyForecastCardWrapper.append(dailyForecasttitle)
-
-
 
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
@@ -271,10 +271,8 @@ function showStoredCity() {
         const savedCityCard = `
         <div class="saved-city">
             <h1>${storedCity.cityName}</h1>
-            <h4>Current Conditions</h4>
             <p>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
             <p>${storedCity.conditions}</p>
-            <img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Current Weather Condition'>
             <button id="show-forecast">Show Forecast</button>
         </div>
     `   // end saved city card
