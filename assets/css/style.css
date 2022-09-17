@@ -27,6 +27,11 @@ nav>a {
 
 /*------------------------------- SAVED CITY  */
 
+.weather-banner > #saved-city-weather {
+  width: 50%;
+  margin: 0 auto;
+}
+
 #saved-city-weather {
   text-align: center;
 }
@@ -52,10 +57,7 @@ nav>a {
 
 /*------------------------------- END SAVED CITY  */
 
-
-
-
-
+/*------------------------------- BEG. OF CURRENT CONDITIONS  */
 
 
 #current-day-weather-info {
@@ -63,6 +65,9 @@ nav>a {
   box-shadow: 0px 0px 1px;
   padding: 2px;
   margin: 10px 5px;
+}
+
+#current-day-weather-info > img {
 }
 
 
@@ -96,11 +101,6 @@ button:hover {
   margin: 0 auto;
 }
 
-.weather-banner aside {
-  top: 0;
-  width: 50%;
-  display: inline-block;
-}
 
 /*styling for our current display card and our saved city display card*/
 
@@ -117,7 +117,7 @@ button:hover {
 /* Add Grid to Current Weather Display */
 .weather-info-wrapper {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 /*styling of forecast title*/

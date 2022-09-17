@@ -159,15 +159,14 @@ function currentDay() {
         const currentDayWeatherInfo = `
         
     <div id="current-day-weather-info">
-            <h1 class='city-name'>Today in ${currentDayForecast.cityName}</h1>
+            <h1 class="city-name">Currently in ${currentDayForecast.cityName}</h1>
+            <img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'>
             <div class="weather-info-wrapper">
-                <h4>Current Temperature</h4>
                 <h4>Conditions</h4>
-                <h4>Wind Speed</h4>
+                <h4>Wind</h4>
                 <h4>UV Index</h4>
                 <h4>Humidity</h4>
-                <div>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F</div>
-                <div>${currentDayForecast.conditions}<img src='https://openweathermap.org/img/wn/${currentDayForecast.conditionImg}@2x.png' alt='Weather Condition Image'></div>
+                <div>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F ${currentDayForecast.conditions}</div>
                 <div>${currentDayForecast.windSpeed} mph</div>
                 <div>${currentDayForecast.uvi}${uviColorDisplay(currentDayForecast.uvi)}</div>
                 <div>${currentDayForecast.humidity}%</div>
