@@ -166,9 +166,9 @@ function currentDay() {
                 <h4>UV</h4>
                 <h4>Humidity</h4>
                 <div>${Math.round((currentDayForecast.temp - 273.15) * (9 / 5) + 32)}\u00B0F ${currentDayForecast.conditions}</div>
-                <div>${currentDayForecast.windSpeed} mph</div>
+                <div>${currentDayForecast.windSpeed}mph</div>
                 <div>
-                    <div>${currentDayForecast.uvi}</div>
+                    <div>${currentDayForecast.uvi.split(".")[0]}</div>
                     <div>${uviColorDisplay(currentDayForecast.uvi)}</div>
                 </div>
                 <div>${currentDayForecast.humidity}%</div>
@@ -192,11 +192,10 @@ const realDate = (x) => {
     let unixTimeStamp = x.trim();
     let dateObject = new Date(unixTimeStamp * 1000);
     let readableDate = {
-        day: dateObject.toLocaleString('en-US', { weekday: 'long' }),
-        month: dateObject.toLocaleString('en-US', { month: 'long' }),
+        day: dateObject.toLocaleString('en-US', { weekday: 'short' }),
         dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
     }
-    let date = `${readableDate.day} ${readableDate.month} ${readableDate.dayNum}`
+    let date = `${readableDate.day} ${readableDate.dayNum}`
     return date;
 }
 
@@ -219,17 +218,16 @@ const fiveDayForecast = () => {
         let humidityStr = localStorage.getItem("dailyHumidity").split(",");
         let uviStr = localStorage.getItem("dailyUvi").split(",");
         let weatherConditionMainStr = localStorage.getItem("dailyConditionMain").split(",");
-        let weatherConditionIconStr = localStorage.getItem("dailyConditionImg").split(",");
+
 
         // grab our id form index.html and append daily forecast titles
         let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
         let dailyForecasttitle = `
             <h4>Date</h4>
-            <h4>Max</h4>
-            <h4>Min</h4>
+            <h4>Max - Min</h4>
             <h4>Conditions</h4>
-            <h4>Wind Speed</h4>
-            <h4>UV Index</h4>
+            <h4>Wind</h4>
+            <h4>UV</h4>
             <h4>Humidity</h4>
         `;
         dailyForecastCardWrapper.append(dailyForecasttitle)
@@ -238,13 +236,16 @@ const fiveDayForecast = () => {
             // five day forecast card using template literals
             const dailyForecastCard = `
                 <div>${realDate(dateStr[i])}</div>
-                <div>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
-                <div>${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
-                <div>${weatherConditionMainStr[i].trim()}<img src='https://openweathermap.org/img/wn/${weatherConditionIconStr[i].trim()}@2x.png' alt='Weather Condition Image'></div>
+                <div>${Math.round(((tempMaxStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F - ${Math.round(((tempMinStr[i].trim()) - 273.15) * (9 / 5) + 32)}\u00B0F</div>
+                <div>${weatherConditionMainStr[i].trim()}</div>
                 <div>${windSpeedStr[i].trim()} mph</div>
-                <div>${uviStr[i].trim()}${uviColorDisplay(uviStr[i].trim())}</div>
+                <div>
+                    <div>${uviStr[i].split(".")[0]}</div>
+                    <div>${uviColorDisplay(uviStr[i].trim())}</div>
+                </div>
                 <div>${humidityStr[i].trim()}%</div>
         `
+        console.log(uviStr[i])
             dailyForecastCardWrapper.append(dailyForecastCard)
         }
         const title = `<div id="forecast-title">Five Day Forecast for ${cityNameGlobal}</div>`;
