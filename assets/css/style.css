@@ -7,7 +7,12 @@
   --boxFadeShadow: rgba(255, 150, 100, 0.4) 0px 2px, rgba(255, 150, 100, 0.3) 0px 4px, rgba(255, 150, 100, 0.2) 0px 6px, rgba(255, 150, 100, 0.1) 0px 8px, rgba(255, 150, 100, 0.05) 0px 10px;
 }
 
-/*--------------------------------------- BUTTON STYLING */
+body {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+/*---------------------------------- BEG. BUTTON STYLING */
 button {
   background-color: rgba(255, 183, 150, 0.8);
   border: none;
@@ -22,6 +27,8 @@ button:hover {
 #button-search {
   padding: 4px 12px;
 }
+/*---------------------------------- END BUTTON STYLING */
+
 
 /*-------------------------------- NAV STYLING */
 nav {
@@ -40,6 +47,10 @@ nav>a {
 #search-bar-header {
   text-align: center;
   border: 1px solid black;
+}
+
+#search-bar-header > button {
+  margin-bottom: 2em;
 }
 
 /*------------------------------- SAVED CITY  */
