@@ -10,7 +10,9 @@
 nav {
   background-color: black;
 }
-nav, nav > a {
+
+nav,
+nav>a {
   color: rgba(255, 150, 100, 1);
   text-align: center;
   padding: 2em 0;
@@ -23,36 +25,60 @@ nav, nav > a {
   border: 1px solid black;
 }
 
-/*us this to flex our saved city and currenty city data*/
-/* #hold-info {
-  display: flex;
-} */
+/*------------------------------- SAVED CITY  */
 
-/* this holds are saved title and saved city weather data */
-#saved-title {
-  /* background-color: rgba(0, 0, 0, 0.1); */
-  border-radius: 5px;
-  padding: 6px;
-  margin: 2em;
-  box-shadow: inset 4px 4px 7px rgb(0 0 0 / 30%), 4px 4px 4px rgb(0 0 0 / 20%);
-  max-height: 25em;
+#saved-city-weather {
+  text-align: center;
 }
 
-.saved-city-wrapper {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
+.saved-city {
+  box-shadow: 0px 0px 1px;
+  padding: 2px;
+  margin: 10px 5px;
 }
 
-/* -------------------------------------------BUTTON STYLING------------------------------------------------- */
+.saved-city > h4 {
+  background-color: rgba(236, 110, 76, .2);
+  color: black;
+  padding: 3px;
+  margin: 1px;
+}
+
+#show-forecast {
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+
+/*------------------------------- END SAVED CITY  */
+
+
+
+
+
+
+
+#current-day-weather-info {
+  text-align: center;
+  box-shadow: 0px 0px 1px;
+  padding: 2px;
+  margin: 10px 5px;
+}
+
+
+
+/*--------------------------------------- BUTTON STYLING */
 button {
   background-color: rgba(255, 183, 150, 0.8);
   border: none;
   border-radius: 5px;
 }
+
 button:hover {
   box-shadow: 3px -4px 7px 1px grey;
   cursor: pointer;
 }
+
 #button-search {
   padding: 4px 12px;
 }
@@ -62,33 +88,26 @@ button:hover {
   grid-template-columns: repeat(7, 1fr);
 
 }
+
 /* STYLING FOR ASIDES - puts them next to each other*/
 .weather-banner {
   white-space: nowrap;
   max-width: 1200px;
   margin: 0 auto;
 }
-.weather-banner aside{
+
+.weather-banner aside {
   top: 0;
   width: 50%;
   display: inline-block;
 }
 
-/* Current Day city Name */
-.city-name{
-  margin: 0;
-}
-
 /*styling for our current display card and our saved city display card*/
-#current-day-weather-info, .saved-city-weather-info {
-  text-align: center;
-  box-shadow: 0px 0px 1px;
-  padding: 2px;
-  margin: 10px 5px;
-}
+
 
 /* h4 titls for our weather information */
-#current-day-weather-info h4, .saved-city-wrapper h4, #daily-forecast-card-wrapper h4{
+#current-day-weather-info h4,
+#daily-forecast-card-wrapper h4 {
   background-color: rgba(236, 110, 76, .2);
   color: black;
   padding: 3px;
@@ -118,18 +137,19 @@ button:hover {
 }
 
 /* Media Queries for screen size */
-@media only screen and (max-width: 1000px){
-  nav li{
+@media only screen and (max-width: 1000px) {
+  nav li {
     width: 40%;
   }
 
 }
 
-@media only screen and (max-width: 600px){
-  nav li{
+@media only screen and (max-width: 600px) {
+  nav li {
     display: grid;
     width: 50%;
   }
+
   .weather-banner {
     white-space: normal;
   }

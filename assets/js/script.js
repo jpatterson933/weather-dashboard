@@ -268,18 +268,17 @@ function showStoredCity() {
 
     } else {
         let storedCity = JSON.parse(localStorage.getItem("savedCity"))
-        // saved city card for front
+        // saved city card
         const savedCityCard = `
-        <div class="saved-city-weather-info">
-            <h1 class="city-name">${storedCity.cityName}</h1>
-                <div class="saved-city-wrapper">
-                        <h4>Current Conditions</h4>
-                        <div>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</div>
-                        <div>${storedCity.conditions}<img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'></div>
-                </div>
-            <button id='show-forecast'>Show Forecast</button>
+        <div class="saved-city">
+            <h1>${storedCity.cityName}</h1>
+            <h4>Current Conditions</h4>
+            <p>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</p>
+            <p>${storedCity.conditions}</p>
+            <img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Current Weather Condition'>
+            <button id="show-forecast">Show Forecast</button>
         </div>
-    `
+    `   // end saved city card
         const savedCityWeather = $("#saved-city-weather")
         savedCityWeather.append(savedCityCard)
 
