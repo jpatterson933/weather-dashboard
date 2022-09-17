@@ -6,41 +6,31 @@
   --globalBorder: 3px solid rgba(255, 150, 100, 1);
 }
 
-/* NAV STYLING */
+/*-------------------------------- NAV STYLING */
 nav {
   background-color: black;
 }
 nav, nav > a {
-  color: white;
+  color: rgba(255, 150, 100, 1);
   text-align: center;
   padding: 2em 0;
   font-size: 1.5em;
 }
 
-
-
-
-#date-box {
-    min-width: 12em;
-}
-
-/*formatting for search bar*/
+/*------------------------------- SEARCH BAR STYLING  */
 #search-bar-header {
-  width: 45%;
   text-align: center;
   border: 1px solid black;
-  min-width: 550px;
-  margin: 10px auto;
 }
 
 /*us this to flex our saved city and currenty city data*/
-#hold-info {
+/* #hold-info {
   display: flex;
-}
+} */
 
 /* this holds are saved title and saved city weather data */
 #saved-title {
-  background-color: rgba(0, 0, 0, 0.1);
+  /* background-color: rgba(0, 0, 0, 0.1); */
   border-radius: 5px;
   padding: 6px;
   margin: 2em;
@@ -50,7 +40,7 @@ nav, nav > a {
 
 .saved-city-wrapper {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
 }
 
 /* -------------------------------------------BUTTON STYLING------------------------------------------------- */

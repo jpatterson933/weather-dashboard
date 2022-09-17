@@ -271,10 +271,9 @@ function showStoredCity() {
         // saved city card for front
         const savedCityCard = `
         <div class="saved-city-weather-info">
-            <h1 class='city-name'>Your Saved City: ${storedCity.cityName}</h1>
+            <h1 class="city-name">${storedCity.cityName}</h1>
                 <div class="saved-city-wrapper">
-                        <h4>Current Temp</h4>
-                        <h4>Conditions</h4>
+                        <h4>Current Conditions</h4>
                         <div>${Math.round((storedCity.temp - 273.15) * (9 / 5) + 32)}\u00B0F</div>
                         <div>${storedCity.conditions}<img src='https://openweathermap.org/img/wn/${storedCity.conditionImg}@2x.png' alt='Weather Condition Image'></div>
                 </div>
