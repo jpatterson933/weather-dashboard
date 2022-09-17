@@ -1,3 +1,6 @@
+/* This css is mobile styling FIRST any media queries below will be for websites only and increased window width */
+
+
 /* global variables declared here */
 :root {
   --globalBorder: 3px solid rgba(255, 150, 100, 1);
@@ -6,29 +9,15 @@
 /* NAV STYLING */
 nav {
   background-color: black;
-  padding: 20px;
+}
+nav, nav > a {
   color: white;
-  min-width: 550px;
+  text-align: center;
+  padding: 2em 0;
+  font-size: 1.5em;
 }
 
-nav ul {
-  white-space: nowrap;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-nav li {
-  width: 25%;
-  display: inline-block;
-  font-size: 24px;
-  margin: 0 auto;
-
-}
-
-nav a {
-  text-decoration: none;
-  color: white;
-}
 
 
 #date-box {
