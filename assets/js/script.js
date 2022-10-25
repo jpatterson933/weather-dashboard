@@ -67,6 +67,7 @@ $("#button-search").on("click", function (event) {
                     let weatherConditionIconStr = ' ';
 
                     //----------------------------locally store a five day weather forecast using loop----------------------//
+                    // set to loop 6 times
                     for (let i = 1; i < 6; i++) {
 
                         //create date string and store
