@@ -11,7 +11,84 @@ function storeLocalData(title, item) {
     localStorage.setItem(title, item);
 };
 
-function fetchData() {
+// function to fetch our forecast data based off of the latitude and longitude of our city meridian data
+function fetchForecast(lat, lon) {
+    //url to fetch daily forecast data -- we exclude hourly and minutely data
+    let query = foreCastUrl + "lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely" + apiKey;
+
+    fetch(query)
+        .then(response => { return response.json() })
+        .then(res => {
+
+            // grab our city Meridian data
+            let cityInfo = JSON.parse(localStorage.getItem("cityMeridian"))
+
+            // create current forecast object
+            const current = new Object();
+            current.city = cityInfo.name;
+            current.date = res.current.dt;
+            current.temp = res.current.temp;
+            current.feels = res.current.feels_like;
+            current.sunset = res.current.sunset;
+            current.wndSpd = res.current.wind_speed;
+            current.hmid = res.current.humidity;
+            current.dew = res.current.dew_point;
+            current.uvi = res.current.uvi;
+            current.main = res.current.weather[0].main;
+            current.desc = res.current.weather[0].description;
+            current.icon = res.current.weather[0].icon;
+
+            // create daily ForeCast object with empty arrays for data
+            const dailyFC = new Object();
+            dailyFC.city = cityInfo.name;
+            dailyFC.date = new Array();
+            dailyFC.dayTemp = new Array();
+            dailyFC.eveTemp = new Array();
+            dailyFC.maxTemp = new Array();
+            dailyFC.minTemp = new Array();
+            dailyFC.feelsDay = new Array();
+            dailyFC.feelsEve = new Array();
+            dailyFC.sunrise = new Array();
+            dailyFC.sunset = new Array();
+            dailyFC.wndSpd = new Array();
+            dailyFC.hmid = new Array();
+            dailyFC.dew = new Array();
+            dailyFC.uvi = new Array();
+            dailyFC.main = new Array();
+            dailyFC.desc = new Array();
+            dailyFC.icon = new Array();
+
+            //----------------------------locally store a forecast using forEach() ----------------------//
+            res.daily.forEach(element => {
+                dailyFC.date.push(element.dt);
+                dailyFC.dayTemp.push(element.temp.day);
+                dailyFC.eveTemp.push(element.temp.eve);
+                dailyFC.maxTemp.push(element.temp.max);
+                dailyFC.minTemp.push(element.temp.min);
+                dailyFC.feelsDay.push(element.feels_like.day);
+                dailyFC.feelsEve.push(element.feels_like.eve);
+                dailyFC.sunrise.push(element.sunrise);
+                dailyFC.sunset.push(element.sunset);
+                dailyFC.wndSpd.push(element.wind_speed);
+                dailyFC.hmid.push(element.humidity);
+                dailyFC.dew.push(element.dew_point)
+                dailyFC.uvi.push(element.uvi);
+                dailyFC.main.push(element.weather[0].main);
+                dailyFC.desc.push(element.weather[0].description);
+                dailyFC.icon.push(element.weather[0].icon);
+            });
+
+            //--------------locally store our current weather and our 8 day forecast --------------//
+            storeLocalData("current", JSON.stringify(current));
+            storeLocalData("dailyCard", JSON.stringify(dailyFC));
+
+            //reload page on click to display newly stored information
+            // location.reload()
+        });
+};
+
+
+function fetchCity() {
 
     // searched city from user
     let cityName = $("#city-name").val().trim();
@@ -21,17 +98,8 @@ function fetchData() {
 
     //first fetch that pulls lat and lon locations of cities
     fetch(query)
-        .then(res => {
-            if (res.status === 404) {
-                alert("Please enter a valid city name!")
-            };
-            return res.json();
-        })
+        .then(res => { if (res.status === 404) { alert("Please enter a valid city name!") } return res.json() })
         .then(data => {
-
-            // console.log(data.city);
-            // create our current object
-
 
             const cityMeridian = new Object();
             cityMeridian.name = data.city.name;
@@ -46,72 +114,7 @@ function fetchData() {
             storeLocalData("latitude", data.city.coord.lat)
             storeLocalData("longitude", data.city.coord.lon);
 
-            console.log(cityMeridian);
-
-            //make the next url include the lat and lon to create the forecast url -- we also exclude hourly and minutely data so we only get daily
-            let query2 = foreCastUrl + "lat=" + cityMeridian.lat + "&lon=" + cityMeridian.long + "&exclude=hourly,minutely" + apiKey;
-
-            //our second fetch grabbing the data from our new url created at query2
-            fetch(query2)
-                .then(response => { return response.json() })
-                .then(res => {
-
-                    console.log(res.daily, "this is my response")
-                    console.log(res.daily.length)
-
-                    let cityInfo = JSON.parse(localStorage.getItem("cityMeridian"))
-                    // store local data 
-
-
-                    const foreCastNow = new Object();
-                    foreCastNow.city = cityInfo.name;
-                    foreCastNow.date = res.current.dt;
-                    foreCastNow.temp = res.current.temp;
-                    foreCastNow.wndSpd = res.current.wind_speed;
-                    foreCastNow.hmid = res.current.humidity;
-                    foreCastNow.uvi = res.current.uvi;
-                    foreCastNow.desc = res.current.weather[0].main;
-                    foreCastNow.icon = res.current.weather[0].icon;
-
-
-                    //--------------locally store our current day weather condition--------------//
-                    storeLocalData("foreCastCard", JSON.stringify(foreCastNow))
-
-
-
-                    //----------------------------locally store a five day weather forecast using loop----------------------//
-                    // set to loop 6 times
-                    const dailyObj = new Object();
-                    dailyObj.date = new Array();
-                    dailyObj.maxTemp = new Array();
-                    dailyObj.minTemp = new Array();
-                    dailyObj.wndSpd = new Array();
-                    dailyObj.hmid = new Array();
-                    dailyObj.uvi = new Array();
-                    dailyObj.conditions = new Array();
-                    dailyObj.conditionImg = new Array();
-
-                    console.log(dailyObj, "this is my empty object")
-
-                    for (let i = 1; i < 6; i++) {
-                        let daily = res.daily[i];
-                        let condition = res.daily[i].weather[0];
-
-                        dailyObj.date.push(daily.dt);
-                        dailyObj.maxTemp.push(daily.temp.max);
-                        dailyObj.minTemp.push(daily.temp.min);
-                        dailyObj.wndSpd.push(daily.wind_speed);
-                        dailyObj.hmid.push(daily.humidity);
-                        dailyObj.uvi.push(daily.uvi);
-                        dailyObj.conditions.push(condition.main);
-                        dailyObj.conditionImg.push(condition.icon);
-
-                        
-                    }
-                    storeLocalData("dailyCard", JSON.stringify(dailyObj));
-                    //reload page on click to display newly stored information
-                    // location.reload()
-                })
+            fetchForecast((cityMeridian.lat), (cityMeridian.long))
         })
 
 }
@@ -120,8 +123,159 @@ function fetchData() {
 //when the user clicks this button, it will search for a city and store all relevant data for that city and the future five days in local storage
 $("#button-search").on("click", function (event) {
     event.preventDefault();
-    fetchData();
+    fetchCity();
 });
+
+
+
+//function for grabbing locally stored current day information and displaying that info in card on browswer
+function currentDay() {
+    if (localStorage.getItem("cityName") === null) {
+        const currentDayWeatherInfo = `
+            <div id="current-day-weather-info>
+                <h1>Please search for a city</h1>
+            </div>
+        `
+        const currentDay = $("#current-day-weather")
+        currentDay.append(currentDayWeatherInfo)
+    } else {
+        // console.log(foreCastNow, "forecastnow")
+        let current = JSON.parse(localStorage.getItem('current'));
+        console.log(current, 'the forecase card in the current day function to display saved / stored city shit')
+
+
+
+        // {"city":"Los Angeles","date":1666766170,"temp":298.01,"wndSpd":4.27,"hmid":74,"uvi":2,"desc":"Clear","icon":"01d"}
+
+        // our current day weather card put into template literal to be appended to our index.html
+        const currentDayWeatherInfo = `
+    <div id="current-day-weather-info">
+            <h1 class="city-name">Currently in ${current.city}</h1>
+            <div class="weather-info-wrapper">
+                <h4>Conditions</h4>
+                <h4>Wind</h4>
+                <h4>UV</h4>
+                <h4>Humidity</h4>
+                <div>${calculateFahrenheit((current.temp), (current.desc))}</div>
+                <div>${current.wndSpd}mph</div>
+                <div>
+                    <div>${current.uvi}</div>
+                    <div>${uviColorDisplay(current.uvi)}</div>
+                </div>
+                <div>${current.hmid}%</div>
+            </div>
+            <button id="save-current-city">Save City</button>
+    </div>
+    `
+        const currentDay = $("#current-day-weather")
+        currentDay.append(currentDayWeatherInfo)
+
+        //save current city into local storage
+        $("#save-current-city").on("click", function () {
+            // localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
+            // it should be just the lat and long saved here and then displayed on the screen when the page loads
+            localStorage.setItem("savedCity", JSON.stringify(current));
+
+            location.reload()
+        })
+    }
+}
+
+
+// five day forecast card creating loop
+const fiveDayForecast = () => {
+
+    let dailyCard = JSON.parse(localStorage.getItem("dailyCard"));
+
+    if (dailyCard === null) {
+        const dailyForecastCard = `
+        <div id="current-day-weather-info>
+            <h1>Please search for a city</h1>
+        </div>
+    `
+        // grab id from index.html and append dailyForecastCard
+        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
+        dailyForecastCardWrapper.append(dailyForecastCard)
+    } else {
+        // city info
+        let current = JSON.parse(localStorage.getItem('current'));
+        let dailyObjCard = JSON.parse(localStorage.getItem("dailyCard"));
+
+        console.log(dailyObjCard, "object card retrieved from local storage")
+
+
+        // grab our id form index.html and append daily forecast titles
+        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
+        let dailyForecasttitle = `
+            <h4>Date</h4>
+            <h4>Max - Min</h4>
+            <h4>Conditions</h4>
+            <h4>Wind</h4>
+            <h4>UV</h4>
+            <h4>Humidity</h4>
+        `;
+        dailyForecastCardWrapper.append(dailyForecasttitle)
+
+        console.log(dailyObjCard.date, 'date')
+
+        for (let i = 0; i < 5; i++) {
+            // five day forecast card using template literals
+            const dailyForecastCard = `
+                <div>${realDate(dailyObjCard.date[i])}</div>
+                <div>${calculateFahrenheit(dailyObjCard.maxTemp[i])} - ${calculateFahrenheit(dailyObjCard.minTemp[i])}</div>
+                <div>${dailyObjCard.main[i]}</div>
+                <div>${dailyObjCard.wndSpd[i]} mph</div>
+                <div>
+                    <div>${dailyObjCard.uvi[i]}</div>
+                    <div>${uviColorDisplay(dailyObjCard.uvi[i])}</div>
+                </div>
+                <div>${dailyObjCard.hmid[i]}%</div>
+        `
+            dailyForecastCardWrapper.append(dailyForecastCard)
+        }
+        const title = `<div id="forecast-title">Five Day Forecast for ${current.city}</div>`;
+        let fiveDayTitle = $("#five-day-title");
+        fiveDayTitle.append(title);
+    }
+}
+
+function showStoredCity() {
+    let savedCity = JSON.parse(localStorage.getItem('savedCity'));
+    console.log(savedCity, "will be null if there is no saved city")
+
+    if (savedCity === null) {
+        const savedCityCard = `
+        <div id="no-saved-city">
+            <h3>You have no saved cities!</h3>
+            <p> Enter a city in the search bar to begin. <p>
+        </div>
+        `
+        const savedCityWeather = $("#saved-city-weather")
+        savedCityWeather.append(savedCityCard)
+
+    } else {
+        let cityMeridian = JSON.parse(localStorage.getItem("cityMeridian"));
+        let savedCity = JSON.parse(localStorage.getItem("savedCity"))
+
+        console.log(savedCity, "city logic")
+
+        // saved city card
+        const savedCityCard = `
+        <div class="saved-city">
+        <h1>${savedCity.city}</h1>
+        <button id="show-forecast">Show Forecast</button>
+        </div>
+        `   // end saved city card
+        const savedCityWeather = $("#saved-city-weather")
+        savedCityWeather.append(savedCityCard)
+
+        //on click event to reload our stored data from the saved button and display it on the page
+        $("#show-forecast").on("click", function () {
+
+            fetchForecast((cityMeridian.lat), (cityMeridian.long))
+        })
+    }
+}
 
 
 // function for color coded uv index
@@ -162,186 +316,8 @@ const realDate = (unixTimeStamp) => {
     }
     let date = `${readableDate.dayNum} ${readableDate.day}`
     return date;
-}
+};
 
-
-
-//function for grabbing locally stored current day information and displaying that info in card on browswer
-function currentDay() {
-    if (localStorage.getItem("cityName") === null) {
-        const currentDayWeatherInfo = `
-            <div id="current-day-weather-info>
-                <h1>Please search for a city</h1>
-            </div>
-        `
-        const currentDay = $("#current-day-weather")
-        currentDay.append(currentDayWeatherInfo)
-    } else {
-        // console.log(foreCastNow, "forecastnow")
-        let foreCastCard = JSON.parse(localStorage.getItem('foreCastCard'));
-        console.log(foreCastCard, 'the forecase card in the current day function to display saved / stored city shit')
-
-
-
-        // {"city":"Los Angeles","date":1666766170,"temp":298.01,"wndSpd":4.27,"hmid":74,"uvi":2,"desc":"Clear","icon":"01d"}
-
-        // our current day weather card put into template literal to be appended to our index.html
-        const currentDayWeatherInfo = `
-    <div id="current-day-weather-info">
-            <h1 class="city-name">Currently in ${foreCastCard.city}</h1>
-            <div class="weather-info-wrapper">
-                <h4>Conditions</h4>
-                <h4>Wind</h4>
-                <h4>UV</h4>
-                <h4>Humidity</h4>
-                <div>${calculateFahrenheit((foreCastCard.temp), (foreCastCard.desc))}</div>
-                <div>${foreCastCard.wndSpd}mph</div>
-                <div>
-                    <div>${foreCastCard.uvi}</div>
-                    <div>${uviColorDisplay(foreCastCard.uvi)}</div>
-                </div>
-                <div>${foreCastCard.hmid}%</div>
-            </div>
-            <button id="save-current-city">Save City</button>
-    </div>
-    `
-        const currentDay = $("#current-day-weather")
-        currentDay.append(currentDayWeatherInfo)
-
-        //save current city into local storage
-        $("#save-current-city").on("click", function () {
-            // localStorage.setItem("savedCity", JSON.stringify(currentDayForecast))
-            localStorage.setItem("foreCastCard", JSON.stringify(foreCastCard));
-
-            // location.reload()
-        })
-    }
-}
-
-
-// five day forecast card creating loop
-const fiveDayForecast = () => {
-
-    let dailyCard = JSON.parse(localStorage.getItem("dailyCard"));
-    console.log(dailyCard, "tsting again");
-    if (dailyCard === null) {
-        const dailyForecastCard = `
-        <div id="current-day-weather-info>
-            <h1>Please search for a city</h1>
-        </div>
-    `
-        // grab id from index.html and append dailyForecastCard
-        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-        dailyForecastCardWrapper.append(dailyForecastCard)
-    } else {
-        // city info
-        let foreCastCard = JSON.parse(localStorage.getItem('foreCastCard'));
-        let dailyObjCard = JSON.parse(localStorage.getItem("dailyCard"));
-
-        console.log(dailyObjCard, "object card retrieved from local storage")
-
-
-        // grab our id form index.html and append daily forecast titles
-        let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-        let dailyForecasttitle = `
-            <h4>Date</h4>
-            <h4>Max - Min</h4>
-            <h4>Conditions</h4>
-            <h4>Wind</h4>
-            <h4>UV</h4>
-            <h4>Humidity</h4>
-        `;
-        dailyForecastCardWrapper.append(dailyForecasttitle)
-
-        console.log(dailyObjCard.date, 'date')
-
-        for (let i = 0; i < 5; i++) {
-            // five day forecast card using template literals
-            const dailyForecastCard = `
-                <div>${realDate(dailyObjCard.date[i])}</div>
-                <div>${calculateFahrenheit(dailyObjCard.maxTemp[i])} - ${calculateFahrenheit(dailyObjCard.minTemp[i])}</div>
-                <div>${dailyObjCard.conditions[i]}</div>
-                <div>${dailyObjCard.wndSpd[i]} mph</div>
-                <div>
-                    <div>${dailyObjCard.uvi[i]}</div>
-                    <div>${uviColorDisplay(dailyObjCard.uvi[i])}</div>
-                </div>
-                <div>${dailyObjCard.hmid[i]}%</div>
-        `
-            dailyForecastCardWrapper.append(dailyForecastCard)
-        }
-        const title = `<div id="forecast-title">Five Day Forecast for ${foreCastCard.city}</div>`;
-        let fiveDayTitle = $("#five-day-title");
-        fiveDayTitle.append(title);
-    }
-}
-
-function showStoredCity() {
-    let foreCastCard = JSON.parse(localStorage.getItem('foreCastCard'));
-    console.log(foreCastCard)
-
-    if (foreCastCard === null) {
-        const savedCityCard = `
-        <div id="no-saved-city">
-            <h3>You have no saved cities!</h3>
-            <p> Enter a city in the search bar to begin. <p>
-        </div>
-        `
-        const savedCityWeather = $("#saved-city-weather")
-        savedCityWeather.append(savedCityCard)
-
-    } else {
-        let cityLogistics = JSON.parse(localStorage.getItem("cityMeridian"));
-        let storedCity = JSON.parse(localStorage.getItem("foreCastCard"))
-
-        console.log(storedCity, "city logic")
-
-        // saved city card
-        const savedCityCard = `
-        <div class="saved-city">
-        <h1>${storedCity.city}</h1>
-        <p>${calculateFahrenheit(storedCity.temp)}</p>
-        <p>${storedCity.desc}</p>
-        <button id="show-forecast">Show Forecast</button>
-        </div>
-        `   // end saved city card
-        const savedCityWeather = $("#saved-city-weather")
-        savedCityWeather.append(savedCityCard)
-
-        //new query based off of stored city latitutde and longitude
-        let query2 = foreCastUrl + "lat=" + cityLogistics.lat + "&lon=" + cityLogistics.long + "&exclude=hourly,minutely" + apiKey;
-
-        //on click event to reload our stored data from the saved button and display it on the page
-        $("#show-forecast").on("click", function () {
-            fetch(query2)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(res => {
-
-
-                    const foreCastNow = new Object();
-                    foreCastNow.city = cityLogistics.name;
-                    foreCastNow.date = res.current.dt;
-                    foreCastNow.temp = res.current.temp;
-                    foreCastNow.wndSpd = res.current.wind_speed;
-                    foreCastNow.hmid = res.current.humidity;
-                    foreCastNow.uvi = res.current.uvi;
-                    foreCastNow.desc = res.current.weather[0].main;
-                    foreCastNow.icon = res.current.weather[0].icon;
-
-                    console.log(foreCastNow, 'forecast')
-
-                    let todayCard = JSON.parse(localStorage.getItem("foreCastCard"));
-                    console.log(todayCard, 'testing test')
-                    storeLocalData("foreCastCard", JSON.stringify(todayCard))
-
-
-                    // location.reload()
-                })
-        })
-    }
-}
 
 // display functions
 currentDay()
