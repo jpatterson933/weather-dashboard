@@ -3,7 +3,8 @@ let searchButton = $("#button-search");
 let baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
 //this input pulls my daily forcast
 let foreCastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-import { apiKey } from './config.js';
+// import { apiKey } from './config.js';
+const apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195";
 
 // store in local storage function
 function storeLocalData(title, item) {
