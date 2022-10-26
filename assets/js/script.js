@@ -3,8 +3,7 @@ let searchButton = $("#button-search");
 let baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
 //this input pulls my daily forcast
 let foreCastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-//this is my api key
-let apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
+import { apiKey } from './config.js';
 
 // store in local storage function
 function storeLocalData(title, item) {
@@ -19,6 +18,7 @@ function fetchForecast(lat, lon, info) {
     fetch(query)
         .then(response => { return response.json() })
         .then(res => {
+            console.log(res);
 
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
@@ -258,19 +258,19 @@ function uviColorDisplay(uviColor) {
     let uvi = parseInt(uviColor);
 
     if (uvi < 3) {
-        return color = "<div id='uvi-color' style='background-color: green'></div>";
+        return "<div id='uvi-color' style='background-color: green'></div>";
     }
     if (uvi > 2 && uvi < 6) {
-        return color = "<div id='uvi-color' style='background-color: yellow'></div>";
+        return "<div id='uvi-color' style='background-color: yellow'></div>";
     }
     if (uvi > 5 && uvi < 8) {
-        return color = "<div id='uvi-color' style='background-color: orange'></div>";
+        return "<div id='uvi-color' style='background-color: orange'></div>";
     }
     if (uvi > 7 && uvi < 11) {
-        return color = "<div id='uvi-color' style='background-color: red'></div>";
+        return "<div id='uvi-color' style='background-color: red'></div>";
     }
     if (uvi > 11) {
-        return color = "<div id='uvi-color' style='background-color: purple'></div>";
+        return "<div id='uvi-color' style='background-color: purple'></div>";
     }
 };
 

@@ -1,1 +1,0 @@
-let apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195"
