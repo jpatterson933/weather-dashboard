@@ -4,6 +4,7 @@ let baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
 //this input pulls my daily forcast
 let foreCastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 // import { apiKey } from './config.js';
+// free api, not hidden, anyone can use
 const apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195";
 
 // store in local storage function
@@ -23,6 +24,7 @@ function fetchForecast(lat, lon, info) {
 
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
+            console.log(cityInfo, "city info again")
 
             // create current forecast object
             const current = new Object();
@@ -32,8 +34,10 @@ function fetchForecast(lat, lon, info) {
             current.date = res.current.dt;
             current.temp = res.current.temp;
             current.feels = res.current.feels_like;
+            current.sunrise = res.current.sunrise;
             current.sunset = res.current.sunset;
             current.wndSpd = res.current.wind_speed;
+            current.wndDir = res.current.wind_speed;
             current.hmid = res.current.humidity;
             current.dew = res.current.dew_point;
             current.uvi = res.current.uvi;
@@ -127,9 +131,9 @@ function currentDay() {
 
     if (JSON.parse(localStorage.getItem("current")) === null) {
         const currentDayWeatherInfo = `
-            <div id="current-day-weather-info>
-                <h1>Please search for a city</h1>
-            </div>
+        <div id="current-day-weather-info>
+            <h1>Please search for a city</h1>
+        </div>
         `
         const currentDay = $("#current-day-weather");
         currentDay.append(currentDayWeatherInfo);
@@ -139,22 +143,22 @@ function currentDay() {
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
-    <div id="current-day-weather-info">
-            <h1 class="city-name">Currently in ${current.city}</h1>
-            <div class="weather-info-wrapper">
-                <h4>Conditions</h4>
-                <h4>Wind</h4>
-                <h4>UV</h4>
-                <h4>Humidity</h4>
-                <div>${calculateFahrenheit((current.temp), (current.desc))}</div>
-                <div>${current.wndSpd}mph</div>
-                <div>
-                    <div>${current.uvi}</div>
-                    <div>${uviColorDisplay(current.uvi)}</div>
-                </div>
-                <div>${current.hmid}%</div>
-            </div>
-            <button id="save-current-city">Save City</button>
+
+        <div>${current.city}</div>
+        <div>It is currently ${new Date()}
+        <div>Today is ${calculateFahrenheit((current.temp), (current.main))}</div>
+        <div>Feels like ${calculateFahrenheit((current.feels))}
+        <div>Description: ${current.desc}</div>
+        <div>Wind Speed: ${current.wndSpd} mph</div>
+        <div>Wind Direction: ${getCardinalDirection(current.wndDir )}</div>
+        <div>UV Index Rating: ${current.uvi}</div>
+        <div>${uviColorDisplay(current.uvi)}</div>
+        <div>Humidity: ${current.hmid}%</div>
+        <div>Water will form in the air at ${calculateFahrenheit(current.dew)}</div>
+        <div>Sunrise: ${current.sunrise}</div>
+        <div>Sunset: ${current.sunset}</div>
+
+        <button id="save-current-city">Save City</button>
     </div>
     `
         const currentDay = $("#current-day-weather");
@@ -284,6 +288,9 @@ function calculateFahrenheit(temp, ...conditions) {
 const realDate = (unixTimeStamp) => {
 
     let dateObject = new Date(unixTimeStamp * 1000);
+    console.log(dateObject, "date object")
+
+    console.log(dateObject.toLocaleString('en-US', { time: 'short'}))
     let readableDate = {
         day: dateObject.toLocaleString('en-US', { weekday: 'short' }),
         dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
@@ -292,7 +299,12 @@ const realDate = (unixTimeStamp) => {
     return date;
 };
 
+const getCardinalDirection = (angle) => {
+    const directions = ['North', 'NorthEast', 'East', 'SouthEast', 'South', 'SouthWest', 'West', 'NorthWest'];
+    return directions[Math.round(angle / 22.5) % 8];
+}
+
 // display functions
-currentDay();
+currentDay(); 
 fiveDayForecast();
 showStoredCity();
