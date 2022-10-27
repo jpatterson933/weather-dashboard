@@ -20,7 +20,8 @@ function fetchForecast(lat, lon, info) {
     fetch(query)
         .then(response => { return response.json() })
         .then(res => {
-            console.log(res);
+            console.log(res.current.timezone, "reso");
+            console.log(res)
 
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
@@ -44,6 +45,7 @@ function fetchForecast(lat, lon, info) {
             current.main = res.current.weather[0].main;
             current.desc = res.current.weather[0].description;
             current.icon = res.current.weather[0].icon;
+            current.timeZone = res.timezone;
 
             // create daily ForeCast object with empty arrays for data
             const dailyFC = new Object();
@@ -66,6 +68,7 @@ function fetchForecast(lat, lon, info) {
             dailyFC.main = new Array();
             dailyFC.desc = new Array();
             dailyFC.icon = new Array();
+            dailyFC.timeZone = res.timezone;
 
             //----------------------------locally store a forecast using forEach() ----------------------//
             res.daily.forEach(element => {
@@ -92,7 +95,7 @@ function fetchForecast(lat, lon, info) {
             storeLocalData("daily", JSON.stringify(dailyFC));
 
             //reload page on click to display newly stored information
-            location.reload();
+            // location.reload();
         });
 };
 
@@ -143,23 +146,20 @@ function currentDay() {
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
-
         <div>${current.city}</div>
-        <div>It is currently ${new Date()}
+        <div>It is currently ${getCurrentTime()}</div>
         <div>Today is ${calculateFahrenheit((current.temp), (current.main))}</div>
-        <div>Feels like ${calculateFahrenheit((current.feels))}
+        <div>Feels like ${calculateFahrenheit((current.feels))}</div>
         <div>Description: ${current.desc}</div>
         <div>Wind Speed: ${current.wndSpd} mph</div>
-        <div>Wind Direction: ${getCardinalDirection(current.wndDir )}</div>
+        <div>Wind Direction: ${getCardinalDirection(current.wndDir)}</div>
         <div>UV Index Rating: ${current.uvi}</div>
-        <div>${uviColorDisplay(current.uvi)}</div>
+        <div>UV Index color ${uviColorDisplay(current.uvi)}</div>
         <div>Humidity: ${current.hmid}%</div>
         <div>Water will form in the air at ${calculateFahrenheit(current.dew)}</div>
-        <div>Sunrise: ${current.sunrise}</div>
-        <div>Sunset: ${current.sunset}</div>
-
+        <div>Sunrise: ${convertSecondsToTime(current.sunrise)}</div>
+        <div>Sunset: ${convertSecondsToTime(current.sunset)}</div>
         <button id="save-current-city">Save City</button>
-    </div>
     `
         const currentDay = $("#current-day-weather");
         currentDay.append(currentDayWeatherInfo);
@@ -169,7 +169,7 @@ function currentDay() {
             // store current city in local storage as savedCity for later use
             localStorage.setItem("savedCity", JSON.stringify(current));
 
-            location.reload();
+            // location.reload();
         });
     };
 };
@@ -241,10 +241,8 @@ function showStoredCity() {
 
         // saved city card
         const savedCityCard = `
-        <div class="saved-city">
         <h1>${savedCity.city}</h1>
         <button id="show-forecast">Show Forecast</button>
-        </div>
         `   // end saved city card
         const savedCityWeather = $("#saved-city-weather");
         savedCityWeather.append(savedCityCard);
@@ -288,15 +286,49 @@ function calculateFahrenheit(temp, ...conditions) {
 const realDate = (unixTimeStamp) => {
 
     let dateObject = new Date(unixTimeStamp * 1000);
-    console.log(dateObject, "date object")
 
-    console.log(dateObject.toLocaleString('en-US', { time: 'short'}))
     let readableDate = {
         day: dateObject.toLocaleString('en-US', { weekday: 'short' }),
         dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
     };
     let date = `${readableDate.dayNum} ${readableDate.day}`;
     return date;
+};
+const getCurrentTime = () => {
+    const dateTimeStr = new Date().toLocaleString()
+    const result = (dateTimeStr.split(", ")[0], dateTimeStr.split(", ")[1])
+    return result;
+}
+
+
+function changeTimeZone(date, timeZone) {
+    if (typeof date === 'string') {
+        return new Date(
+            new Date(date).toLocaleString('en-US', {
+                timeZone,
+            }),
+        );
+    }
+
+    return new Date(
+        date.toLocaleString('en-US', {
+            timeZone,
+        }),
+    );
+}
+
+
+
+
+
+
+
+
+const convertSecondsToTime = (seconds) => {
+
+    const dateTimeStr = new Date(seconds * 1000).toLocaleString()
+    const result = (dateTimeStr.split(", ")[0], dateTimeStr.split(", ")[1])
+    return result;
 };
 
 const getCardinalDirection = (angle) => {
@@ -305,6 +337,6 @@ const getCardinalDirection = (angle) => {
 }
 
 // display functions
-currentDay(); 
+currentDay();
 fiveDayForecast();
 showStoredCity();

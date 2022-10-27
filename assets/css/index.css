@@ -1,7 +1,118 @@
 /* styling for our uvi color holder */
+
+/*
+other colors
+RGB: (241, 119, 32)
+RGB: (4, 116, 186)
+
+
+
+*/
+
+body {
+  background-color: rgba(235, 235, 235);
+}
+
+
+/*--------------------NAV BAR STYLING ------------------*/
+a {
+  color: white;
+}
+
+#header-wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  background: rgb(0, 167, 225);
+  width: fit-content;
+  padding: 10px;
+
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+
+}
+
+#button-search,
+#show-forecast {
+  background: rgba(255, 166, 48);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+nav {
+  display: inline;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+
+  /* flex-grow: 1; */
+}
+
+nav>a {
+  padding-right: 10px;
+}
+
+div>input {
+  background: rgba(235, 235, 235);
+  border: none;
+  padding: 10px 0;
+  text-align: center;
+}
+
+
+#saved-city-weather {
+  display: flex;
+  flex-direction: row;
+
+  align-items: baseline;
+
+}
+
+#show-forecast {
+  margin-left: 15px;
+}
+
+#saved-city-weather>h1 {
+  color: rgba(235, 235, 235);
+}
+
+/*-------------------- END NAV BAR STYLING ------------------*/
+
+section {
+  margin: 20px 0;
+  background: rgb(0, 167, 225, 90%);
+  color: rgba(235, 235, 235);
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #uvi-color {
-    width: 20px;
-    height: 20px;
-    /* border-radius: 150px; */
-    /* margin: 0 auto; */
-  }
+  float: right;
+  width: 20px;
+  height: 20px;
+  /* border-radius: 150px; */
+  /* margin: 0 auto; */
+}
