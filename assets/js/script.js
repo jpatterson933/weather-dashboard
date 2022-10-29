@@ -146,20 +146,24 @@ function currentDay() {
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
-        <div>${current.city}</div>
-        <div>It is currently ${getCurrentTime()}</div>
-        <div>Today is ${calculateFahrenheit((current.temp), (current.main))}</div>
-        <div>Feels like ${calculateFahrenheit((current.feels))}</div>
-        <div>Description: ${current.desc}</div>
-        <div>Wind Speed: ${current.wndSpd} mph</div>
-        <div>Wind Direction: ${getCardinalDirection(current.wndDir)}</div>
-        <div>UV Index Rating: ${current.uvi}</div>
-        <div>UV Index color ${uviColorDisplay(current.uvi)}</div>
-        <div>Humidity: ${current.hmid}%</div>
-        <div>Water will form in the air at ${calculateFahrenheit(current.dew)}</div>
-        <div>Sunrise: ${convertSecondsToTime(current.sunrise)}</div>
-        <div>Sunset: ${convertSecondsToTime(current.sunset)}</div>
-        <button id="save-current-city">Save City</button>
+        <section id="current-card">
+            <p>${current.city}</p>
+            <p>If you were in ${current.city} it would be ${getTimeZone(current.timeZone)}</p>
+            <p>The forecast is ${calculateFahrenheit((current.temp), (current.main))}</p>
+            <p>It feels like ${calculateFahrenheit((current.feels))} and there are ${current.desc}</p>
+            <p>Wind Speed: ${current.wndSpd} mph</p>
+            <p>Wind Direction: ${getCardinalDirection(current.wndDir)}</p>
+            <p>UV Index Rating: ${current.uvi}</p>
+            <p>UV Index color ${uviColorDisplay(current.uvi)}</p>
+            <p>Humidity: ${current.hmid}%</p>
+            <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
+            <p> (this does not mean it will rain just that your windows will have condensation.</p>
+            <p>Wake up and enjoy the Sunrise: ${convertSecondsToTime(current.sunrise)}</p>
+            <p>Unless of course you love sleeping in!</p>
+            <p>Sunset: ${convertSecondsToTime(current.sunset)}</p>
+            <p>Best time of day, literally just step outside and stare at the sun!</p>
+            <button id="save-current-city">Save City</button>
+        </section>
     `
         const currentDay = $("#current-day-weather");
         currentDay.append(currentDayWeatherInfo);
@@ -300,28 +304,17 @@ const getCurrentTime = () => {
     return result;
 }
 
-
-function changeTimeZone(date, timeZone) {
-    if (typeof date === 'string') {
-        return new Date(
-            new Date(date).toLocaleString('en-US', {
-                timeZone,
-            }),
-        );
-    }
-
-    return new Date(
-        date.toLocaleString('en-US', {
-            timeZone,
-        }),
-    );
+function getTimeZone(tz) {
+    let date = new Date();
+    return new Intl.DateTimeFormat('en-US', { timeZone: tz, dateStyle: 'full', timeStyle: 'long' }).format(date);
 }
 
 
+// Specify date and time format using "style" options (i.e. full, long, medium, short)
+// Expected output "Sunday, 20 December 2020 at 14:23:16 GMT+11"
 
-
-
-
+// const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+// console.log(timezone); 
 
 
 const convertSecondsToTime = (seconds) => {
@@ -340,3 +333,21 @@ const getCardinalDirection = (angle) => {
 currentDay();
 fiveDayForecast();
 showStoredCity();
+
+// // canvas script for clouds
+// var canvas = document.querySelector('canvas');
+// var ctx = canvas.getContext('2d');
+
+// const drawCloud = (x, y) => {
+//     ctx.beginPath();
+//     ctx.arc(x, y, 60, Math.PI * 0.5, Math.PI * 1.5);
+//     ctx.arc(x + 70, y - 60, 70, Math.PI * 1, Math.PI * 1.85);
+//     ctx.arc(x + 152, y - 45, 50, Math.PI * 1.37, Math.PI * 1.91);
+//     ctx.arc(x + 200, y, 60, Math.PI * 1.5, Math.PI * 0.5);
+//     ctx.moveTo(x + 200, y + 60);
+//     ctx.lineTo(x, y + 60);
+//     ctx.strokeStyle = '#797874';
+//     ctx.stroke();
+//     ctx.fillStyle = '#8ED6FF';
+//     ctx.fill()
+// };
