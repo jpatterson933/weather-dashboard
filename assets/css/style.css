@@ -1,4 +1,4 @@
-/* This css is mobile styling FIRST any media queries below will be for websites only and increased window width */
+/* This css is mobile styling FIRST any media queries below will be for websites only and increased window width
 
 
 /* global variables declared here */
@@ -116,7 +116,7 @@ nav>a {
 #current-day-weather-info > button:hover {
   box-shadow: none;
   transition: 2s;
-}
+} */
 
 
 

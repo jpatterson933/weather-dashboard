@@ -149,19 +149,55 @@ function currentDay() {
         <section id="current-card">
             <p>${current.city}</p>
             <p>If you were in ${current.city} it would be ${getTimeZone(current.timeZone)}</p>
-            <p>The forecast is ${calculateFahrenheit((current.temp), (current.main))}</p>
-            <p>It feels like ${calculateFahrenheit((current.feels))} and there are ${current.desc}</p>
-            <p>Wind Speed: ${current.wndSpd} mph</p>
-            <p>Wind Direction: ${getCardinalDirection(current.wndDir)}</p>
-            <p>UV Index Rating: ${current.uvi}</p>
-            <p>UV Index color ${uviColorDisplay(current.uvi)}</p>
-            <p>Humidity: ${current.hmid}%</p>
-            <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
-            <p> (this does not mean it will rain just that your windows will have condensation.</p>
-            <p>Wake up and enjoy the Sunrise: ${convertSecondsToTime(current.sunrise)}</p>
-            <p>Unless of course you love sleeping in!</p>
-            <p>Sunset: ${convertSecondsToTime(current.sunset)}</p>
-            <p>Best time of day, literally just step outside and stare at the sun!</p>
+            <details>
+                <summary>Forecast: ${calculateFahrenheit((current.temp), (current.main))}</summary>
+                <p>It feels like ${calculateFahrenheit((current.feels))} and the local weather description is "${current.desc}"</p>
+            </details>            
+            <br><br><br><br><br><br>
+            <details>
+                <summary>What about the wind!?</summary>
+                <div>
+                    <p>Wind Speed: ${current.wndSpd} mph</p>
+                    <p>Wind Direction: ${getCardinalDirection(current.wndDir)}</p>
+                </div>
+            </details>
+            <br><br><br><br><br><br>
+            <details>
+                <summary>Worried about your skin and UV radiation?</summary>
+                <div>
+                    <p>UV Index Rating: ${current.uvi}</p>
+                    ${uviColorDisplay(current.uvi)}
+                </div>
+            </details>
+            <br><br><br><br><br><br>
+
+            <details>
+                <summary>Stuff about water..</summary>
+                <div>
+                <p>Water is a colorless, transparent, odorless liquid that forms the seas
+                <br><br><br><br><br><br>
+                lakes, reivers, and rain and is the basis of the fluids of living organisms (aka you!)</p>
+                <p>Humidity: ${current.hmid}%</p>
+                <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
+                <p>This does not mean it will rain just that your windows will have condensation!</p>
+                <p>Is it going to rain? idk check your local forecast!!</p>
+                </div>
+            </details>
+            <br><br><br><br><br><br>
+            <details>
+                <summary>Appearance and dissappearance of the sun.</summary>
+                <div>
+                <p>Wake up and enjoy the Sunrise: ${convertSecondsToTime(current.sunrise)}</p>
+                <p>Unless of course you love sleeping in!</p>
+                <p>Sunset: ${convertSecondsToTime(current.sunset)}</p>
+                <p>Best time of day, literally just step outside and stare at the sun!</p>
+                </div>
+            </details>
+            <br><br><br><br><br><br>
+
+   
+       
+            <br><br><br><br><br><br>
             <button id="save-current-city">Save City</button>
         </section>
     `
@@ -265,19 +301,19 @@ function uviColorDisplay(uviColor) {
     let uvi = parseInt(uviColor);
 
     if (uvi < 3) {
-        return "<div id='uvi-color' style='background-color: green'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: green'></div></p>";
     }
     if (uvi > 2 && uvi < 6) {
-        return "<div id='uvi-color' style='background-color: yellow'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: yellow'></div></p>";
     }
     if (uvi > 5 && uvi < 8) {
-        return "<div id='uvi-color' style='background-color: orange'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: orange'></div></p>";
     }
     if (uvi > 7 && uvi < 11) {
-        return "<div id='uvi-color' style='background-color: red'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: red'></div></p>";
     }
     if (uvi > 11) {
-        return "<div id='uvi-color' style='background-color: purple'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: purple'></div></p>";
     }
 };
 
