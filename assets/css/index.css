@@ -97,7 +97,8 @@ div>input {
 
 #current-day-weather {
   background-color: rgb(241, 119, 32, 50%);
-
+  padding: 1em 0;
+  margin-top: 1em;
 }
 
 #current-card {

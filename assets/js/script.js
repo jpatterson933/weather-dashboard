@@ -147,8 +147,13 @@ function currentDay() {
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
         <section id="current-card">
-            <p>${current.city}</p>
-            <p>If you were in ${current.city} it would be ${getTimeZone(current.timeZone)}</p>
+            <h1>Info Card</h1>
+            <br>
+            <details>
+                <summary>${current.city}</summary>
+                <p>If you were in ${current.city} it would be ${getTimeZone(current.timeZone)}</p>
+            </details>
+            <br><br><br><br><br><br>
             <details>
                 <summary>Forecast: ${calculateFahrenheit((current.temp), (current.main))}</summary>
                 <p>It feels like ${calculateFahrenheit((current.feels))} and the local weather description is "${current.desc}"</p>
@@ -170,33 +175,28 @@ function currentDay() {
                 </div>
             </details>
             <br><br><br><br><br><br>
-
             <details>
                 <summary>Stuff about water..</summary>
                 <div>
-                <p>Water is a colorless, transparent, odorless liquid that forms the seas
-                <br><br><br><br><br><br>
-                lakes, reivers, and rain and is the basis of the fluids of living organisms (aka you!)</p>
-                <p>Humidity: ${current.hmid}%</p>
-                <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
-                <p>This does not mean it will rain just that your windows will have condensation!</p>
-                <p>Is it going to rain? idk check your local forecast!!</p>
+                    <p>Water is a colorless, transparent, odorless liquid that forms the seas
+                    <br><br><br><br><br><br>
+                    lakes, reivers, and rain and is the basis of the fluids of living organisms (aka you!)</p>
+                    <p>Humidity: ${current.hmid}%</p>
+                    <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
+                    <p>This does not mean it will rain just that your windows will have condensation!</p>
+                    <p>Is it going to rain? idk check your local forecast!!</p>
                 </div>
             </details>
             <br><br><br><br><br><br>
             <details>
                 <summary>Appearance and dissappearance of the sun.</summary>
                 <div>
-                <p>Wake up and enjoy the Sunrise: ${convertSecondsToTime(current.sunrise)}</p>
-                <p>Unless of course you love sleeping in!</p>
-                <p>Sunset: ${convertSecondsToTime(current.sunset)}</p>
-                <p>Best time of day, literally just step outside and stare at the sun!</p>
+                    <p>Wake up and enjoy the Sunrise at ${convertSecondsToTime(current.sunrise)}</p>
+                    <p>Unless of course you love sleeping in!</p>
+                    <p>Sunset: ${convertSecondsToTime(current.sunset)}</p>
+                    <p>Best time of day, literally just step outside and stare at the sun!</p>
                 </div>
-            </details>
-            <br><br><br><br><br><br>
-
-   
-       
+            </details>       
             <br><br><br><br><br><br>
             <button id="save-current-city">Save City</button>
         </section>
@@ -334,32 +334,26 @@ const realDate = (unixTimeStamp) => {
     let date = `${readableDate.dayNum} ${readableDate.day}`;
     return date;
 };
+
+// function to get current time
 const getCurrentTime = () => {
     const dateTimeStr = new Date().toLocaleString()
     const result = (dateTimeStr.split(", ")[0], dateTimeStr.split(", ")[1])
     return result;
 }
-
+// function to return time from specific time zone
 function getTimeZone(tz) {
     let date = new Date();
     return new Intl.DateTimeFormat('en-US', { timeZone: tz, dateStyle: 'full', timeStyle: 'long' }).format(date);
 }
-
-
-// Specify date and time format using "style" options (i.e. full, long, medium, short)
-// Expected output "Sunday, 20 December 2020 at 14:23:16 GMT+11"
-
-// const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-// console.log(timezone); 
-
-
+// function to convert seconds to a normal 10:00am time
 const convertSecondsToTime = (seconds) => {
 
     const dateTimeStr = new Date(seconds * 1000).toLocaleString()
     const result = (dateTimeStr.split(", ")[0], dateTimeStr.split(", ")[1])
     return result;
 };
-
+// function to grab cardinal direction based off of degrees
 const getCardinalDirection = (angle) => {
     const directions = ['North', 'NorthEast', 'East', 'SouthEast', 'South', 'SouthWest', 'West', 'NorthWest'];
     return directions[Math.round(angle / 22.5) % 8];
@@ -370,7 +364,7 @@ currentDay();
 fiveDayForecast();
 showStoredCity();
 
-// // canvas script for clouds
+// // canvas script for clouds might use this might not - this does not live with the mvp
 // var canvas = document.querySelector('canvas');
 // var ctx = canvas.getContext('2d');
 
