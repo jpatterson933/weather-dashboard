@@ -37,7 +37,8 @@ function fetchForecast(lat, lon, info) {
             current.feels = res.current.feels_like;
             current.sunrise = res.current.sunrise;
             current.sunset = res.current.sunset;
-            current.wndSpd = res.current.wind_speed;
+            current.wndSpd = (res.current.wind_speed).toFixed(1);
+            current.wndSpdKph = ((res.current.wind_speed) * 1.60934).toFixed(1)
             current.wndDir = res.current.wind_speed;
             current.hmid = res.current.humidity;
             current.dew = res.current.dew_point;
@@ -62,6 +63,9 @@ function fetchForecast(lat, lon, info) {
             dailyFC.sunrise = new Array();
             dailyFC.sunset = new Array();
             dailyFC.wndSpd = new Array();
+            dailyFC.wndSpdKph = new Array();
+            dailyFC.wndDir = new Array();
+            dailyFC.wndGust = new Array();
             dailyFC.hmid = new Array();
             dailyFC.dew = new Array();
             dailyFC.uvi = new Array();
@@ -81,7 +85,10 @@ function fetchForecast(lat, lon, info) {
                 dailyFC.feelsEve.push(element.feels_like.eve);
                 dailyFC.sunrise.push(element.sunrise);
                 dailyFC.sunset.push(element.sunset);
-                dailyFC.wndSpd.push(element.wind_speed);
+                dailyFC.wndSpd.push((element.wind_speed).toFixed(1));
+                dailyFC.wndSpdKph.push(((element.wind_speed) * 1.60934).toFixed(1));
+                dailyFC.wndDir.push(element.wind_deg);
+                dailyFC.wndGust.push(element.wind_gust);
                 dailyFC.hmid.push(element.humidity);
                 dailyFC.dew.push(element.dew_point)
                 dailyFC.uvi.push(element.uvi);
@@ -147,11 +154,11 @@ function currentDay() {
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
         <section id="current-card">
-            <h1>Info Card</h1>
+            <h1>${current.city}</h1>
             <br>
             <details>
-                <summary>${current.city}</summary>
-                <p>If you were in ${current.city} it would be ${getTimeZone(current.timeZone)}</p>
+                <summary>${getTimeZone(current.timeZone)}</summary>
+                <p>${current.city} is in the ${current.timeZone} timezone</p>
             </details>
             <br><br><br><br><br><br>
             <details>
@@ -162,8 +169,8 @@ function currentDay() {
             <details>
                 <summary>What about the wind!?</summary>
                 <div>
-                    <p>Wind Speed: ${current.wndSpd} mph</p>
-                    <p>Wind Direction: ${getCardinalDirection(current.wndDir)}</p>
+                    <p>The wind is blowing ${getCardinalDirection(current.wndDir)} at ${current.wndSpd} mph (miles per hour)</p>
+                    <p>OR ${current.wndSpdKph} kph (kilometers per hour)</p>
                 </div>
             </details>
             <br><br><br><br><br><br>
@@ -178,12 +185,9 @@ function currentDay() {
             <details>
                 <summary>Stuff about water..</summary>
                 <div>
-                    <p>Water is a colorless, transparent, odorless liquid that forms the seas
-                    <br><br><br><br><br><br>
-                    lakes, reivers, and rain and is the basis of the fluids of living organisms (aka you!)</p>
                     <p>Humidity: ${current.hmid}%</p>
                     <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
-                    <p>This does not mean it will rain just that your windows will have condensation!</p>
+                    <p>This means that your windows will have condensation!</p>
                     <p>Is it going to rain? idk check your local forecast!!</p>
                 </div>
             </details>
@@ -232,29 +236,59 @@ const fiveDayForecast = () => {
     } else {
         // grab our id form index.html and append daily forecast titles
         let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-        let dailyForecasttitle = `
-            <h4>Date</h4>
-            <h4>Max - Min</h4>
-            <h4>Conditions</h4>
-            <h4>Wind</h4>
-            <h4>UV</h4>
-            <h4>Humidity</h4>
-        `;
 
-        dailyForecastCardWrapper.append(dailyForecasttitle);
 
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
             const dailyForecastCard = `
-                <div>${realDate(daily.date[i])}</div>
-                <div>${calculateFahrenheit(daily.maxTemp[i])} - ${calculateFahrenheit(daily.minTemp[i])}</div>
-                <div>${daily.main[i]}</div>
-                <div>${daily.wndSpd[i]} mph</div>
-                <div>
-                    <div>${daily.uvi[i]}</div>
-                    <div>${uviColorDisplay(daily.uvi[i])}</div>
-                </div>
-                <div>${daily.hmid[i]}%</div>
+            <section id="daily-card">
+                <details>
+                    <summary>Timezone</summary>
+                    <p>${daily.city} is in the ${daily.timeZone} timezone</p>
+                </details>
+                <details>
+                    <summary>Forecast: ${calculateFahrenheit((daily.dayTemp[i]), (daily.main[i]))}</summary>
+                    <div>
+                        <p>Max Temp ${calculateFahrenheit(daily.maxTemp[i])}</p>
+                        <p>During the day it will feel like ${calculateFahrenheit(daily.feelsDay[i])}</p>
+                        <p>At night it will be ${calculateFahrenheit(daily.eveTemp[i])}</p>
+                        <p>Lowest Temp ${calculateFahrenheit(daily.minTemp[i])}</p>
+                        <p>At night it will feel like ${calculateFahrenheit(daily.feelsEve[i])}</p>
+                    </div>
+                </details>            
+                <details>
+                    <summary>What about the wind!?</summary>
+                    <div>
+                        <p>The wind is blowing ${getCardinalDirection(daily.wndDir[i])} at ${daily.wndSpd[i]} mph (miles per hour)</p>
+                        <p>OR ${daily.wndSpdKph[i]} kph (kilometers per hour)</p>
+                    </div>
+                </details>
+                <details>
+                    <summary>Worried about your skin and UV radiation?</summary>
+                    <div>
+                        <p>UV Index Rating: ${daily.uvi[i]}</p>
+                        ${uviColorDisplay(daily.uvi[i])}
+                    </div>
+                </details>
+                <details>
+                    <summary>Stuff about water..</summary>
+                    <div>
+                        <p>Humidity: ${daily.hmid[i]}%</p>
+                        <p>Water will form in the air at ${calculateFahrenheit(daily.dew[i])}</p>
+                        <p>This means that your windows will have condensation!</p>
+                        <p>Is it going to rain? idk check your local forecast!!</p>
+                    </div>
+                </details>
+                <details>
+                    <summary>Appearance and dissappearance of the sun.</summary>
+                    <div>
+                        <p>Wake up and enjoy the Sunrise at ${convertSecondsToTime(daily.sunrise[i])}</p>
+                        <p>Unless of course you love sleeping in!</p>
+                        <p>Sunset: ${convertSecondsToTime(daily.sunset[i])}</p>
+                        <p>Best time of day, literally just step outside and stare at the sun!</p>
+                    </div>
+                </details>       
+            </section>
         `
             dailyForecastCardWrapper.append(dailyForecastCard);
         }
@@ -355,7 +389,7 @@ const convertSecondsToTime = (seconds) => {
 };
 // function to grab cardinal direction based off of degrees
 const getCardinalDirection = (angle) => {
-    const directions = ['North', 'NorthEast', 'East', 'SouthEast', 'South', 'SouthWest', 'West', 'NorthWest'];
+    const directions = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest', 'West', 'Northwest'];
     return directions[Math.round(angle / 22.5) % 8];
 }
 

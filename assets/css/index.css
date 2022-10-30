@@ -135,3 +135,25 @@ section > p {
   /* border-radius: 150px; */
   /* margin: 0 auto; */
 }
+
+#daily-forecast-card-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+#daily-card {
+  line-height: 1.5;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  width: fit-content;
+  background-color: rgb(241, 119, 32, 70%);
+  color: white;
+  
+
+}
