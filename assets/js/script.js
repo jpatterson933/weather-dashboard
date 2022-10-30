@@ -88,7 +88,7 @@ function fetchForecast(lat, lon, info) {
                 dailyFC.wndSpd.push((element.wind_speed).toFixed(1));
                 dailyFC.wndSpdKph.push(((element.wind_speed) * 1.60934).toFixed(1));
                 dailyFC.wndDir.push(element.wind_deg);
-                dailyFC.wndGust.push(element.wind_gust);
+                dailyFC.wndGust.push((element.wind_gust).toFixed(1));
                 dailyFC.hmid.push(element.humidity);
                 dailyFC.dew.push(element.dew_point)
                 dailyFC.uvi.push(element.uvi);
@@ -155,17 +155,14 @@ function currentDay() {
         const currentDayWeatherInfo = `
         <section id="current-card">
             <h1>${current.city}</h1>
-            <br>
             <details>
                 <summary>${getTimeZone(current.timeZone)}</summary>
                 <p>${current.city} is in the ${current.timeZone} timezone</p>
             </details>
-            <br><br><br><br><br><br>
             <details>
                 <summary>Forecast: ${calculateFahrenheit((current.temp), (current.main))}</summary>
                 <p>It feels like ${calculateFahrenheit((current.feels))} and the local weather description is "${current.desc}"</p>
             </details>            
-            <br><br><br><br><br><br>
             <details>
                 <summary>What about the wind!?</summary>
                 <div>
@@ -173,7 +170,6 @@ function currentDay() {
                     <p>OR ${current.wndSpdKph} kph (kilometers per hour)</p>
                 </div>
             </details>
-            <br><br><br><br><br><br>
             <details>
                 <summary>Worried about your skin and UV radiation?</summary>
                 <div>
@@ -181,7 +177,6 @@ function currentDay() {
                     ${uviColorDisplay(current.uvi)}
                 </div>
             </details>
-            <br><br><br><br><br><br>
             <details>
                 <summary>Stuff about water..</summary>
                 <div>
@@ -191,7 +186,6 @@ function currentDay() {
                     <p>Is it going to rain? idk check your local forecast!!</p>
                 </div>
             </details>
-            <br><br><br><br><br><br>
             <details>
                 <summary>Appearance and dissappearance of the sun.</summary>
                 <div>
@@ -201,7 +195,6 @@ function currentDay() {
                     <p>Best time of day, literally just step outside and stare at the sun!</p>
                 </div>
             </details>       
-            <br><br><br><br><br><br>
             <button id="save-current-city">Save City</button>
         </section>
     `
@@ -242,36 +235,38 @@ const fiveDayForecast = () => {
             // five day forecast card using template literals
             const dailyForecastCard = `
             <section id="daily-card">
+            <summary>${realDate(daily.date[i])}</summary>
+            <div>${calculateFahrenheit((daily.dayTemp[i]), (daily.main[i]))}</div>
                 <details>
-                    <summary>Timezone</summary>
-                    <p>${daily.city} is in the ${daily.timeZone} timezone</p>
-                </details>
+                    <summary>Unnecessary Details</summary>
+                    <details>
+                    <summary>Tempeature Details</summary
+                        <div>
+                            <p>Max Temp ${calculateFahrenheit(daily.maxTemp[i])}</p>
+                            <p>During the day it will feel like ${calculateFahrenheit(daily.feelsDay[i])}</p>
+                            <p>At night it will be ${calculateFahrenheit(daily.eveTemp[i])}</p>
+                            <p>Lowest Temp ${calculateFahrenheit(daily.minTemp[i])}</p>
+                            <p>At night it will feel like ${calculateFahrenheit(daily.feelsEve[i])}</p>
+                        </div>
+                    </details>
+                        
                 <details>
-                    <summary>Forecast: ${calculateFahrenheit((daily.dayTemp[i]), (daily.main[i]))}</summary>
-                    <div>
-                        <p>Max Temp ${calculateFahrenheit(daily.maxTemp[i])}</p>
-                        <p>During the day it will feel like ${calculateFahrenheit(daily.feelsDay[i])}</p>
-                        <p>At night it will be ${calculateFahrenheit(daily.eveTemp[i])}</p>
-                        <p>Lowest Temp ${calculateFahrenheit(daily.minTemp[i])}</p>
-                        <p>At night it will feel like ${calculateFahrenheit(daily.feelsEve[i])}</p>
-                    </div>
-                </details>            
-                <details>
-                    <summary>What about the wind!?</summary>
+                    <summary>Wind Details</summary>
                     <div>
                         <p>The wind is blowing ${getCardinalDirection(daily.wndDir[i])} at ${daily.wndSpd[i]} mph (miles per hour)</p>
                         <p>OR ${daily.wndSpdKph[i]} kph (kilometers per hour)</p>
+                        <p>Wind gust of up to ${daily.wndGust[i]} mph</p>
                     </div>
                 </details>
                 <details>
-                    <summary>Worried about your skin and UV radiation?</summary>
+                    <summary>Ultra Violet Details</summary>
                     <div>
                         <p>UV Index Rating: ${daily.uvi[i]}</p>
                         ${uviColorDisplay(daily.uvi[i])}
                     </div>
                 </details>
                 <details>
-                    <summary>Stuff about water..</summary>
+                    <summary>Hydro Details</summary>
                     <div>
                         <p>Humidity: ${daily.hmid[i]}%</p>
                         <p>Water will form in the air at ${calculateFahrenheit(daily.dew[i])}</p>
@@ -280,21 +275,20 @@ const fiveDayForecast = () => {
                     </div>
                 </details>
                 <details>
-                    <summary>Appearance and dissappearance of the sun.</summary>
+                    <summary>Sun Details</summary>
                     <div>
                         <p>Wake up and enjoy the Sunrise at ${convertSecondsToTime(daily.sunrise[i])}</p>
                         <p>Unless of course you love sleeping in!</p>
                         <p>Sunset: ${convertSecondsToTime(daily.sunset[i])}</p>
                         <p>Best time of day, literally just step outside and stare at the sun!</p>
                     </div>
-                </details>       
+                </details>      
+                </details> 
             </section>
         `
             dailyForecastCardWrapper.append(dailyForecastCard);
         }
-        const title = `<div id="forecast-title">Five Day Forecast for ${daily.city}</div>`;
         let fiveDayTitle = $("#five-day-title");
-        fiveDayTitle.append(title);
     }
 }
 
@@ -362,10 +356,10 @@ const realDate = (unixTimeStamp) => {
     let dateObject = new Date(unixTimeStamp * 1000);
 
     let readableDate = {
-        day: dateObject.toLocaleString('en-US', { weekday: 'short' }),
+        day: dateObject.toLocaleString('en-US', { weekday: 'long' }),
         dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
     };
-    let date = `${readableDate.dayNum} ${readableDate.day}`;
+    let date = `${readableDate.day} ${readableDate.dayNum} `;
     return date;
 };
 
