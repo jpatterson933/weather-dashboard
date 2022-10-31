@@ -255,7 +255,9 @@ const fiveDayForecast = () => {
                     <div>
                         <p>The wind is blowing ${getCardinalDirection(daily.wndDir[i])} at ${daily.wndSpd[i]} mph (miles per hour)</p>
                         <p>OR ${daily.wndSpdKph[i]} kph (kilometers per hour)</p>
-                        <p>Wind gust of up to ${daily.wndGust[i]} mph</p>
+                        <p>Wind gusts of up to ${daily.wndGust[i]} mph</p>
+                        <p>A wind gust is a sudden, brief increase in speed of the wind</p>
+                        <p>Sound dramatic!!</p>
                     </div>
                 </details>
                 <details>
