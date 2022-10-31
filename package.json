@@ -1,7 +1,7 @@
 {
-  "name": "weather-dashboard",
+  "name": "weatherjeffstats",
   "version": "1.0.0",
-  "description": "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)",
+  "description": "An app with weather stats.",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,8 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/jpatterson933/weather-dashboard.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "weather",
+    "stats"
+  ],
+  "author": "Design Frame Build Web",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jpatterson933/weather-dashboard/issues"
