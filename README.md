@@ -2,7 +2,7 @@
 
 # [Deployed Application](https://jpatterson933.github.io/weather-dashboard/)
 
-# ![What it looks like]()
+# ![What it looks like](./assets/images/screenshotWithSavedCity.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
