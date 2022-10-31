@@ -102,7 +102,7 @@ function fetchForecast(lat, lon, info) {
             storeLocalData("daily", JSON.stringify(dailyFC));
 
             //reload page on click to display newly stored information
-            // location.reload();
+            location.reload();
         });
 };
 
@@ -206,7 +206,7 @@ function currentDay() {
             // store current city in local storage as savedCity for later use
             localStorage.setItem("savedCity", JSON.stringify(current));
 
-            // location.reload();
+            location.reload();
         });
     };
 };
@@ -290,7 +290,7 @@ const fiveDayForecast = () => {
         `
             dailyForecastCardWrapper.append(dailyForecastCard);
         }
-        let fiveDayTitle = $("#five-day-title");
+        // let fiveDayTitle = $("#five-day-title");
     }
 }
 
