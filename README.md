@@ -32,30 +32,36 @@ this software or any code within this application.
 
 # Application Description
 
-This application can be used to find the current weather data and five day forecast of any known city typed into the search bar. The user can find weather data on the current temperature, wind speeds, uv index and relevant color for uvi level, current conditions with associated image, and the humidity levels for the city. The five day forecast will display the same information except instead of the current temperature, it will take the max and minimum temperature of the day and display it for the user to read.
+Get your mind blown by some serious data! 
 
-The user can also save a city and easily return and load the five day forecast for their saved city.
+App provides weather data on cities that you search for using an open API weather.
 
-[Back to Top](#table-of-contents)
-
-# Installation Instructions
-
-You can git clone if you would like to download and use it.
+You can also save a city to look at it later. If you erase your cookies, you will erase our very existence. 
 
 [Back to Top](#table-of-contents)
 
-# Application Usage
 
-The purpose of this application is to show a five day forecast. It also saves a city so the user can return and quickly reload the five day forecast for their saved city.
-
-[Back to Top](#table-of-contents)
-
-# Languages Used
+# Languages and Used
 
 ### HTML
 ### CSS
 ### Javascript
 ### jQuery
+### API data fetch and request methods
+
+# Installation Instructions
+
+You can git clone if you would like to download and use it. Data is stored in objects on local storage. API key may be outdated.
+
+[Back to Top](#table-of-contents)
+
+# Application Usage
+
+This application has a singular purpose. The purpose to provide too much information about the weather in any one city. Seriously, if you go to the live website you will see what I am talking about.
+
+Look at any city in the world and then dig deeper into the details! You are your own detective!
+
+Use the app wisely.
 
 [Back to Top](#table-of-contents)
 
@@ -63,17 +69,21 @@ The purpose of this application is to show a five day forecast. It also saves a 
 
 There are no guidelines for contribution.
 
-[Back to Top](#table-of-contents)
+1. Fix to issues if a city is not spelled correctly
+2. Implement Canvas on top border with pictures of clouds
 
 # Testing Instrutions
 
-NA
+No current Testing Instructions
+
+# [Deployed Application](https://jpatterson933.github.io/weather-dashboard/)
+
 
 [Back to Top](#table-of-contents)
 
 # Known Issues/Errors
 
-No. There are some areas of the styling that can be improved but overall the application does not give any errors when ran.
+Cities must be spelled correctly. If not, it will not be able to locate it.
 
 [Back to Top](#table-of-contents)
 
