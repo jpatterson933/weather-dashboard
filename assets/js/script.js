@@ -4,6 +4,7 @@ let baseUrl = "https://api.openweathermap.org/data/2.5/forecast?&q="
 //this input pulls my daily forcast
 let foreCastUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 // import { apiKey } from './config.js';
+// free api, not hidden, anyone can use
 const apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195";
 
 // store in local storage function
@@ -19,10 +20,12 @@ function fetchForecast(lat, lon, info) {
     fetch(query)
         .then(response => { return response.json() })
         .then(res => {
-            console.log(res);
+            console.log(res.current.timezone, "reso");
+            console.log(res)
 
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
+            console.log(cityInfo, "city info again")
 
             // create current forecast object
             const current = new Object();
@@ -32,14 +35,18 @@ function fetchForecast(lat, lon, info) {
             current.date = res.current.dt;
             current.temp = res.current.temp;
             current.feels = res.current.feels_like;
+            current.sunrise = res.current.sunrise;
             current.sunset = res.current.sunset;
-            current.wndSpd = res.current.wind_speed;
+            current.wndSpd = (res.current.wind_speed).toFixed(1);
+            current.wndSpdKph = ((res.current.wind_speed) * 1.60934).toFixed(1)
+            current.wndDir = res.current.wind_speed;
             current.hmid = res.current.humidity;
             current.dew = res.current.dew_point;
             current.uvi = res.current.uvi;
             current.main = res.current.weather[0].main;
             current.desc = res.current.weather[0].description;
             current.icon = res.current.weather[0].icon;
+            current.timeZone = res.timezone;
 
             // create daily ForeCast object with empty arrays for data
             const dailyFC = new Object();
@@ -56,12 +63,16 @@ function fetchForecast(lat, lon, info) {
             dailyFC.sunrise = new Array();
             dailyFC.sunset = new Array();
             dailyFC.wndSpd = new Array();
+            dailyFC.wndSpdKph = new Array();
+            dailyFC.wndDir = new Array();
+            dailyFC.wndGust = new Array();
             dailyFC.hmid = new Array();
             dailyFC.dew = new Array();
             dailyFC.uvi = new Array();
             dailyFC.main = new Array();
             dailyFC.desc = new Array();
             dailyFC.icon = new Array();
+            dailyFC.timeZone = res.timezone;
 
             //----------------------------locally store a forecast using forEach() ----------------------//
             res.daily.forEach(element => {
@@ -74,7 +85,10 @@ function fetchForecast(lat, lon, info) {
                 dailyFC.feelsEve.push(element.feels_like.eve);
                 dailyFC.sunrise.push(element.sunrise);
                 dailyFC.sunset.push(element.sunset);
-                dailyFC.wndSpd.push(element.wind_speed);
+                dailyFC.wndSpd.push((element.wind_speed).toFixed(1));
+                dailyFC.wndSpdKph.push(((element.wind_speed) * 1.60934).toFixed(1));
+                dailyFC.wndDir.push(element.wind_deg);
+                dailyFC.wndGust.push((element.wind_gust).toFixed(1));
                 dailyFC.hmid.push(element.humidity);
                 dailyFC.dew.push(element.dew_point)
                 dailyFC.uvi.push(element.uvi);
@@ -88,7 +102,7 @@ function fetchForecast(lat, lon, info) {
             storeLocalData("daily", JSON.stringify(dailyFC));
 
             //reload page on click to display newly stored information
-            location.reload();
+            // location.reload();
         });
 };
 
@@ -127,9 +141,9 @@ function currentDay() {
 
     if (JSON.parse(localStorage.getItem("current")) === null) {
         const currentDayWeatherInfo = `
-            <div id="current-day-weather-info>
-                <h1>Please search for a city</h1>
-            </div>
+        <div id="current-day-weather-info>
+            <h1>Please search for a city</h1>
+        </div>
         `
         const currentDay = $("#current-day-weather");
         currentDay.append(currentDayWeatherInfo);
@@ -139,23 +153,50 @@ function currentDay() {
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
-    <div id="current-day-weather-info">
-            <h1 class="city-name">Currently in ${current.city}</h1>
-            <div class="weather-info-wrapper">
-                <h4>Conditions</h4>
-                <h4>Wind</h4>
-                <h4>UV</h4>
-                <h4>Humidity</h4>
-                <div>${calculateFahrenheit((current.temp), (current.desc))}</div>
-                <div>${current.wndSpd}mph</div>
+        <section id="current-card">
+            <h1>${current.city}</h1>
+            <details>
+                <summary>${getTimeZone(current.timeZone)}</summary>
+                <p>${current.city} is in the ${current.timeZone} timezone</p>
+            </details>
+            <details>
+                <summary>Forecast: ${calculateFahrenheit((current.temp), (current.main))}</summary>
+                <p>It feels like ${calculateFahrenheit((current.feels))} and the local weather description is "${current.desc}"</p>
+            </details>            
+            <details>
+                <summary>What about the wind!?</summary>
                 <div>
-                    <div>${current.uvi}</div>
-                    <div>${uviColorDisplay(current.uvi)}</div>
+                    <p>The wind is blowing ${getCardinalDirection(current.wndDir)} at ${current.wndSpd} mph (miles per hour)</p>
+                    <p>OR ${current.wndSpdKph} kph (kilometers per hour)</p>
                 </div>
-                <div>${current.hmid}%</div>
-            </div>
+            </details>
+            <details>
+                <summary>Worried about your skin and UV radiation?</summary>
+                <div>
+                    <p>UV Index Rating: ${current.uvi}</p>
+                    ${uviColorDisplay(current.uvi)}
+                </div>
+            </details>
+            <details>
+                <summary>Stuff about water..</summary>
+                <div>
+                    <p>Humidity: ${current.hmid}%</p>
+                    <p>Water will form in the air at ${calculateFahrenheit(current.dew)}</p>
+                    <p>This means that your windows will have condensation!</p>
+                    <p>Is it going to rain? idk check your local forecast!!</p>
+                </div>
+            </details>
+            <details>
+                <summary>Appearance and dissappearance of the sun.</summary>
+                <div>
+                    <p>Wake up and enjoy the Sunrise at ${convertSecondsToTime(current.sunrise)}</p>
+                    <p>Unless of course you love sleeping in!</p>
+                    <p>Sunset: ${convertSecondsToTime(current.sunset)}</p>
+                    <p>Best time of day, literally just step outside and stare at the sun!</p>
+                </div>
+            </details>       
             <button id="save-current-city">Save City</button>
-    </div>
+        </section>
     `
         const currentDay = $("#current-day-weather");
         currentDay.append(currentDayWeatherInfo);
@@ -165,7 +206,7 @@ function currentDay() {
             // store current city in local storage as savedCity for later use
             localStorage.setItem("savedCity", JSON.stringify(current));
 
-            location.reload();
+            // location.reload();
         });
     };
 };
@@ -188,35 +229,68 @@ const fiveDayForecast = () => {
     } else {
         // grab our id form index.html and append daily forecast titles
         let dailyForecastCardWrapper = $("#daily-forecast-card-wrapper");
-        let dailyForecasttitle = `
-            <h4>Date</h4>
-            <h4>Max - Min</h4>
-            <h4>Conditions</h4>
-            <h4>Wind</h4>
-            <h4>UV</h4>
-            <h4>Humidity</h4>
-        `;
 
-        dailyForecastCardWrapper.append(dailyForecasttitle);
 
         for (let i = 0; i < 5; i++) {
             // five day forecast card using template literals
             const dailyForecastCard = `
-                <div>${realDate(daily.date[i])}</div>
-                <div>${calculateFahrenheit(daily.maxTemp[i])} - ${calculateFahrenheit(daily.minTemp[i])}</div>
-                <div>${daily.main[i]}</div>
-                <div>${daily.wndSpd[i]} mph</div>
-                <div>
-                    <div>${daily.uvi[i]}</div>
-                    <div>${uviColorDisplay(daily.uvi[i])}</div>
-                </div>
-                <div>${daily.hmid[i]}%</div>
+            <section id="daily-card">
+            <summary>${realDate(daily.date[i])}</summary>
+            <div>${calculateFahrenheit((daily.dayTemp[i]), (daily.main[i]))}</div>
+                <details>
+                    <summary>Unnecessary Details</summary>
+                    <details>
+                    <summary>Tempeature Details</summary
+                        <div>
+                            <p>Max Temp ${calculateFahrenheit(daily.maxTemp[i])}</p>
+                            <p>During the day it will feel like ${calculateFahrenheit(daily.feelsDay[i])}</p>
+                            <p>At night it will be ${calculateFahrenheit(daily.eveTemp[i])}</p>
+                            <p>Lowest Temp ${calculateFahrenheit(daily.minTemp[i])}</p>
+                            <p>At night it will feel like ${calculateFahrenheit(daily.feelsEve[i])}</p>
+                        </div>
+                    </details>
+                        
+                <details>
+                    <summary>Wind Details</summary>
+                    <div>
+                        <p>The wind is blowing ${getCardinalDirection(daily.wndDir[i])} at ${daily.wndSpd[i]} mph (miles per hour)</p>
+                        <p>OR ${daily.wndSpdKph[i]} kph (kilometers per hour)</p>
+                        <p>Wind gusts of up to ${daily.wndGust[i]} mph</p>
+                        <p>A wind gust is a sudden, brief increase in speed of the wind</p>
+                        <p>Sound dramatic!!</p>
+                    </div>
+                </details>
+                <details>
+                    <summary>Ultra Violet Details</summary>
+                    <div>
+                        <p>UV Index Rating: ${daily.uvi[i]}</p>
+                        ${uviColorDisplay(daily.uvi[i])}
+                    </div>
+                </details>
+                <details>
+                    <summary>Hydro Details</summary>
+                    <div>
+                        <p>Humidity: ${daily.hmid[i]}%</p>
+                        <p>Water will form in the air at ${calculateFahrenheit(daily.dew[i])}</p>
+                        <p>This means that your windows will have condensation!</p>
+                        <p>Is it going to rain? idk check your local forecast!!</p>
+                    </div>
+                </details>
+                <details>
+                    <summary>Sun Details</summary>
+                    <div>
+                        <p>Wake up and enjoy the Sunrise at ${convertSecondsToTime(daily.sunrise[i])}</p>
+                        <p>Unless of course you love sleeping in!</p>
+                        <p>Sunset: ${convertSecondsToTime(daily.sunset[i])}</p>
+                        <p>Best time of day, literally just step outside and stare at the sun!</p>
+                    </div>
+                </details>      
+                </details> 
+            </section>
         `
             dailyForecastCardWrapper.append(dailyForecastCard);
         }
-        const title = `<div id="forecast-title">Five Day Forecast for ${daily.city}</div>`;
         let fiveDayTitle = $("#five-day-title");
-        fiveDayTitle.append(title);
     }
 }
 
@@ -237,10 +311,8 @@ function showStoredCity() {
 
         // saved city card
         const savedCityCard = `
-        <div class="saved-city">
         <h1>${savedCity.city}</h1>
         <button id="show-forecast">Show Forecast</button>
-        </div>
         `   // end saved city card
         const savedCityWeather = $("#saved-city-weather");
         savedCityWeather.append(savedCityCard);
@@ -259,19 +331,19 @@ function uviColorDisplay(uviColor) {
     let uvi = parseInt(uviColor);
 
     if (uvi < 3) {
-        return "<div id='uvi-color' style='background-color: green'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: green'></div></p>";
     }
     if (uvi > 2 && uvi < 6) {
-        return "<div id='uvi-color' style='background-color: yellow'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: yellow'></div></p>";
     }
     if (uvi > 5 && uvi < 8) {
-        return "<div id='uvi-color' style='background-color: orange'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: orange'></div></p>";
     }
     if (uvi > 7 && uvi < 11) {
-        return "<div id='uvi-color' style='background-color: red'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: red'></div></p>";
     }
     if (uvi > 11) {
-        return "<div id='uvi-color' style='background-color: purple'></div>";
+        return "<p>UV Index color: <div id='uvi-color' style='background-color: purple'></div></p>";
     }
 };
 
@@ -284,15 +356,58 @@ function calculateFahrenheit(temp, ...conditions) {
 const realDate = (unixTimeStamp) => {
 
     let dateObject = new Date(unixTimeStamp * 1000);
+
     let readableDate = {
-        day: dateObject.toLocaleString('en-US', { weekday: 'short' }),
+        day: dateObject.toLocaleString('en-US', { weekday: 'long' }),
         dayNum: dateObject.toLocaleString('en-US', { day: 'numeric' })
     };
-    let date = `${readableDate.dayNum} ${readableDate.day}`;
+    let date = `${readableDate.day} ${readableDate.dayNum} `;
     return date;
 };
+
+// function to get current time
+const getCurrentTime = () => {
+    const dateTimeStr = new Date().toLocaleString()
+    const result = (dateTimeStr.split(", ")[0], dateTimeStr.split(", ")[1])
+    return result;
+}
+// function to return time from specific time zone
+function getTimeZone(tz) {
+    let date = new Date();
+    return new Intl.DateTimeFormat('en-US', { timeZone: tz, dateStyle: 'full', timeStyle: 'long' }).format(date);
+}
+// function to convert seconds to a normal 10:00am time
+const convertSecondsToTime = (seconds) => {
+
+    const dateTimeStr = new Date(seconds * 1000).toLocaleString()
+    const result = (dateTimeStr.split(", ")[0], dateTimeStr.split(", ")[1])
+    return result;
+};
+// function to grab cardinal direction based off of degrees
+const getCardinalDirection = (angle) => {
+    const directions = ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest', 'West', 'Northwest'];
+    return directions[Math.round(angle / 22.5) % 8];
+}
 
 // display functions
 currentDay();
 fiveDayForecast();
 showStoredCity();
+
+// // canvas script for clouds might use this might not - this does not live with the mvp
+// var canvas = document.querySelector('canvas');
+// var ctx = canvas.getContext('2d');
+
+// const drawCloud = (x, y) => {
+//     ctx.beginPath();
+//     ctx.arc(x, y, 60, Math.PI * 0.5, Math.PI * 1.5);
+//     ctx.arc(x + 70, y - 60, 70, Math.PI * 1, Math.PI * 1.85);
+//     ctx.arc(x + 152, y - 45, 50, Math.PI * 1.37, Math.PI * 1.91);
+//     ctx.arc(x + 200, y, 60, Math.PI * 1.5, Math.PI * 0.5);
+//     ctx.moveTo(x + 200, y + 60);
+//     ctx.lineTo(x, y + 60);
+//     ctx.strokeStyle = '#797874';
+//     ctx.stroke();
+//     ctx.fillStyle = '#8ED6FF';
+//     ctx.fill()
+// };
