@@ -1,7 +1,7 @@
 {
   "name": "weatherjeffstats",
   "version": "1.0.0",
-  "description": "An app with weather stats.",
+  "description": "An app with weather stats and stuff.",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
