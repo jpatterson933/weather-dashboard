@@ -18,14 +18,14 @@ function fetchForecast(lat, lon, info) {
     let query = foreCastUrl + "lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely" + apiKey;
 
     fetch(query)
-        .then(response => { return response.json() })
+        .then(response => {return response.json()})
         .then(res => {
-            console.log(res.current.timezone, "reso");
-            console.log(res)
+            // console.log(res.current.timezone, "reso");
+            // console.log(res)
 
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
-            console.log(cityInfo, "city info again")
+            // console.log(cityInfo, "city info again")
 
             // create current forecast object
             const current = new Object();
