@@ -11,6 +11,32 @@ const apiKey = "&appid=3eba9a255d0b187b6983dc669df8b195";
 function storeLocalData(title, item) {
     localStorage.setItem(title, item);
 };
+// CLASS FOR DAILY FORECAST
+
+class CurrentFC {
+    constructor(city, lat, lon, date, temp, feels, sunrise, sunset, wndSpd, wndSpdKph, wndDir, hmid, dew, uvi, main, desc, icon, timeZone) {
+        this.city = city;
+        this.lat = lat;
+        this.lon = lon;
+        this.date = date;
+        this.temp = temp;
+        this.feels = feels;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+        this.wndSpd = wndSpd.toFixed(1);
+        this.wndSpdKph = ((wndSpdKph) * 1.60934).toFixed(1);
+        this.wndDir = wndDir;
+        this.hmid = hmid;
+        this.dew = dew;
+        this.uvi = uvi;
+        this.main = main;
+        this.desc = desc;
+        this.icon = icon;
+        this.timeZone = timeZone;
+    }
+}
+
+
 
 // function to fetch our forecast data based off of the latitude and longitude of our city meridian data
 function fetchForecast(lat, lon, info) {
@@ -20,33 +46,13 @@ function fetchForecast(lat, lon, info) {
     fetch(query)
         .then(response => {return response.json()})
         .then(res => {
-            // console.log(res.current.timezone, "reso");
-            // console.log(res)
-
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
-            // console.log(cityInfo, "city info again")
 
-            // create current forecast object
-            const current = new Object();
-            current.city = cityInfo.city;
-            current.lat = cityInfo.lat;
-            current.lon = cityInfo.lon;
-            current.date = res.current.dt;
-            current.temp = res.current.temp;
-            current.feels = res.current.feels_like;
-            current.sunrise = res.current.sunrise;
-            current.sunset = res.current.sunset;
-            current.wndSpd = (res.current.wind_speed).toFixed(1);
-            current.wndSpdKph = ((res.current.wind_speed) * 1.60934).toFixed(1)
-            current.wndDir = res.current.wind_speed;
-            current.hmid = res.current.humidity;
-            current.dew = res.current.dew_point;
-            current.uvi = res.current.uvi;
-            current.main = res.current.weather[0].main;
-            current.desc = res.current.weather[0].description;
-            current.icon = res.current.weather[0].icon;
-            current.timeZone = res.timezone;
+            const current = new CurrentFC(cityInfo.city, cityInfo.lat, cityInfo.lon, res.current.dt, res.current.temp, 
+                res.current.feels_like, res.current.sunrise, res.current.sunset, res.current.wind_speed, res.current.wind_speed, res.current.wind_speed, res.current.humidity, res.current.dew_point, res.current.uvi, res.current.weather[0].main, res.current.weather[0].description, res.current.weather[0].icon, res.timezone)
+
+            console.log(current, "current")
 
             // create daily ForeCast object with empty arrays for data
             const dailyFC = new Object();
@@ -73,6 +79,7 @@ function fetchForecast(lat, lon, info) {
             dailyFC.desc = new Array();
             dailyFC.icon = new Array();
             dailyFC.timeZone = res.timezone;
+            console.log(dailyFC)
 
             //----------------------------locally store a forecast using forEach() ----------------------//
             res.daily.forEach(element => {
@@ -102,7 +109,7 @@ function fetchForecast(lat, lon, info) {
             storeLocalData("daily", JSON.stringify(dailyFC));
 
             //reload page on click to display newly stored information
-            location.reload();
+            // location.reload();
         });
 };
 
@@ -149,7 +156,10 @@ function currentDay() {
         currentDay.append(currentDayWeatherInfo);
     } else {
         // console.log(foreCastNow, "forecastnow")
+        console.log(localStorage.getItem("current"))
         let current = JSON.parse(localStorage.getItem("current"));
+
+        console.log("second current", current)
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
