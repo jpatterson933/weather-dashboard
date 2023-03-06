@@ -36,13 +36,9 @@ class CurrentFC {
     }
 }
 
-
 class DailyFC extends CurrentFC {
     constructor(city, lat, lon, date, dayTemp, eveTemp, maxTemp, minTemp, feelsDay, feelsEve, sunrise, sunset, wndSpd, wndSpdKph, wndDir, wndGust, hmid, dew, uvi, main, desc, icon, timeZone) {
         super(city, lat, lon)
-        // this.city = city;
-        // this.lat = lat;
-        // this.lon = lon;
         this.date = date;
         this.dayTemp = dayTemp;
         this.eveTemp = eveTemp;
@@ -66,33 +62,6 @@ class DailyFC extends CurrentFC {
     }
 }
 
-const dailyFC = new DailyFC(
-    cityInfo.city,
-    cityInfo.lat,
-    cityInfo.lon,
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    new Array(),
-    res.timezone
-);
-console.log(dailyFC);
-
-
 // function to fetch our forecast data based off of the latitude and longitude of our city meridian data
 function fetchForecast(lat, lon, info) {
     //url to fetch daily forecast data -- we exclude hourly and minutely data
@@ -107,7 +76,7 @@ function fetchForecast(lat, lon, info) {
             const current = new CurrentFC(cityInfo.city, cityInfo.lat, cityInfo.lon, res.current.dt, res.current.temp, 
                 res.current.feels_like, res.current.sunrise, res.current.sunset, res.current.wind_speed, res.current.wind_speed, res.current.wind_speed, res.current.humidity, res.current.dew_point, res.current.uvi, res.current.weather[0].main, res.current.weather[0].description, res.current.weather[0].icon, res.timezone)
 
-            console.log(current, "current")
+            // console.log(current, "current")
 
             // create daily ForeCast object with empty arrays for data
             const dailyFC = new Object();
@@ -134,7 +103,7 @@ function fetchForecast(lat, lon, info) {
             dailyFC.desc = new Array();
             dailyFC.icon = new Array();
             dailyFC.timeZone = res.timezone;
-            console.log(dailyFC)
+            // console.log(dailyFC)
 
             //----------------------------locally store a forecast using forEach() ----------------------//
             res.daily.forEach(element => {
@@ -211,10 +180,10 @@ function currentDay() {
         currentDay.append(currentDayWeatherInfo);
     } else {
         // console.log(foreCastNow, "forecastnow")
-        console.log(localStorage.getItem("current"))
+        // console.log(localStorage.getItem("current"))
         let current = JSON.parse(localStorage.getItem("current"));
 
-        console.log("second current", current)
+        // console.log("second current", current)
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
