@@ -37,6 +37,61 @@ class CurrentFC {
 }
 
 
+class DailyFC {
+    constructor(city, lat, lon, date, dayTemp, eveTemp, maxTemp, minTemp, feelsDay, feelsEve, sunrise, sunset, wndSpd, wndSpdKph, wndDir, wndGust, hmid, dew, uvi, main, desc, icon, timeZone) {
+        super(city, lat, lon)
+        // this.city = city;
+        // this.lat = lat;
+        // this.lon = lon;
+        this.date = date;
+        this.dayTemp = dayTemp;
+        this.eveTemp = eveTemp;
+        this.maxTemp = maxTemp;
+        this.minTemp = minTemp;
+        this.feelsDay = feelsDay;
+        this.feelsEve = feelsEve;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+        this.wndSpd = wndSpd;
+        this.wndSpdKph = wndSpdKph;
+        this.wndDir = wndDir;
+        this.wndGust = wndGust;
+        this.hmid = hmid;
+        this.dew = dew;
+        this.uvi = uvi;
+        this.main = main;
+        this.desc = desc;
+        this.icon = icon;
+        this.timeZone = timeZone;
+    }
+}
+
+const dailyFC = new DailyFC(
+    cityInfo.city,
+    cityInfo.lat,
+    cityInfo.lon,
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    new Array(),
+    res.timezone
+);
+console.log(dailyFC);
+
 
 // function to fetch our forecast data based off of the latitude and longitude of our city meridian data
 function fetchForecast(lat, lon, info) {
@@ -109,7 +164,7 @@ function fetchForecast(lat, lon, info) {
             storeLocalData("daily", JSON.stringify(dailyFC));
 
             //reload page on click to display newly stored information
-            // location.reload();
+            location.reload();
         });
 };
 
