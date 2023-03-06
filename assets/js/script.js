@@ -37,7 +37,7 @@ class CurrentFC {
 }
 
 
-class DailyFC {
+class DailyFC extends CurrentFC {
     constructor(city, lat, lon, date, dayTemp, eveTemp, maxTemp, minTemp, feelsDay, feelsEve, sunrise, sunset, wndSpd, wndSpdKph, wndDir, wndGust, hmid, dew, uvi, main, desc, icon, timeZone) {
         super(city, lat, lon)
         // this.city = city;
