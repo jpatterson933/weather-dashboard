@@ -1,13 +1,3 @@
-/* styling for our uvi color holder */
-
-/*
-other colors
-RGB: (241, 119, 32)
-RGB: (4, 116, 186)
-
-
-
-*/
 
 body {
   background-color: rgba(235, 235, 235);
@@ -91,7 +81,7 @@ div>input {
 /*changes need to be added do media query if they exist*/
 #intro {
   margin: 20px 0;
-  background: linear-gradient(to bottom, rgb(0 187 247 / 74%), rgb(255 107 0 / 36%));
+  background: linear-gradient(to bottom, rgb(0 187 247 / 74%),rgb(255, 255, 255) ,rgb(255 107 0 / 36%));
   color: rgba(235, 235, 235);
   padding: 10px;
   /* font-size: 18px; */
@@ -103,7 +93,7 @@ div>input {
 #intro>p {
   background-color: rgb(255 255 255 / 10%);
   padding: 39px;
-  color: #1630429e;
+  color: #344856;
   border-radius: 30px;
 }
 
@@ -129,30 +119,14 @@ div>input {
 
 }
 
-/* canvas {
-  position: relative;
-  z-index: 0;
-}
-
-section > p {
-  z-index: 4;
-} */
-
-
-
-
-
 #uvi-color {
   margin: 0 auto;
   width: 20px;
   height: 20px;
-  /* border-radius: 150px; */
-  /* margin: 0 auto; */
 }
 
 #daily-forecast-card-wrapper {
   margin: 1em 0;
-  /* padding: 1em 0; */
   background-color: rgb(0, 167, 225, 50%);
   display: flex;
   flex-direction: row;
@@ -171,10 +145,8 @@ p {
   text-align: center;
   width: fit-content;
   background: rgb(0, 167, 225, 90%);
-
   color: white;
   flex-grow: 1;
-  
 }
 
 summary > p {
@@ -189,3 +161,13 @@ footer {
   color: white;
 }
 
+@media only screen and (max-width: 1150px) {
+  #header-wrap {
+    flex-direction: column;
+  }
+  #header-card {
+    margin: 0 auto;
+    border-radius: 24px 0;
+  }
+
+}

@@ -68,15 +68,14 @@ function fetchForecast(lat, lon, info) {
     let query = foreCastUrl + "lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely" + apiKey;
 
     fetch(query)
-        .then(response => {return response.json()})
+        .then(response => { return response.json() })
         .then(res => {
             // grab our city Meridian data
             let cityInfo = JSON.parse(localStorage.getItem(info));
 
-            const current = new CurrentFC(cityInfo.city, cityInfo.lat, cityInfo.lon, res.current.dt, res.current.temp, 
+            const current = new CurrentFC(cityInfo.city, cityInfo.lat, cityInfo.lon, res.current.dt, res.current.temp,
                 res.current.feels_like, res.current.sunrise, res.current.sunset, res.current.wind_speed, res.current.wind_speed, res.current.wind_speed, res.current.humidity, res.current.dew_point, res.current.uvi, res.current.weather[0].main, res.current.weather[0].description, res.current.weather[0].icon, res.timezone)
 
-            // console.log(current, "current")
 
             // create daily ForeCast object with empty arrays for data
             const dailyFC = new Object();
@@ -103,7 +102,6 @@ function fetchForecast(lat, lon, info) {
             dailyFC.desc = new Array();
             dailyFC.icon = new Array();
             dailyFC.timeZone = res.timezone;
-            // console.log(dailyFC)
 
             //----------------------------locally store a forecast using forEach() ----------------------//
             res.daily.forEach(element => {
@@ -179,11 +177,7 @@ function currentDay() {
         const currentDay = $("#current-day-weather");
         currentDay.append(currentDayWeatherInfo);
     } else {
-        // console.log(foreCastNow, "forecastnow")
-        // console.log(localStorage.getItem("current"))
         let current = JSON.parse(localStorage.getItem("current"));
-
-        // console.log("second current", current)
 
         // our current day weather card put into template literal to be appended to our index.html
         const currentDayWeatherInfo = `
@@ -324,7 +318,6 @@ const fiveDayForecast = () => {
         `
             dailyForecastCardWrapper.append(dailyForecastCard);
         }
-        // let fiveDayTitle = $("#five-day-title");
     }
 }
 
@@ -427,21 +420,3 @@ const getCardinalDirection = (angle) => {
 currentDay();
 fiveDayForecast();
 showStoredCity();
-
-// // canvas script for clouds might use this might not - this does not live with the mvp
-// var canvas = document.querySelector('canvas');
-// var ctx = canvas.getContext('2d');
-
-// const drawCloud = (x, y) => {
-//     ctx.beginPath();
-//     ctx.arc(x, y, 60, Math.PI * 0.5, Math.PI * 1.5);
-//     ctx.arc(x + 70, y - 60, 70, Math.PI * 1, Math.PI * 1.85);
-//     ctx.arc(x + 152, y - 45, 50, Math.PI * 1.37, Math.PI * 1.91);
-//     ctx.arc(x + 200, y, 60, Math.PI * 1.5, Math.PI * 0.5);
-//     ctx.moveTo(x + 200, y + 60);
-//     ctx.lineTo(x, y + 60);
-//     ctx.strokeStyle = '#797874';
-//     ctx.stroke();
-//     ctx.fillStyle = '#8ED6FF';
-//     ctx.fill()
-// };
