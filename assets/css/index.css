@@ -1,11 +1,9 @@
-
+/* full page styling  */
 body {
   background-color: rgba(235, 235, 235);
   font-family: 'Raleway', sans-serif;
   font-size: 1.5em;
-
 }
-
 
 /*--------------------NAV BAR STYLING ------------------*/
 a {
@@ -27,9 +25,7 @@ a {
   background: rgb(63 181 219);
   width: fit-content;
   padding: 10px;
-  /* box-shadow: rgb(0 0 0 / 18%) 0px 2px 4px; */
   box-shadow: rgb(0 0 0 / 18%) 8px 0px 4px;
-
 }
 
 #button-search,
@@ -45,8 +41,6 @@ nav {
   display: inline;
   padding-bottom: 10px;
   margin-bottom: 8px;
-
-  /* flex-grow: 1; */
 }
 
 nav>a {
@@ -60,13 +54,10 @@ div>input {
   text-align: center;
 }
 
-
 #saved-city-weather {
   display: flex;
   flex-direction: row;
-
   align-items: baseline;
-
 }
 
 #show-forecast {
@@ -76,15 +67,14 @@ div>input {
 #saved-city-weather>h1 {
   color: rgba(235, 235, 235);
 }
-
 /*-------------------- END NAV BAR STYLING ------------------*/
+
 /*changes need to be added do media query if they exist*/
 #intro {
   margin: 20px 0;
   background: linear-gradient(to bottom, rgb(0 187 247 / 74%),rgb(255, 255, 255) ,rgb(255 107 0 / 36%));
   color: rgba(235, 235, 235);
   padding: 10px;
-  /* font-size: 18px; */
   text-align: center;
   border-radius: 0 30px 30px 0;
 }
@@ -96,7 +86,6 @@ div>input {
   color: #344856;
   border-radius: 30px;
 }
-
 
 #current-day-weather {
   background-color: rgb(241, 119, 32, 50%);
@@ -112,11 +101,7 @@ div>input {
   text-align: center;
   width: fit-content;
   background-color: rgb(241, 119, 32, 70%);
-
-  
-
   color: white;
-
 }
 
 #uvi-color {
@@ -169,5 +154,4 @@ footer {
     margin: 0 auto;
     border-radius: 24px 0;
   }
-
 }
