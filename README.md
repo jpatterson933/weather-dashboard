@@ -1,5 +1,7 @@
 # Weather Dashboard Application
 
+[![Buymeacoffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label)](https://www.buymeacoffee.com/jpatterson)
+
 # [Deployed Application](https://jpatterson933.github.io/weather-dashboard/)
 
 # ![What it looks like](./assets/images/screenshotWithSavedCity.png)
@@ -65,6 +67,9 @@ Use the app wisely.
 
 [Back to Top](#table-of-contents)
 
+# [Buy Me A Coffee](https://www.buymeacoffee.com/jpatterson)
+
+There are no guidelines for contribution.
 # Contribution Guidelines
 
 There are no guidelines for contribution.
